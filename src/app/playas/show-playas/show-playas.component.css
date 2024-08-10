@@ -1,0 +1,9 @@
+#asd{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Ocupa toda la altura de l a pantalla */
+    margin: 50;
+    width: 60%;
+    margin: 0 auto;
+}           

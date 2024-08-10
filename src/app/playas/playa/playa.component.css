@@ -1,0 +1,28 @@
+.container {
+  
+  
+}
+.custom-nav-tabs {
+    font-size: 18px; /* Tamaño de letra más grande */
+  }
+  
+  .custom-nav-tabs .nav-link {
+    padding: 10px 20px; /* Más espacio alrededor del texto */
+  }
+  
+  .custom-nav-tabs .nav-link.active {
+    background-color: #007bff; /* Color de fondo de la pestaña seleccionada */
+    color: white; /* Color del texto de la pestaña seleccionada */
+    font-weight: bold; /* Texto en negrita */
+    border: 1px solid #007bff; /* Borde del mismo color */
+    border-bottom-color: transparent; /* Elimina el borde inferior */
+  }
+  
+  .custom-nav-tabs .nav-link {
+    color: #007bff; /* Color del texto de las pestañas no seleccionadas */
+  }
+  
+  .custom-nav-tabs .nav-link:hover {
+    background-color: #e9ecef; /* Color de fondo al pasar el ratón por encima */
+  }
+  

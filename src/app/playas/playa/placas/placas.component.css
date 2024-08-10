@@ -1,0 +1,57 @@
+/* Ajusta el ancho de cada columna */
+.col-id {
+    width:  5%; /* Ajusta el valor según sea necesario */
+  }
+  
+  .col-ingreso {
+    width: 10%; /* Ajusta el valor según sea necesario */
+  }
+  
+  .col-placa {
+    width: 10%; /* Ajusta el valor según sea necesario */
+  }
+  
+  .col-imagen {
+    width: 20%; /* Ajusta el valor según sea necesario */
+    
+  }
+  
+  .col-monto {
+    width: 7%; /* Ajusta el valor según sea necesario */
+  }
+  
+  .col-estado {
+    width: 10%; /* Ajusta el valor según sea necesario */
+  }
+  
+  .col-opc {
+    width: 40%; /* Ajusta el valor según sea necesario, más ancho */
+    border: 2px;
+  }
+.container{
+  width: 100%;
+  padding: 2%;
+  
+}
+.btn0{
+  width: 100px; /* Ajusta el valor según tus necesidades */
+  height: 50px;
+}
+.btn1 {
+  width: 180px; /* Ajusta el valor según tus necesidades */
+  height: 50px;
+  
+}
+
+.alert {
+  opacity: 1;
+  transition: opacity 0.99s ease-out;
+  position: fixed;
+  bottom: 0;
+  margin: 0;
+  width: 100%;
+}
+
+.alert.fade-out {
+  opacity: 0;
+}

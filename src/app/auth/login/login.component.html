@@ -1,0 +1,23 @@
+<h1>Playas</h1>
+
+<form [formGroup]="formularioContacto"  (ngSubmit)="enviar()">
+  <div class="user-box">
+    <input type="text" id="name" formControlName="name" name="" required="" />
+    <label>Nombre</label>
+  </div>
+ 
+  <div class="user-box">
+    <input type="password" id="password" formControlName="password" name="" required=""/>
+    <label>Contraseña</label>
+  </div>
+  
+  <a (click)="enviar()" type="submit">
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    Ingresar
+  </a>
+
+  <button type="submit" style="display: none;"></button>
+</form>

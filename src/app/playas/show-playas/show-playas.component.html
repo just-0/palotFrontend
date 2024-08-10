@@ -1,0 +1,29 @@
+<div class="bg-dark">
+  <div class="container">
+    <h1 class="display-4 text-light">Selecciona la Playa</h1>
+  </div>
+</div>
+<div id="asd">
+  <div class="row">
+    <div class="col-sm-6" *ngFor="let playa of playas">
+      <div class="card m-3">
+        <img
+          class="card-img-top"
+          src="https://concepto.de/wp-content/uploads/2015/03/paisaje-2-e1549600987975.jpg"
+          alt="Card image cap"
+        />
+        <div class="card-body">
+          <h1 class="card-title">{{ playa.nombre }}</h1>
+          <p class="card-text">Dirección: {{ playa.direccion }}</p>
+          <p class="card-text">Tarifa: S./{{ playa.tarifa }}</p>
+          <a
+            [routerLink]="['/playas', playa.nombre]"
+            (click)="abrirPlaya(playa)"
+            class="btn btn-primary w-100 h-25"
+            >Iniciar Playa</a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

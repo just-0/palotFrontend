@@ -1,0 +1,115 @@
+<div class="container">
+  <input
+    type="text"
+    class="form-control mb-3"
+    placeholder="Buscar registros"
+    [(ngModel)]="filtro"
+  />
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th class="col-id">ID</th>
+        <th class="col-ingreso">Ingreso</th>
+        <th class="col-placa">Placa</th>
+        <th class="col-imagen">Imagen Placa</th>
+        <th class="col-monto">Monto</th>
+        <th class="col-estado">Estado</th>
+        <th class="col-opc">Opc.</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of datosFiltrados()">
+        <td class="col-id">{{ item.id_auto }}</td>
+        <td class="col-ingreso">{{ formatHora(item.hora_entrada) }}</td>
+        <td class="col-placa">{{ item.placa }}</td>
+        <td class="col-imagen">
+          <img
+            *ngIf="item.img"
+            [src]="item.img"
+            alt="No cargo"
+            style="max-width: 200px; max-height: 200px"
+          />
+        </td>
+        <td class="col-monto">
+          <p *ngIf="item.state == 3 ">
+            S/.{{ playa.tarifa }}0
+          </p>
+          <p *ngIf="item.state == 1 || item.state == 2 ">
+            S/. 0.00
+          </p>
+        </td>
+        <td
+          class="col-estado"
+          [ngStyle]="{
+            'background-color':
+              item.state === 2
+                ? '#FF5353'
+                : item.state === 3
+                ? '#53FF7A'
+                : 'transparent',
+            color: item.state === 2 || item.state === 3 ? 'white' : 'black',
+            'text-align': 'center'
+          }"
+        >
+          <div *ngIf="item.state === 2" class="estado-rojo">
+            <p class="text-dark">PENDIENTE</p>
+          </div>
+
+          <!-- Estado 3 -->
+          <div *ngIf="item.state === 3" class="estado-verde">
+            <p class="text-dark">CANCELADO</p>
+          </div>
+
+          <!-- Otros estados -->
+          <div
+            *ngIf="item.state !== 2 && item.state !== 3"
+            class="estado-default"
+          >
+            <p class="text-dark">NO TICKET</p>
+          </div>
+        </td>
+
+        <td class="col-opc">
+
+           <div *ngIf="item.state === 2" class="estado-rojo">
+            <div class="btn-group" role="group" aria-label="Basic example">
+              <button type="button" (click)="printTicket(item, 2)" class="btn0 btn btn-primary"><i class="fa-solid fa-car"></i></button>
+              <button type="button" (click)="printPago(item)" class="btn0 btn btn-success"><i class="fa-solid fa-money-bill-1-wave"></i></button>
+              <button type="button" class="btn1 btn btn-dark"><i class="fa-solid fa-money-bill-1-wave"></i>BV Directa</button>
+              <button type="button" class="btn1 btn btn-dark"><i class="fa-solid fa-money-bill-1-wave"></i>BV/FV Cliente</button>
+            </div>
+          </div>
+
+          <!-- Estado 3 -->
+          <div *ngIf="item.state === 3" class="estado-verde">
+            
+          </div>
+
+          <!-- Otros estados -->
+          <div
+            *ngIf="item.state !== 2 && item.state !== 3"
+            class="estado-default"
+          >
+          <div class="btn-group" role="group" aria-label="Basic example">
+            <button type="button" (click)="printTicket(item, 2)" class="btn0 btn btn-primary"> <i class="fa-solid fa-car"></i></button>
+            
+          </div>
+          </div>
+          
+          
+
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div
+  class="alert alert-danger alert-dismissible fade show"
+  role="alert"
+  *ngIf="showAlert || fadingOut"
+  [ngClass]="{'fade-out': fadingOut}"
+>
+  {{ errorMessage }}
+  <button type="button" class="btn-close" aria-label="Close" (click)="showAlert = false"></button>
+</div>
