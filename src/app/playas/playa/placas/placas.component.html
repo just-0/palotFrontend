@@ -33,7 +33,7 @@
           />
         </td>
         <td class="col-monto">
-          <p *ngIf="item.state == 3">S/.{{ playa.tarifa }}0</p>
+          <p *ngIf="item.state == 3 || item.state == 4">S/.{{ pdfClient.totalHoras*playa.tarifa }}</p>
           <p *ngIf="item.state == 1 || item.state == 2">S/. 0.00</p>
         </td>
         <td
@@ -42,10 +42,10 @@
             'background-color':
               item.state === 2
                 ? '#FF5353'
-                : item.state === 3
+                : item.state === 3 || item.state == 4
                 ? '#53FF7A'
                 : 'transparent',
-            color: item.state === 2 || item.state === 3 ? 'white' : 'black',
+            color: item.state === 1 || item.state === 1 ? 'white' : 'black',
             'text-align': 'center'
           }"
         >
@@ -77,7 +77,7 @@
               </button>
               <button
                 type="button"
-                (click)="printPago(item, 4)"
+                (click)="printPago(item, 3)"
                 class="btn0 btn btn-success"
               >
                 <i class="fa-solid fa-money-bill-1-wave"></i>

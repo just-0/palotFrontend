@@ -8,7 +8,7 @@ export class jsPDFclient{
   
     constructor(private datePipe: DatePipe) {}
     private _servicioApi = inject(CurrentPlayaService);
-
+    public totalHoras: number = 0;
     errorMessage: string | null = null;
     showAlert: boolean = false;
     fadingOut: boolean = false;
@@ -117,23 +117,23 @@ export class jsPDFclient{
     //const horaEntrada = '2024-08-07T07:00:00';
     //const horaSalida = new Date('2024-08-07T08:16:00');
     //const totalHoras = this.calcularHorasEntreFechas(horaEntrada,horaSalida,15)
-    const totalHoras = this.calcularHorasEntreFechas(item.hora_entrada,fechaHora,15)
+    this.totalHoras = this.calcularHorasEntreFechas(item.hora_entrada,fechaHora,15)
     
     
-    doc.text(String(totalHoras), 6, 57.5);
+    doc.text(String(this.totalHoras), 6, 57.5);
     
     doc.text("HR", 12, 57.5);
     doc.text("SERVICIO PLAYA", 18, 57.5);
     doc.text(String(Number(playa.tarifa).toFixed(2)), 56.5, 57.5, { align: 'right' });
-    doc.text(`${(totalHoras*playa.tarifa).toFixed(2)}`,73, 57.5, { align: 'right' });
+    doc.text(`${(this.totalHoras*playa.tarifa).toFixed(2)}`,73, 57.5, { align: 'right' });
     doc.line(2, 60.5, 77, 60.5);
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(6);
-    const N2W=this.convertAmountToWords(totalHoras*playa.tarifa); 
+    const N2W=this.convertAmountToWords(this.totalHoras*playa.tarifa); 
     doc.text(N2W,(doc.internal.pageSize.width - doc.getTextWidth(N2W))/2, 64.5);
     doc.setFontSize(10);
     doc.text("TOTAL:", 40, 71);
-    doc.text(`S./ ${(totalHoras*playa.tarifa).toFixed(2)}`,73, 71, { align: 'right' });
+    doc.text(`S./ ${(this.totalHoras*playa.tarifa).toFixed(2)}`,73, 71, { align: 'right' });
     
     doc.text(playa.direccion.toUpperCase(), (doc.internal.pageSize.width - doc.getTextWidth(playa.direccion.toUpperCase()))/2, 78);
     doc.text("AREQUIPA-AREQUIPA-AREQUIPA", (doc.internal.pageSize.width - doc.getTextWidth("AREQUIPA-AREQUIPA-AREQUIPA"))/2, 82);
@@ -161,7 +161,7 @@ export class jsPDFclient{
 
 
 
-    this._servicioApi.carroPagoTicketVenta(item, newState, fechaHora, totalHoras*playa.tarifa).subscribe(
+    this._servicioApi.carroPagoTicketVenta(item, newState, fechaHora, this.totalHoras*playa.tarifa).subscribe(
       response => {
         console.log('Actualización exitosa:', response);
         
