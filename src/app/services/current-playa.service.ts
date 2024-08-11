@@ -53,6 +53,27 @@ export class CurrentPlayaService implements OnInit{
     console.log("DEBUGGG ->", id)
     return this._httpClient.put<Auto>(query,{state});
   }
-  
+  public carroPagoTicketVenta(placa :Auto, state: number, fechaHora: Date, Monto: number){
+    
+    
+
+  // Obtén la fecha y hora en formato local
+    
+    const horaEntrada = placa.hora_entrada;
+    const horaSalida = fechaHora;
+    const body = {
+      id: placa.id_auto, // Incluye el ID en el cuerpo
+      state,
+      horaEntrada,
+      horaSalida,
+      Monto
+    };
+
+    
+
+    const query = `${this.baseURL}carroPagoTicketVenta`;
+   
+    return this._httpClient.put<Auto>(query, body);
+  }
 
 }

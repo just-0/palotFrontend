@@ -20,7 +20,9 @@
     <tbody>
       <tr *ngFor="let item of datosFiltrados()">
         <td class="col-id">{{ item.id_auto }}</td>
-        <td class="col-ingreso">{{ formatHora(item.hora_entrada) }}</td>
+        <td class="col-ingreso">
+          {{ this.pdfClient.formatHora(item.hora_entrada) }}
+        </td>
         <td class="col-placa">{{ item.placa }}</td>
         <td class="col-imagen">
           <img
@@ -31,12 +33,8 @@
           />
         </td>
         <td class="col-monto">
-          <p *ngIf="item.state == 3 ">
-            S/.{{ playa.tarifa }}0
-          </p>
-          <p *ngIf="item.state == 1 || item.state == 2 ">
-            S/. 0.00
-          </p>
+          <p *ngIf="item.state == 3">S/.{{ playa.tarifa }}0</p>
+          <p *ngIf="item.state == 1 || item.state == 2">S/. 0.00</p>
         </td>
         <td
           class="col-estado"
@@ -51,6 +49,9 @@
             'text-align': 'center'
           }"
         >
+          <div *ngIf="item.state === 1" class="estado-default">
+            <p class="text-dark">NO TICKET</p>
+          </div>
           <div *ngIf="item.state === 2" class="estado-rojo">
             <p class="text-dark">PENDIENTE</p>
           </div>
@@ -59,45 +60,75 @@
           <div *ngIf="item.state === 3" class="estado-verde">
             <p class="text-dark">CANCELADO</p>
           </div>
-
-          <!-- Otros estados -->
-          <div
-            *ngIf="item.state !== 2 && item.state !== 3"
-            class="estado-default"
-          >
-            <p class="text-dark">NO TICKET</p>
+          <div *ngIf="item.state === 4" class="estado-verde">
+            <p class="text-dark">CANCELADO</p>
           </div>
         </td>
 
         <td class="col-opc">
-
-           <div *ngIf="item.state === 2" class="estado-rojo">
+          <div *ngIf="item.state === 2" class="estado-rojo">
             <div class="btn-group" role="group" aria-label="Basic example">
-              <button type="button" (click)="printTicket(item, 2)" class="btn0 btn btn-primary"><i class="fa-solid fa-car"></i></button>
-              <button type="button" (click)="printPago(item)" class="btn0 btn btn-success"><i class="fa-solid fa-money-bill-1-wave"></i></button>
-              <button type="button" class="btn1 btn btn-dark"><i class="fa-solid fa-money-bill-1-wave"></i>BV Directa</button>
-              <button type="button" class="btn1 btn btn-dark"><i class="fa-solid fa-money-bill-1-wave"></i>BV/FV Cliente</button>
+              <button
+                type="button"
+                (click)="printTicket(item, 2)"
+                class="btn0 btn btn-primary"
+              >
+                <i class="fa-solid fa-car"></i>
+              </button>
+              <button
+                type="button"
+                (click)="printPago(item, 4)"
+                class="btn0 btn btn-success"
+              >
+                <i class="fa-solid fa-money-bill-1-wave"></i>
+              </button>
+              <button type="button" class="btn1 btn btn-dark">
+                <i class="fa-solid fa-money-bill-1-wave"></i>BV Directa
+              </button>
+              <button type="button" class="btn1 btn btn-dark">
+                <i class="fa-solid fa-money-bill-1-wave"></i>BV/FV Cliente
+              </button>
             </div>
           </div>
-
+          
           <!-- Estado 3 -->
           <div *ngIf="item.state === 3" class="estado-verde">
-            
+            <button type="button" class="btn1 btn btn-dark">
+                <i class="fa-solid fa-money-bill-1-wave" ></i>BV Directa
+              </button>
+              <button type="button" class="btn1 btn btn-dark">
+                <i class="fa-solid fa-money-bill-1-wave"></i>BV/FV Cliente
+              </button>
+
+          </div>
+
+          <div *ngIf="item.state === 4" class="estado-rojo">
+            <div class="btn-group" role="group" aria-label="Basic example">
+              
+              <button type="button" class="btn1 btn btn-dark">
+                <i class="fa-solid fa-money-bill-1-wave"></i>BV Directa
+              </button>
+              <button type="button" class="btn1 btn btn-dark">
+                <i class="fa-solid fa-money-bill-1-wave"></i>BV/FV Cliente
+              </button>
+            </div>
           </div>
 
           <!-- Otros estados -->
           <div
-            *ngIf="item.state !== 2 && item.state !== 3"
+            *ngIf="item.state == 1 "
             class="estado-default"
           >
-          <div class="btn-group" role="group" aria-label="Basic example">
-            <button type="button" (click)="printTicket(item, 2)" class="btn0 btn btn-primary"> <i class="fa-solid fa-car"></i></button>
-            
+            <div class="btn-group" role="group" aria-label="Basic example">
+              <button
+                type="button"
+                (click)="printTicket(item, 2)"
+                class="btn0 btn btn-primary"
+              >
+                <i class="fa-solid fa-car"></i>
+              </button>
+            </div>
           </div>
-          </div>
-          
-          
-
         </td>
       </tr>
     </tbody>
@@ -107,9 +138,14 @@
 <div
   class="alert alert-danger alert-dismissible fade show"
   role="alert"
-  *ngIf="showAlert || fadingOut"
-  [ngClass]="{'fade-out': fadingOut}"
+  *ngIf="this.pdfClient.showAlert || this.pdfClient.fadingOut"
+  [ngClass]="{ 'fade-out': this.pdfClient.fadingOut }"
 >
-  {{ errorMessage }}
-  <button type="button" class="btn-close" aria-label="Close" (click)="showAlert = false"></button>
+  {{ this.pdfClient.errorMessage }}
+  <button
+    type="button"
+    class="btn-close"
+    aria-label="Close"
+    (click)="this.pdfClient.showAlert = false"
+  ></button>
 </div>
