@@ -16,14 +16,19 @@ export class LoginService {
   }
   login() {
     this.loggedIn = true;
-    this.cookieService.set('isLoggedIn', 'true', 1);
-    
-  }
-
-  logout() {
-    this.loggedIn = false;
-    this.cookieService.delete('isLoggedIn');
-
+  
+    // Obtener la fecha actual
+    const now = new Date();
+  
+    // Crear una nueva fecha que será medianoche
+    const midnight = new Date();
+    midnight.setHours(23, 59, 59, 999); // Ajustar a las 23:59:59.999 para que expire justo antes de medianoche
+  
+    // Calcular la diferencia en minutos entre ahora y medianoche
+    const minutesUntilMidnight = (midnight.getTime() - now.getTime()) / (1000 * 60);
+  
+    // Establecer la cookie con la expiración a medianoche
+    this.cookieService.set('isLoggedIn', 'true', minutesUntilMidnight / 60);
   }
 
   isLoggedIn() {

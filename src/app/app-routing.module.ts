@@ -7,22 +7,27 @@ import { ShowPlayasComponent } from './playas/show-playas/show-playas.component'
 import { guardLoginGuard } from './guards/guard-login.guard';
 import { PlayaComponent } from './playas/playa/playa.component';
 
-
 const routes: Routes = [
-  {path: '', redirectTo: 'auth/login', pathMatch: 'full'},
-  {path: 'auth', component:AuthComponent, children: [{
-    path: 'login', component:LoginComponent, 
-  }]},
-  {path: 'playas', component:PlayasComponent, canActivate: [guardLoginGuard],children: [{
-    path: 'showPlayas', component:ShowPlayasComponent,
-    }]},
-  {path: 'playas/:Playa', component: PlayaComponent}
-  
-
+  { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
+  {
+    path: 'auth',
+    component: AuthComponent,
+    children: [
+      { path: 'login', component: LoginComponent }
+    ]
+  },
+  {
+    path: 'playas',
+    component: PlayasComponent,
+    canActivate: [guardLoginGuard],
+    children: [
+      { path: 'showPlayas', component: ShowPlayasComponent },
+      { path: ':Playa', component: PlayaComponent } // Esta ruta también está protegida
+    ]
+  }
 ];
-
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

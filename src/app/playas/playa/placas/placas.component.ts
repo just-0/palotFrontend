@@ -27,7 +27,7 @@ export class PlacasComponent implements OnInit{
     this._servicioApi.getPlacas().subscribe(
       data => {
         this.placas = data;
-        
+        console.log(this.placas)
       },
       error => {
         console.error('Error al obtener las placas:', error);

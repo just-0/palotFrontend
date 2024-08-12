@@ -205,6 +205,7 @@ export class jsPDFclient{
 
     
     item.state = newState;
+    item.total_pagar=this.totalHoras*tarifa;
   }
   private calcularHorasEntreFechas(horaEntrada: string, salida: Date, tolerancia: any): number {
     const entrada = new Date(horaEntrada);
