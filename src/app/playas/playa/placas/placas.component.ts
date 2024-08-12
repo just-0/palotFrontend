@@ -4,7 +4,7 @@ import { Auto, Moto } from '../../../services/auto.model';
 import { DatePipe } from '@angular/common';
 import { jsPDFclient } from './utils/jsTicketPDF';
 import { FormBuilder } from '@angular/forms';
-
+import * as xml2js from 'xml2js';
 @Component({
   selector: 'app-placas',
   templateUrl: './placas.component.html',
@@ -43,15 +43,22 @@ export class PlacasComponent implements OnInit{
         console.error('Error al obtener las placasMotos:', error);
       }
     );
+    
     this._servicioApi.getPlacasCameras().subscribe(
-      data => {
-        console.log(data);
-        
+      (response: string) => {
+        this.parseXML(response).then(result => {
+          
+          this.placasCamera = Array.isArray(result.Plates.Plate) ? result.Plates.Plate : [result.Plates.Plate];
+          console.log("Parsed Platesxd:", this.placasCamera[0]);
+        }).catch(err => {
+          console.error("Error parsing XML:", err);
+        });
       },
-      error => {
-        console.error('Error al obtener las placasCAMARAS:', error);
+      (error) => {
+        console.error("Error occurred:", error);
       }
     );
+  
     this.playa = this._servicioApi.getCurrentPlaya();
   }
   datosFiltrados() {
@@ -77,15 +84,15 @@ export class PlacasComponent implements OnInit{
       this.pdfClient.errorMessage = 'La placa no puede estar vacia';
       this.pdfClient.showAlert = true;
 
-        // Start fade-out after 5 seconds
+        
         setTimeout(() => {
           this.pdfClient.fadingOut = true;
           setTimeout(() => {
             this.pdfClient.showAlert = false;
-            this.pdfClient.fadingOut = false; // Reset fade-out state
-            this.pdfClient.errorMessage = null; // Optionally clear the message
-          }, 1000); // Match this duration with the CSS transition duration
-        }, 5000); // Display alert for 5 seconds
+            this.pdfClient.fadingOut = false; 
+            this.pdfClient.errorMessage = null;
+          }, 1000); 
+        }, 5000); 
       return;
     }
     this._servicioApi.createManualCar(this.placaManual, this.playa.id_playa,new Date,2
@@ -106,15 +113,15 @@ export class PlacasComponent implements OnInit{
       this.pdfClient.errorMessage = 'La placa no puede estar vacia';
       this.pdfClient.showAlert = true;
 
-        // Start fade-out after 5 seconds
+       
         setTimeout(() => {
           this.pdfClient.fadingOut = true;
           setTimeout(() => {
             this.pdfClient.showAlert = false;
-            this.pdfClient.fadingOut = false; // Reset fade-out state
-            this.pdfClient.errorMessage = null; // Optionally clear the message
-          }, 1000); // Match this duration with the CSS transition duration
-        }, 5000); // Display alert for 5 seconds
+            this.pdfClient.fadingOut = false; 
+            this.pdfClient.errorMessage = null; 
+          }, 1000); 
+        }, 5000); 
       return;
     }
     this._servicioApi.createManualBike(this.placaManual, this.playa.id_playa,new Date,2
@@ -135,5 +142,17 @@ export class PlacasComponent implements OnInit{
   printPago(item: Auto, newState: number ){
     
     this.pdfClient.generatePagoPDF(item,newState,this.playa);
+  }
+  private parseXML(xmlString: string): Promise<any> {
+    const parser = new xml2js.Parser({ explicitArray: false });
+    return new Promise((resolve, reject) => {
+      parser.parseString(xmlString, (err, result) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(result);
+        }
+      });
+    });
   }
 }

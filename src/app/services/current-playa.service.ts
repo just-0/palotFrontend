@@ -4,6 +4,8 @@ import { Observable } from 'rxjs';
 import { query } from '@angular/animations';
 import { Auto } from './auto.model';
 import { Moto } from './auto.model';
+import * as $ from 'jquery';
+
 
 @Injectable({
   providedIn: 'root'
@@ -70,7 +72,7 @@ export class CurrentPlayaService implements OnInit{
     const horaEntrada = placa.hora_entrada;
     const horaSalida = fechaHora;
     const body = {
-      id: placa.id_auto, // Incluye el ID en el cuerpo
+      id: placa.id_auto, 
       state,
       horaEntrada,
       horaSalida,
@@ -83,7 +85,7 @@ export class CurrentPlayaService implements OnInit{
     const horaEntrada = placa.hora_entrada;
     const horaSalida = fechaHora;
     const body = {
-      id: placa.id_moto, // Incluye el ID en el cuerpo
+      id: placa.id_moto, 
       state,
       horaEntrada,
       horaSalida,
@@ -123,21 +125,12 @@ export class CurrentPlayaService implements OnInit{
    
     return this._httpClient.get<any[]>(query);
   }
-
-  public getPlacasCameras(): Observable<any> {
-    // URL del endpoint
-    const url = 'http://localhost:3000/api/ISAPI/Traffic/channels/1/vehicleDetect/plates/';
-
-    // Configurar los headers
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/xml',
-      'Authorization': 'Basic ' + btoa('admin:Hik12345')  // Autenticación básica
+  public getPlacasCameras(): Observable<string> {
+    const url = "http://localhost:3000/api/ISAPI/Traffic/channels/1/vehicleDetect/plates/";
+  
+    return this._httpClient.get(url, {
+      responseType: 'text'  
     });
+  }
 
-    // Crear el cuerpo vacío como texto
-    const body = '<HttpHostNotificationList version="2.0" xmlns="http://www.hikvision.com/ver20/XMLSchema"></HttpHostNotificationList>';
-
-    // Hacer la petición POST con el cuerpo
-    return this._httpClient.post(url, body, { headers, responseType: 'text' as 'json' });
-}
 }
