@@ -1,0 +1,28 @@
+<input
+  type="text"
+  class="form-control mb-3"
+  placeholder="Buscar registros"
+  [(ngModel)]="filtro"
+/>
+
+<table class="table table-striped">
+    <thead>
+      <tr>
+        <th class="col-id">ID</th>
+        <th class="col-ingreso">Placa</th>
+        <th class="col-placa">Hora Ingreso</th>
+        <th class="col-imagen">Hora Salida</th>
+        <th class="col-monto">Monto</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of datosFiltrados()">
+        <td class="col-id">{{ item.id }}</td>
+        <td class="col-ingreso">{{ item.placa }}</td>
+        <td class="col-placa">{{ this.formatHora(item.hora_entrada) }}</td>
+        <td class="col-imagen">{{ this.formatHora(item.hora_salida)  }}</td>
+        <td class="col-monto">S/. {{ item.monto }}</td>
+      </tr>
+    </tbody>
+  </table>
+  

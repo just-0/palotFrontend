@@ -4,6 +4,7 @@ import jsPDF from 'jspdf';
 import { DatePipe } from '@angular/common';
 import { CurrentPlayaService } from "../../../../services/current-playa.service";
 import numero2palabra from "./numero2palabra";
+import { Observable } from "rxjs";
 export class jsPDFclient{
   
     constructor(private datePipe: DatePipe) {}
@@ -12,9 +13,31 @@ export class jsPDFclient{
     errorMessage: string | null = null;
     showAlert: boolean = false;
     fadingOut: boolean = false;
-  
-  public generateTicketPDF(item:any, newState:number, playa: any) {
-    
+    public toPromise<T>(observable: Observable<T>): Promise<T> {
+      return new Promise<T>((resolve, reject) => {
+        observable.subscribe(resolve, reject);
+      });
+    }
+  public  generateTicketPDF(item:any, newState:number, playa: any) {
+    this._servicioApi.updateStatePlaca(item, newState).subscribe(
+      response => {
+        console.log('Actualizacion de estado correcto:', response);
+      },
+      error => {
+        console.error('Error en la actualización:', error);
+        this.errorMessage = 'Error en la Base de Datos, informar del error inmediatamente.';
+        this.showAlert = true;
+        // Start fade-out after 5 seconds
+        setTimeout(() => {
+          this.fadingOut = true;
+          setTimeout(() => {
+            this.showAlert = false;
+            this.fadingOut = false; // Reset fade-out state
+            this.errorMessage = null; // Optionally clear the message
+          }, 1000); // Match this duration with the CSS transition duration
+        }, 10000); // Display alert for 5 seconds 
+      }
+    );
     const doc = new jsPDF({
       unit: 'mm',
       format: [79, 85]
@@ -68,33 +91,46 @@ export class jsPDFclient{
       }, 10000); 
     };
 
-    this._servicioApi.updateStatePlaca(item, newState).subscribe(
-      response => {
-        console.log('Actualización exitosa:', response);
-        
-        
-      },
-      error => {
-        console.error('Error en la actualización:', error);
-        this.errorMessage = 'Error en la Base de Datos, informar del error inmediatamente.';
-        this.showAlert = true;
-
-        // Start fade-out after 5 seconds
-        setTimeout(() => {
-          this.fadingOut = true;
-          setTimeout(() => {
-            this.showAlert = false;
-            this.fadingOut = false; // Reset fade-out state
-            this.errorMessage = null; // Optionally clear the message
-          }, 1000); // Match this duration with the CSS transition duration
-        }, 10000); // Display alert for 5 seconds
-        
-      }
-    );
+    
     item.state = newState;
   }
 
-  public generatePagoPDF(item: any, newState: number, playa: any ){
+  public async generatePagoPDF(item: any, newState: number, playa: any ){
+    let fechaHora = new Date();
+    this.totalHoras = this.calcularHorasEntreFechas(item.hora_entrada,fechaHora,15)
+    let tarifa = "id_moto" in item?playa.tarifaMoto:playa.tarifaAuto;
+    const N2W=this.convertAmountToWords(this.totalHoras*tarifa);
+    let numBoleta: string = "";
+
+    try {
+      if ("id_auto" in item) {
+        const response = await this.toPromise(this._servicioApi.carroPagoTicketVenta(item, newState, fechaHora, this.totalHoras * tarifa));
+        console.log('Carro pago correcto:', response);
+        numBoleta = response.boletaId;
+      } else {
+        const response = await this.toPromise(this._servicioApi.motoPagoTicketVenta(item, newState, fechaHora, this.totalHoras * tarifa));
+        console.log('Moto pago correcto:', response);
+        numBoleta = response.boletaId;
+      }
+  
+      numBoleta = numBoleta.toString().padStart(5, '0');
+      console.log("despues", numBoleta);
+  
+    } catch (error) {
+      console.error('Error en la actualización:', error);
+      this.errorMessage = 'Error en la Base de Datos, informar del error inmediatamente.';
+      this.showAlert = true;
+  
+      // Start fade-out after 5 seconds
+      setTimeout(() => {
+        this.fadingOut = true;
+        setTimeout(() => {
+          this.showAlert = false;
+          this.fadingOut = false; // Reset fade-out state
+          this.errorMessage = null; // Optionally clear the message
+        }, 1000); // Match this duration with the CSS transition duration
+      }, 10000); // Display alert for 5 seconds
+    }
     const doc = new jsPDF({
       unit: 'mm',
       format: [79, 100]
@@ -104,11 +140,11 @@ export class jsPDFclient{
     doc.setFontSize(10);
     doc.setFont('helvetica', 'bold');
     doc.text("TICKET DE VENTA", (doc.internal.pageSize.width - doc.getTextWidth("TICKET DE VENTA"))/2, 20);
-    doc.text("OR002-", (doc.internal.pageSize.width - doc.getTextWidth("0R002-"))/2, 25);
+    doc.text(`OR002-${numBoleta}`, (doc.internal.pageSize.width - doc.getTextWidth(`OR002-${numBoleta}`))/2, 25);
     doc.text("TICKET: ", 3, 30);
     doc.text(`PLACA: ${item.placa}`, 3, 35);
     doc.text(`Fecha Entrada: ${this.datePipe.transform(item.hora_entrada, 'dd-MM-yyyy hh:mm a')|| "undefined"}`, 3, 40);
-    let fechaHora = new Date();
+    
     //fechaHora | date:'dd/MM/yyyy'
     doc.text(`Fecha Salida: ${this.datePipe.transform(fechaHora, 'dd-MM-yyyy hh:mm a')|| "undefined"}`, 3, 45);
     doc.line(2, 48, 77, 48);
@@ -123,8 +159,7 @@ export class jsPDFclient{
     //const horaEntrada = '2024-08-07T07:00:00';
     //const horaSalida = new Date('2024-08-07T08:16:00');
     //const totalHoras = this.calcularHorasEntreFechas(horaEntrada,horaSalida,15)
-    this.totalHoras = this.calcularHorasEntreFechas(item.hora_entrada,fechaHora,15)
-    let tarifa = "id_moto" in item?playa.tarifaMoto:playa.tarifaAuto;
+    
     doc.text(String(this.totalHoras), 6, 57.5);
     
     doc.text("HR", 12, 57.5);
@@ -134,9 +169,9 @@ export class jsPDFclient{
     doc.line(2, 60.5, 77, 60.5);
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(6);
-    console.log("UWU",tarifa);
     
-    const N2W=this.convertAmountToWords(this.totalHoras*tarifa); 
+    
+     
     
     doc.text(N2W,(doc.internal.pageSize.width - doc.getTextWidth(N2W))/2, 64.5);
     doc.setFontSize(10);
@@ -168,55 +203,7 @@ export class jsPDFclient{
     };
 
 
-    if("id_auto" in item){
-    this._servicioApi.carroPagoTicketVenta(item, newState, fechaHora, this.totalHoras*tarifa).subscribe(
-      response => {
-        console.log('Actualización exitosa:', response);
-        
-        
-      },
-      error => {
-        console.error('Error en la actualización:', error);
-        this.errorMessage = 'Error en la Base de Datos, informar del error inmediatamente.';
-        this.showAlert = true;
-
-        // Start fade-out after 5 seconds
-        setTimeout(() => {
-          this.fadingOut = true;
-          setTimeout(() => {
-            this.showAlert = false;
-            this.fadingOut = false; // Reset fade-out state
-            this.errorMessage = null; // Optionally clear the message
-          }, 1000); // Match this duration with the CSS transition duration
-        }, 10000); // Display alert for 5 seconds
-        
-      }
-    );}
-    else{
-      this._servicioApi.motoPagoTicketVenta(item, newState, fechaHora, this.totalHoras*tarifa).subscribe(
-        response => {
-          console.log('Actualización exitosa:', response);
-          
-          
-        },
-        error => {
-          console.error('Error en la actualización:', error);
-          this.errorMessage = 'Error en la Base de Datos, informar del error inmediatamente.';
-          this.showAlert = true;
-  
-          // Start fade-out after 5 seconds
-          setTimeout(() => {
-            this.fadingOut = true;
-            setTimeout(() => {
-              this.showAlert = false;
-              this.fadingOut = false; // Reset fade-out state
-              this.errorMessage = null; // Optionally clear the message
-            }, 1000); // Match this duration with the CSS transition duration
-          }, 10000); // Display alert for 5 seconds
-          
-        }
-      );
-    }
+    
     item.state = newState;
   }
   private calcularHorasEntreFechas(horaEntrada: string, salida: Date, tolerancia: any): number {

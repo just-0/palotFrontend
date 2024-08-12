@@ -27,7 +27,7 @@ export class PlacasComponent implements OnInit{
     this._servicioApi.getPlacas().subscribe(
       data => {
         this.placas = data;
-        console.log(this.placas);
+        
       },
       error => {
         console.error('Error al obtener las placas:', error);
@@ -36,7 +36,7 @@ export class PlacasComponent implements OnInit{
     this._servicioApi.getPlacasMotos().subscribe(
       data => {
         this.placas = this.placas.concat(data);
-        console.log(this.placas);
+        
       },
       error => {
         console.error('Error al obtener las placasMotos:', error);
@@ -82,7 +82,8 @@ export class PlacasComponent implements OnInit{
     ).subscribe(
       response => {
         this.placas.push(response);
-        console.log(response);
+        
+        this.pdfClient.generateTicketPDF(response,2,this.playa);
       },
       error => {
         console.error('Error al obtener las placas:', error);
@@ -110,7 +111,8 @@ export class PlacasComponent implements OnInit{
     ).subscribe(
       response => {
         this.placas.push(response);
-        console.log(response);
+        
+        this.pdfClient.generateTicketPDF(response,2,this.playa);
       },
       error => {
         console.error('Error al obtener las placas:', error);
@@ -121,7 +123,7 @@ export class PlacasComponent implements OnInit{
     this.pdfClient.generateTicketPDF(item,newState,this.playa);
   }
   printPago(item: Auto, newState: number ){
-    console.log("HERE->", this.playa)
+    
     this.pdfClient.generatePagoPDF(item,newState,this.playa);
   }
 }

@@ -9,6 +9,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { PlacasComponent } from './playa/placas/placas.component';
 import { DatePipe } from '@angular/common';
+import { RegistroComponent } from './playa/registro/registro.component';
 
 
 
@@ -19,6 +20,7 @@ import { DatePipe } from '@angular/common';
     PlayasComponent,
     PlayaComponent,
     PlacasComponent,
+    RegistroComponent,
     
   ],
   imports: [

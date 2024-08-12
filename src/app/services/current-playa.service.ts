@@ -37,10 +37,10 @@ export class CurrentPlayaService implements OnInit{
     //console.log('Current Playa:', this.CurrentPlaya);
     return this.CurrentPlaya;
   }
-  public getPlacasMotos(): Observable<Auto[]>{
+  public getPlacasMotos(): Observable<any[]>{
     const query = this.baseURL + "getPlacasMotos" + "?idPlaya="+ this.CurrentPlaya.id_playa;
     
-    return this._httpClient.get<Auto[]>(query);
+    return this._httpClient.get<any[]>(query);
   }
 
   public getPlacas(): Observable<Auto[]>{
@@ -51,7 +51,7 @@ export class CurrentPlayaService implements OnInit{
 
   public updateStatePlaca(placa :any, state: number){
     //http://localhost:3000/updateStateAuto?state=2&idAuto=2
-    console.log(placa);
+    
     let id = 0;
     let query = "" ;
     if("id_auto" in placa){
@@ -76,7 +76,7 @@ export class CurrentPlayaService implements OnInit{
       Monto
     };
     const query = `${this.baseURL}carroPagoTicketVenta`;
-    return this._httpClient.put<void>(query, body);
+    return this._httpClient.put<any>(query, body);
   }
   public motoPagoTicketVenta(placa :any, state: number, fechaHora: Date, Monto: number){
     const horaEntrada = placa.hora_entrada;
@@ -90,7 +90,7 @@ export class CurrentPlayaService implements OnInit{
     };
     
     const query = `${this.baseURL}motoPagoTicketVenta`;
-    return this._httpClient.put<void>(query, body);
+    return this._httpClient.put<any>(query, body);
 
   }
   public createManualCar(placa :string, id_playa: number, fechaHora: Date, state: number){
@@ -117,4 +117,11 @@ export class CurrentPlayaService implements OnInit{
 
     return this._httpClient.put<Moto>(query, body);
   }
+  public getBoletas(): Observable<any[]>{
+    const query = this.baseURL + "getBoletas"+ "?id_playa="+ this.CurrentPlaya.id_playa;
+   
+    return this._httpClient.get<any[]>(query);
+  }
+
+  
 }
