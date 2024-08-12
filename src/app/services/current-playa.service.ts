@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { query } from '@angular/animations';
 import { Auto } from './auto.model';
-
+import { Moto } from './auto.model';
 
 @Injectable({
   providedIn: 'root'
@@ -37,6 +37,11 @@ export class CurrentPlayaService implements OnInit{
     //console.log('Current Playa:', this.CurrentPlaya);
     return this.CurrentPlaya;
   }
+  public getPlacasMotos(): Observable<Auto[]>{
+    const query = this.baseURL + "getPlacasMotos" + "?idPlaya="+ this.CurrentPlaya.id_playa;
+    
+    return this._httpClient.get<Auto[]>(query);
+  }
 
   public getPlacas(): Observable<Auto[]>{
     const query = this.baseURL + "getPlacas" + "?idPlaya="+ this.CurrentPlaya.id_playa;
@@ -44,21 +49,23 @@ export class CurrentPlayaService implements OnInit{
     return this._httpClient.get<Auto[]>(query);
   }
 
-  public updateStatePlaca(placa :Auto, state: number){
+  public updateStatePlaca(placa :any, state: number){
     //http://localhost:3000/updateStateAuto?state=2&idAuto=2
-    const id = placa.id_auto;
-    const query = this.baseURL + "updateStateAuto/"+ id;
-    //const query = this.baseURL + "updateStateAuto/1";
-
-    console.log("DEBUGGG ->", id)
-    return this._httpClient.put<Auto>(query,{state});
+    console.log(placa);
+    let id = 0;
+    let query = "" ;
+    if("id_auto" in placa){
+      id = placa.id_auto;
+      query = this.baseURL + "updateStateAuto/"+ id;
+    }
+    else {
+      id = placa.id_moto;
+      query = this.baseURL + "updateStateMoto/"+ id;
+    }
+ 
+    return this._httpClient.put<void>(query,{state});
   }
   public carroPagoTicketVenta(placa :Auto, state: number, fechaHora: Date, Monto: number){
-    
-    
-
-  // Obtén la fecha y hora en formato local
-    
     const horaEntrada = placa.hora_entrada;
     const horaSalida = fechaHora;
     const body = {
@@ -68,12 +75,46 @@ export class CurrentPlayaService implements OnInit{
       horaSalida,
       Monto
     };
-
-    
-
     const query = `${this.baseURL}carroPagoTicketVenta`;
-   
+    return this._httpClient.put<void>(query, body);
+  }
+  public motoPagoTicketVenta(placa :any, state: number, fechaHora: Date, Monto: number){
+    const horaEntrada = placa.hora_entrada;
+    const horaSalida = fechaHora;
+    const body = {
+      id: placa.id_moto, // Incluye el ID en el cuerpo
+      state,
+      horaEntrada,
+      horaSalida,
+      Monto
+    };
+    
+    const query = `${this.baseURL}motoPagoTicketVenta`;
+    return this._httpClient.put<void>(query, body);
+
+  }
+  public createManualCar(placa :string, id_playa: number, fechaHora: Date, state: number){
+    const query = `${this.baseURL}createManualCar`;
+    const horaEntrada = fechaHora;
+    const body = {
+      placa,
+      id_playa,
+      horaEntrada,
+      state,
+    };
+    
     return this._httpClient.put<Auto>(query, body);
   }
+  public createManualBike(placa :string, id_playa: number, fechaHora: Date, state: number){
+    const query = `${this.baseURL}createManualBike`;
+    const horaEntrada = fechaHora;
+    const body = {
+      placa,
+      id_playa,
+      horaEntrada,
+      state,
+    };
 
+    return this._httpClient.put<Moto>(query, body);
+  }
 }

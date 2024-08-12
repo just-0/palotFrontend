@@ -1,138 +1,168 @@
-<div class="container">
-  <input
-    type="text"
-    class="form-control mb-3"
-    placeholder="Buscar registros"
-    [(ngModel)]="filtro"
-  />
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th class="col-id">ID</th>
-        <th class="col-ingreso">Ingreso</th>
-        <th class="col-placa">Placa</th>
-        <th class="col-imagen">Imagen Placa</th>
-        <th class="col-monto">Monto</th>
-        <th class="col-estado">Estado</th>
-        <th class="col-opc">Opc.</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let item of datosFiltrados()">
-        <td class="col-id">{{ item.id_auto }}</td>
-        <td class="col-ingreso">
-          {{ this.pdfClient.formatHora(item.hora_entrada) }}
-        </td>
-        <td class="col-placa">{{ item.placa }}</td>
-        <td class="col-imagen">
-          <img
-            *ngIf="item.img"
-            [src]="item.img"
-            alt="No cargo"
-            style="max-width: 200px; max-height: 200px"
-          />
-        </td>
-        <td class="col-monto">
-          <p *ngIf="item.state == 3 || item.state == 4">S/.{{ pdfClient.totalHoras*playa.tarifa }}</p>
-          <p *ngIf="item.state == 1 || item.state == 2">S/. 0.00</p>
-        </td>
-        <td
-          class="col-estado"
-          [ngStyle]="{
-            'background-color':
-              item.state === 2
-                ? '#FF5353'
-                : item.state === 3 || item.state == 4
-                ? '#53FF7A'
-                : 'transparent',
-            color: item.state === 1 || item.state === 1 ? 'white' : 'black',
-            'text-align': 'center'
-          }"
-        >
-          <div *ngIf="item.state === 1" class="estado-default">
-            <p class="text-dark">NO TICKET</p>
-          </div>
-          <div *ngIf="item.state === 2" class="estado-rojo">
-            <p class="text-dark">PENDIENTE</p>
-          </div>
+<div class="container-fluid">
+  <div class="row">
+    <!-- Columna de la tabla (izquierda) -->
+    <div class="col-md-9">
+      <input
+        type="text"
+        class="form-control mb-3"
+        placeholder="Buscar registros"
+        [(ngModel)]="filtro"
+      />
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th class="col-id">ID</th>
+            <th class="col-ingreso">Ingreso</th>
+            <th class="col-placa">Placa</th>
+            <th class="col-imagen">Imagen Placa</th>
+            <th class="col-monto">Monto</th>
+            <th class="col-estado">Estado</th>
+            <th class="col-opc">Opc.</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of datosFiltrados()">
+            <td class="col-id">{{ item.id_auto || item.id_moto }}</td>
+            <td class="col-ingreso">
+              {{ this.pdfClient.formatHora(item.hora_entrada) }}
+            </td>
+            <td class="col-placa">{{ item.placa }}</td>
+            <td class="col-imagen">
+              <img
+                *ngIf="item.img"
+                [src]="item.img"
+                alt="No cargo"
+                style="max-width: 200px; max-height: 200px"
+              />
+            </td>
+            <td class="col-monto">
+              <p *ngIf="(item.state == 3 || item.state == 4) && item.id_auto" >S/.{{  pdfClient.totalHoras*playa.tarifaAuto}}</p>
+              <p *ngIf="(item.state == 3 || item.state == 4) && item.id_moto" >S/.{{ pdfClient.totalHoras*playa.tarifaMoto}}</p>
+              <p *ngIf="item.state == 1 || item.state == 2">S/. 0.00</p>
+            </td>
+            <td
+              class="col-estado"
+              [ngStyle]="{
+                'background-color':
+                  item.state === 2
+                    ? '#FF5353'
+                    : item.state === 3 || item.state == 4
+                    ? '#53FF7A'
+                    : 'transparent',
+                color: item.state === 1 || item.state === 1 ? 'white' : 'black',
+                'text-align': 'center'
+              }"
+            >
+              <div *ngIf="item.state === 1" class="estado-default">
+                <p class="text-dark">NO TICKET</p>
+              </div>
+              <div *ngIf="item.state === 2" class="estado-rojo">
+                <p class="text-dark">PENDIENTE</p>
+              </div>
 
-          <!-- Estado 3 -->
-          <div *ngIf="item.state === 3" class="estado-verde">
-            <p class="text-dark">CANCELADO</p>
-          </div>
-          <div *ngIf="item.state === 4" class="estado-verde">
-            <p class="text-dark">CANCELADO</p>
-          </div>
-        </td>
+              <!-- Estado 3 -->
+              <div *ngIf="item.state === 3" class="estado-verde">
+                <p class="text-dark">CANCELADO</p>
+              </div>
+              <div *ngIf="item.state === 4" class="estado-verde">
+                <p class="text-dark">CANCELADO</p>
+              </div>
+            </td>
 
-        <td class="col-opc">
-          <div *ngIf="item.state === 2" class="estado-rojo">
-            <div class="btn-group" role="group" aria-label="Basic example">
-              <button
-                type="button"
-                (click)="printTicket(item, 2)"
-                class="btn0 btn btn-primary"
-              >
-                <i class="fa-solid fa-car"></i>
-              </button>
-              <button
-                type="button"
-                (click)="printPago(item, 3)"
-                class="btn0 btn btn-success"
-              >
-                <i class="fa-solid fa-money-bill-1-wave"></i>
-              </button>
-              <button type="button" class="btn1 btn btn-dark">
-                <i class="fa-solid fa-money-bill-1-wave"></i>BV Directa
-              </button>
-              <button type="button" class="btn1 btn btn-dark">
-                <i class="fa-solid fa-money-bill-1-wave"></i>BV/FV Cliente
-              </button>
-            </div>
-          </div>
-          
-          <!-- Estado 3 -->
-          <div *ngIf="item.state === 3" class="estado-verde">
-            <button type="button" class="btn1 btn btn-dark">
-                <i class="fa-solid fa-money-bill-1-wave" ></i>BV Directa
-              </button>
-              <button type="button" class="btn1 btn btn-dark">
-                <i class="fa-solid fa-money-bill-1-wave"></i>BV/FV Cliente
-              </button>
-
-          </div>
-
-          <div *ngIf="item.state === 4" class="estado-rojo">
-            <div class="btn-group" role="group" aria-label="Basic example">
+            <td class="col-opc">
+              <div *ngIf="item.state === 2" class="estado-rojo">
+                <div class="btn-group" role="group" aria-label="Basic example">
+                  <button
+                    type="button"
+                    (click)="printTicket(item, 2)"
+                    class="btn0 btn btn-primary"
+                  >
+                    <i class="fa-solid fa-car"></i>
+                  </button>
+                  <button
+                    type="button"
+                    (click)="printPago(item, 3)"
+                    class="btn0 btn btn-success"
+                  >
+                    <i class="fa-solid fa-money-bill-1-wave"></i>
+                  </button>
+                  <button type="button" class="btn1 btn btn-dark">
+                    <i class="fa-solid fa-money-bill-1-wave"></i>BV Directa
+                  </button>
+                  <button type="button" class="btn1 btn btn-dark">
+                    <i class="fa-solid fa-money-bill-1-wave"></i>BV/FV Cliente
+                  </button>
+                </div>
+              </div>
               
-              <button type="button" class="btn1 btn btn-dark">
-                <i class="fa-solid fa-money-bill-1-wave"></i>BV Directa
-              </button>
-              <button type="button" class="btn1 btn btn-dark">
-                <i class="fa-solid fa-money-bill-1-wave"></i>BV/FV Cliente
-              </button>
-            </div>
-          </div>
+              <!-- Estado 3 -->
+              <div *ngIf="item.state === 3" class="estado-verde">
+                <button type="button" class="btn1 btn btn-dark">
+                    <i class="fa-solid fa-money-bill-1-wave" ></i>BV Directa
+                  </button>
+                  <button type="button" class="btn1 btn btn-dark">
+                    <i class="fa-solid fa-money-bill-1-wave"></i>BV/FV Cliente
+                  </button>
 
-          <!-- Otros estados -->
-          <div
-            *ngIf="item.state == 1 "
-            class="estado-default"
-          >
-            <div class="btn-group" role="group" aria-label="Basic example">
-              <button
-                type="button"
-                (click)="printTicket(item, 2)"
-                class="btn0 btn btn-primary"
+              </div>
+
+              <div *ngIf="item.state === 4" class="estado-rojo">
+                <div class="btn-group" role="group" aria-label="Basic example">
+                  
+                  <button type="button" class="btn1 btn btn-dark">
+                    <i class="fa-solid fa-money-bill-1-wave"></i>BV Directa
+                  </button>
+                  <button type="button" class="btn1 btn btn-dark">
+                    <i class="fa-solid fa-money-bill-1-wave"></i>BV/FV Cliente
+                  </button>
+                </div>
+              </div>
+
+              <!-- Otros estados -->
+              <div
+                *ngIf="item.state == 1 "
+                class="estado-default"
               >
-                <i class="fa-solid fa-car"></i>
-              </button>
-            </div>
-          </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+                <div class="btn-group" role="group" aria-label="Basic example">
+                  <button
+                    type="button"
+                    (click)="printTicket(item, 2)"
+                    class="btn0 btn btn-primary"
+                  >
+                    <i class="fa-solid fa-car"></i>
+                  </button>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+    <!-- Columna del formulario (derecha) -->
+    <div class="col-md-2 align-self-start">
+      <p class="h1">Placa Manual</p>
+      <form #Formulario="ngForm">
+        <div class="m-1">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Placa"
+            name="placa"
+            [(ngModel)]="placaManual"
+          />
+        </div>
+        <div>
+          <button type="button" (click)="createManualCar()" class="px-5 btn btn-primary me-2">
+            <i class="fa-solid fa-car"></i>
+          </button>
+          <button type="button" (click)="createManualMotorcycle()" class="px-5 btn btn-primary">
+            <i class="fa-solid fa-motorcycle"></i>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
 
 <div

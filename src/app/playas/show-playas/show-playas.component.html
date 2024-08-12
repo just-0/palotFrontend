@@ -15,7 +15,7 @@
         <div class="card-body">
           <h1 class="card-title">{{ playa.nombre }}</h1>
           <p class="card-text">Dirección: {{ playa.direccion }}</p>
-          <p class="card-text">Tarifa: S./{{ playa.tarifa }}</p>
+          <p class="card-text">Tarifa: S./{{ playa.tarifaAuto }}</p>
           <a
             [routerLink]="['/playas', playa.nombre]"
             (click)="abrirPlaya(playa)"

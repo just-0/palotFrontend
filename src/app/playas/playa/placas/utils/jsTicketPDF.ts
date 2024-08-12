@@ -13,14 +13,14 @@ export class jsPDFclient{
     showAlert: boolean = false;
     fadingOut: boolean = false;
   
-  public generateTicketPDF(item:Auto, newState:number, playa: any) {
+  public generateTicketPDF(item:any, newState:number, playa: any) {
     
     const doc = new jsPDF({
       unit: 'mm',
       format: [79, 85]
     });
-    
-
+    let vehiculo = "id_moto" in item?"MOTOS":"VEHICULOS";;
+    let tarifa = "id_moto" in item?playa.tarifaMoto:playa.tarifaAuto;
     
     doc.setFontSize(15);
     doc.setFont('helvetica', 'bold');
@@ -29,18 +29,24 @@ export class jsPDFclient{
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(10);
     doc.text("TARIFA HORA/FRACCION", (doc.internal.pageSize.width - doc.getTextWidth("TARIFA HORA/FRACCION"))/2, 13);
-    doc.text(`VEHICULOS: ${playa.tarifa}`, (doc.internal.pageSize.width - doc.getTextWidth(`VEHICULOS: ${playa.tarifa}`))/2 , 17);
+    
+    doc.text(`${vehiculo}: ${tarifa}`, (doc.internal.pageSize.width - doc.getTextWidth(`${vehiculo}: ${tarifa}`))/2 , 17);
     doc.setFont('helvetica', 'bold');
-    doc.text("ID:", 12, 24);     doc.text(String(item.id_auto) , 45, 24);
+    doc.text("ID:", 12, 24);     doc.text(String(item.id_auto || item.id_moto) , 45, 24);
     doc.text("PLACA:", 12, 29);doc.text(item.placa || "Sin Placa", 45, 29);
     doc.text("HORA:", 12, 34);doc.text(this.datePipe.transform(item.hora_entrada, 'hh:mm a')|| "undefined", 45, 34);
     doc.text("FECHA:", 12, 39);doc.text(this.datePipe.transform(item.hora_entrada, 'dd-MM-yyyy') || "undefined", 45, 39);
-    doc.addImage(item.img || "", 'PNG', 20, 45, 40, 20); // Ajusta las coordenadas y el tamaño según sea necesario
+    let padding = 0;
+    if(item.img!= null){
+      doc.addImage(item.img || "", 'PNG', 20, 45, 40, 20); // Ajusta las coordenadas y el tamaño según sea necesario
+      padding = 22;
+    }
+    
 
-    doc.text(playa.direccion, (doc.internal.pageSize.width - doc.getTextWidth(playa.direccion))/2, 70);
-    doc.text("AREQUIPA-AREQUIPA-AREQUIPA", 10, 74);
+    doc.text(playa.direccion, (doc.internal.pageSize.width - doc.getTextWidth(playa.direccion))/2, 70-22 +padding);
+    doc.text("AREQUIPA-AREQUIPA-AREQUIPA", 10, 74-22 +padding);
     doc.setFontSize(12);
-    doc.text("GRACIAS POR SU PREFERENCIA", 5, 80);
+    doc.text("GRACIAS POR SU PREFERENCIA", 5, 80-22 +padding);
   
     
     const pdfBlob = doc.output('blob');
@@ -88,7 +94,7 @@ export class jsPDFclient{
     item.state = newState;
   }
 
-  public generatePagoPDF(item: Auto, newState: number, playa: any ){
+  public generatePagoPDF(item: any, newState: number, playa: any ){
     const doc = new jsPDF({
       unit: 'mm',
       format: [79, 100]
@@ -118,22 +124,24 @@ export class jsPDFclient{
     //const horaSalida = new Date('2024-08-07T08:16:00');
     //const totalHoras = this.calcularHorasEntreFechas(horaEntrada,horaSalida,15)
     this.totalHoras = this.calcularHorasEntreFechas(item.hora_entrada,fechaHora,15)
-    
-    
+    let tarifa = "id_moto" in item?playa.tarifaMoto:playa.tarifaAuto;
     doc.text(String(this.totalHoras), 6, 57.5);
     
     doc.text("HR", 12, 57.5);
     doc.text("SERVICIO PLAYA", 18, 57.5);
-    doc.text(String(Number(playa.tarifa).toFixed(2)), 56.5, 57.5, { align: 'right' });
-    doc.text(`${(this.totalHoras*playa.tarifa).toFixed(2)}`,73, 57.5, { align: 'right' });
+    doc.text(String(Number(tarifa).toFixed(2)), 56.5, 57.5, { align: 'right' });
+    doc.text(`${(this.totalHoras*tarifa).toFixed(2)}`,73, 57.5, { align: 'right' });
     doc.line(2, 60.5, 77, 60.5);
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(6);
-    const N2W=this.convertAmountToWords(this.totalHoras*playa.tarifa); 
+    console.log("UWU",tarifa);
+    
+    const N2W=this.convertAmountToWords(this.totalHoras*tarifa); 
+    
     doc.text(N2W,(doc.internal.pageSize.width - doc.getTextWidth(N2W))/2, 64.5);
     doc.setFontSize(10);
     doc.text("TOTAL:", 40, 71);
-    doc.text(`S./ ${(this.totalHoras*playa.tarifa).toFixed(2)}`,73, 71, { align: 'right' });
+    doc.text(`S./ ${(this.totalHoras*tarifa).toFixed(2)}`,73, 71, { align: 'right' });
     
     doc.text(playa.direccion.toUpperCase(), (doc.internal.pageSize.width - doc.getTextWidth(playa.direccion.toUpperCase()))/2, 78);
     doc.text("AREQUIPA-AREQUIPA-AREQUIPA", (doc.internal.pageSize.width - doc.getTextWidth("AREQUIPA-AREQUIPA-AREQUIPA"))/2, 82);
@@ -160,8 +168,8 @@ export class jsPDFclient{
     };
 
 
-
-    this._servicioApi.carroPagoTicketVenta(item, newState, fechaHora, this.totalHoras*playa.tarifa).subscribe(
+    if("id_auto" in item){
+    this._servicioApi.carroPagoTicketVenta(item, newState, fechaHora, this.totalHoras*tarifa).subscribe(
       response => {
         console.log('Actualización exitosa:', response);
         
@@ -183,7 +191,32 @@ export class jsPDFclient{
         }, 10000); // Display alert for 5 seconds
         
       }
-    );
+    );}
+    else{
+      this._servicioApi.motoPagoTicketVenta(item, newState, fechaHora, this.totalHoras*tarifa).subscribe(
+        response => {
+          console.log('Actualización exitosa:', response);
+          
+          
+        },
+        error => {
+          console.error('Error en la actualización:', error);
+          this.errorMessage = 'Error en la Base de Datos, informar del error inmediatamente.';
+          this.showAlert = true;
+  
+          // Start fade-out after 5 seconds
+          setTimeout(() => {
+            this.fadingOut = true;
+            setTimeout(() => {
+              this.showAlert = false;
+              this.fadingOut = false; // Reset fade-out state
+              this.errorMessage = null; // Optionally clear the message
+            }, 1000); // Match this duration with the CSS transition duration
+          }, 10000); // Display alert for 5 seconds
+          
+        }
+      );
+    }
     item.state = newState;
   }
   private calcularHorasEntreFechas(horaEntrada: string, salida: Date, tolerancia: any): number {

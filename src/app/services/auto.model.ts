@@ -7,3 +7,12 @@ export interface Auto {
     state: number;
     img?: string;          // Almacena la imagen en base64 como cadena
   }
+export interface Moto {
+    id_moto: number;
+    id_playa: number;
+    placa: string;
+    hora_entrada: string; // Almacena el timestamp como cadena
+    hora_salida: string;  // Almacena el timestamp como cadena
+    state: number;
+    img?: string;          // Almacena la imagen en base64 como cadena
+  }
