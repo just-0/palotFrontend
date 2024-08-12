@@ -21,6 +21,7 @@ export class PlacasComponent implements OnInit{
   private _servicioApi = inject(CurrentPlayaService);
   filtro: string = '';
   placas: any[] = [];
+  placasCamera: any[] = [];
   
   playa: any=[];
   ngOnInit(): void {
@@ -40,6 +41,15 @@ export class PlacasComponent implements OnInit{
       },
       error => {
         console.error('Error al obtener las placasMotos:', error);
+      }
+    );
+    this._servicioApi.getPlacasCameras().subscribe(
+      data => {
+        console.log(data);
+        
+      },
+      error => {
+        console.error('Error al obtener las placasCAMARAS:', error);
       }
     );
     this.playa = this._servicioApi.getCurrentPlaya();

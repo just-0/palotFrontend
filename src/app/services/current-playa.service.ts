@@ -1,5 +1,5 @@
 import { Injectable, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { query } from '@angular/animations';
 import { Auto } from './auto.model';
@@ -10,6 +10,7 @@ import { Moto } from './auto.model';
 })
 export class CurrentPlayaService implements OnInit{
   private baseURL = 'http://localhost:3000/';
+  private baseURLCAMERA = 'http://192.168.1.64/';
   CurrentPlaya: any = [];
   
   constructor(private _httpClient: HttpClient) {}
@@ -123,5 +124,20 @@ export class CurrentPlayaService implements OnInit{
     return this._httpClient.get<any[]>(query);
   }
 
-  
+  public getPlacasCameras(): Observable<any> {
+    // URL del endpoint
+    const url = 'http://localhost:3000/api/ISAPI/Traffic/channels/1/vehicleDetect/plates/';
+
+    // Configurar los headers
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/xml',
+      'Authorization': 'Basic ' + btoa('admin:Hik12345')  // Autenticación básica
+    });
+
+    // Crear el cuerpo vacío como texto
+    const body = '<HttpHostNotificationList version="2.0" xmlns="http://www.hikvision.com/ver20/XMLSchema"></HttpHostNotificationList>';
+
+    // Hacer la petición POST con el cuerpo
+    return this._httpClient.post(url, body, { headers, responseType: 'text' as 'json' });
+}
 }
