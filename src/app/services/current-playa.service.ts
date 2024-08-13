@@ -125,12 +125,11 @@ export class CurrentPlayaService implements OnInit{
    
     return this._httpClient.get<any[]>(query);
   }
-  public getPlacasCameras(): Observable<string> {
-    const url = "http://localhost:3000/api/ISAPI/Traffic/channels/1/vehicleDetect/plates/";
+  public getPlacasCameras(): Observable<any> {
+    
+    const url = "http://localhost:3000/api/ISAPI/Traffic/channels/1/vehicleDetect/plates/?id_playa="+ this.CurrentPlaya.id_playa;
   
-    return this._httpClient.get(url, {
-      responseType: 'text'  
-    });
+    return this._httpClient.get(url);
   }
 
 }

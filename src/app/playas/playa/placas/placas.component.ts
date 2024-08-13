@@ -28,7 +28,7 @@ export class PlacasComponent implements OnInit{
     this._servicioApi.getPlacas().subscribe(
       data => {
         this.placas = data;
-        console.log(this.placas)
+        console.log("aa->",this.placas)
       },
       error => {
         console.error('Error al obtener las placas:', error);
@@ -45,17 +45,13 @@ export class PlacasComponent implements OnInit{
     );
     
     this._servicioApi.getPlacasCameras().subscribe(
-      (response: string) => {
-        this.parseXML(response).then(result => {
-          
-          this.placasCamera = Array.isArray(result.Plates.Plate) ? result.Plates.Plate : [result.Plates.Plate];
-          console.log("Parsed Platesxd:", this.placasCamera[0]);
-        }).catch(err => {
-          console.error("Error parsing XML:", err);
-        });
+      data => {
+        this.placasCamera = data
+        console.log("heehee->",this.placasCamera)
+        
       },
-      (error) => {
-        console.error("Error occurred:", error);
+      error => {
+        console.error('Error al obtener las placas de la camara:', error);
       }
     );
   
@@ -143,16 +139,5 @@ export class PlacasComponent implements OnInit{
     
     this.pdfClient.generatePagoPDF(item,newState,this.playa);
   }
-  private parseXML(xmlString: string): Promise<any> {
-    const parser = new xml2js.Parser({ explicitArray: false });
-    return new Promise((resolve, reject) => {
-      parser.parseString(xmlString, (err, result) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(result);
-        }
-      });
-    });
-  }
+  
 }
