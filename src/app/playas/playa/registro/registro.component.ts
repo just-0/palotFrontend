@@ -33,14 +33,14 @@ export class RegistroComponent implements OnInit {
 
   
   public datosFiltrados() {
-    // Filtrar los datos según el filtro proporcionado
+    
     const datosFiltrados = this.boletas.filter(item => 
       item.placa?.toLowerCase().includes(this.filtro.toLowerCase()) || 
       this.formatHora(item.hora_entrada).includes(this.filtro) ||
       item.id.toString().includes(this.filtro)
     );
 
-    // Ordenar los datos por hora de entrada de forma ascendente
+    
     return datosFiltrados.sort((a, b) => {
       const fechaA = a.hora_entrada ? new Date(a.hora_entrada).getTime() : 0;
       const fechaB = b.hora_entrada ? new Date(b.hora_entrada).getTime() : 0;

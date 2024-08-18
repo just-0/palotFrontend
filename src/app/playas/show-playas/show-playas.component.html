@@ -16,12 +16,22 @@
           <h1 class="card-title">{{ playa.nombre }}</h1>
           <p class="card-text">Dirección: {{ playa.direccion }}</p>
           <p class="card-text">Tarifa: S./{{ playa.tarifaAuto }}</p>
-          <a
-            [routerLink]="['/playas', playa.nombre]"
-            (click)="abrirPlaya(playa)"
-            class="btn btn-primary w-100 h-25"
-            >Iniciar Playa</a
-          >
+          <div *ngIf="playa.id_playa != 3">
+            <a
+              [routerLink]="['/playas', playa.nombre]"
+              (click)="abrirPlaya(playa)"
+              class="btn btn-primary w-100 h-25 disabled"
+            >Iniciar Playa</a>
+          </div>
+          
+          <div *ngIf="playa.id_playa == 3">
+            <a
+              [routerLink]="['/playas', playa.nombre]"
+              (click)="abrirPlaya(playa)"
+              class="btn btn-primary w-100 h-25"
+            >Iniciar Playa</a>
+          </div>
+          
         </div>
       </div>
     </div>

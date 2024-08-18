@@ -29,9 +29,9 @@
             <td class="col-placa">{{ item.placa }}</td>
             <td class="col-imagen">
               <img
-                *ngIf="item.img"
-                [src]="'http://192.168.1.120/doc/ui/images/plate/' + item.img"
-                alt="No cargo"
+                *ngIf="item.img != null"
+                [src]="'http://192.168.1.64/doc/ui/images/plate/' + item.img + '.jpg'"
+                alt=""
                 style="max-width: 200px; max-height: 200px"
               />
             </td>
@@ -94,7 +94,7 @@
                 </div>
               </div>
               
-              <!-- Estado 3 -->
+              <!-- estado 3 -->
               <div *ngIf="item.state === 3" class="estado-verde">
                 <button type="button" class="btn1 btn btn-dark">
                     <i class="fa-solid fa-money-bill-1-wave" ></i>BV Directa

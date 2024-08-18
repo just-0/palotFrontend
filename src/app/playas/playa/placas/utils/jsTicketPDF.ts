@@ -18,83 +18,106 @@ export class jsPDFclient{
         observable.subscribe(resolve, reject);
       });
     }
-  public  generateTicketPDF(item:any, newState:number, playa: any) {
+  public generateTicketPDF(item: any, newState: number, playa: any) {
     this._servicioApi.updateStatePlaca(item, newState).subscribe(
-      response => {
-        console.log('Actualizacion de estado correcto:', response);
-      },
-      error => {
-        console.error('Error en la actualización:', error);
-        this.errorMessage = 'Error en la Base de Datos, informar del error inmediatamente.';
-        this.showAlert = true;
-        // Start fade-out after 5 seconds
-        setTimeout(() => {
-          this.fadingOut = true;
-          setTimeout(() => {
-            this.showAlert = false;
-            this.fadingOut = false; // Reset fade-out state
-            this.errorMessage = null; // Optionally clear the message
-          }, 1000); // Match this duration with the CSS transition duration
-        }, 10000); // Display alert for 5 seconds 
-      }
+        response => {
+            console.log('Actualización de estado correcta:', response);
+        },
+        error => {
+            console.error('Error en la actualización:', error);
+            this.errorMessage = 'Error en la Base de Datos, informar del error inmediatamente.';
+            this.showAlert = true;
+            
+            setTimeout(() => {
+                this.fadingOut = true;
+                setTimeout(() => {
+                    this.showAlert = false;
+                    this.fadingOut = false;
+                    this.errorMessage = null; 
+                }, 1000); 
+            }, 10000); 
+        }
     );
+
     const doc = new jsPDF({
-      unit: 'mm',
-      format: [79, 85]
+        unit: 'mm',
+        format: [79, 85]
     });
-    let vehiculo = "id_moto" in item?"MOTOS":"VEHICULOS";;
-    let tarifa = "id_moto" in item?playa.tarifaMoto:playa.tarifaAuto;
-    
+
+    let vehiculo = "id_moto" in item ? "MOTOS" : "VEHICULOS";
+    let tarifa = "id_moto" in item ? playa.tarifaMoto : playa.tarifaAuto;
+
     doc.setFontSize(15);
     doc.setFont('helvetica', 'bold');
-    doc.text("TICKET PLAYA", (doc.internal.pageSize.width - doc.getTextWidth("TICKET PLAYA"))/2, 7);
-    
+    doc.text("TICKET PLAYA", (doc.internal.pageSize.width - doc.getTextWidth("TICKET PLAYA")) / 2, 7);
+
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(10);
-    doc.text("TARIFA HORA/FRACCION", (doc.internal.pageSize.width - doc.getTextWidth("TARIFA HORA/FRACCION"))/2, 13);
-    
-    doc.text(`${vehiculo}: ${tarifa}`, (doc.internal.pageSize.width - doc.getTextWidth(`${vehiculo}: ${tarifa}`))/2 , 17);
+    doc.text("TARIFA HORA/FRACCION", (doc.internal.pageSize.width - doc.getTextWidth("TARIFA HORA/FRACCION")) / 2, 13);
+
+    doc.text(`${vehiculo}: ${tarifa}`, (doc.internal.pageSize.width - doc.getTextWidth(`${vehiculo}: ${tarifa}`)) / 2, 17);
     doc.setFont('helvetica', 'bold');
-    doc.text("ID:", 12, 24);     doc.text(String(item.id_auto || item.id_moto) , 45, 24);
-    doc.text("PLACA:", 12, 29);doc.text(item.placa || "Sin Placa", 45, 29);
-    doc.text("HORA:", 12, 34);doc.text(this.datePipe.transform(item.hora_entrada, 'hh:mm a')|| "undefined", 45, 34);
-    doc.text("FECHA:", 12, 39);doc.text(this.datePipe.transform(item.hora_entrada, 'dd-MM-yyyy') || "undefined", 45, 39);
+    doc.text("ID:", 12, 24);
+    doc.text(String(item.id_auto || item.id_moto), 45, 24);
+    doc.text("PLACA:", 12, 29);
+    doc.text(item.placa || "Sin Placa", 45, 29);
+    doc.text("HORA:", 12, 34);
+    doc.text(this.datePipe.transform(item.hora_entrada, 'hh:mm a') || "undefined", 45, 34);
+    doc.text("FECHA:", 12, 39);
+    doc.text(this.datePipe.transform(item.hora_entrada, 'dd-MM-yyyy') || "undefined", 45, 39);
     let padding = 0;
-    if(item.img!= null){
-      doc.addImage(item.img || "", 'PNG', 20, 45, 40, 20); // Ajusta las coordenadas y el tamaño según sea necesario
+
+    if (item.img != null) {
+        const imgUrl = '/local-images/' + item.img + '.jpg';
+        console.log("imprimir", imgUrl);
+        
+        const img = new Image();
+        img.src = imgUrl;
+
+        img.onload = () => {
+            
+            doc.addImage(img, 'JPEG', 20, 45, 40, 20);
+            generatePDF();
+        };
+
+        img.onerror = (error) => {
+            console.error('Error al cargar la imagen:', error);
+            generatePDF();
+        };
       padding = 22;
+    } else {
+        generatePDF();
     }
-    
+    item.state = 2;
+    function generatePDF() {
+        doc.text(playa.direccion, (doc.internal.pageSize.width - doc.getTextWidth(playa.direccion)) / 2, 70 - 22 + padding);
+        doc.text("AREQUIPA-AREQUIPA-AREQUIPA", 10, 74 - 22 + padding);
+        doc.setFontSize(12);
+        doc.text("GRACIAS POR SU PREFERENCIA", 5, 80 - 22 + padding);
 
-    doc.text(playa.direccion, (doc.internal.pageSize.width - doc.getTextWidth(playa.direccion))/2, 70-22 +padding);
-    doc.text("AREQUIPA-AREQUIPA-AREQUIPA", 10, 74-22 +padding);
-    doc.setFontSize(12);
-    doc.text("GRACIAS POR SU PREFERENCIA", 5, 80-22 +padding);
-  
-    
-    const pdfBlob = doc.output('blob');
-    
-    const pdfUrl = URL.createObjectURL(pdfBlob);
-    const iframe = document.createElement('iframe');
-    iframe.style.position = 'absolute';
-    iframe.style.width = '0px';
-    iframe.style.height = '0px';
-    iframe.style.border = 'none';
-    iframe.src = pdfUrl;
-    document.body.appendChild(iframe);
-  
-    
-    iframe.onload = () => {
-      iframe.contentWindow?.print();
-      setTimeout(() => {
-        document.body.removeChild(iframe); 
-      }, 10000); 
-    };
+        const pdfBlob = doc.output('blob');
+        const pdfUrl = URL.createObjectURL(pdfBlob);
+        
 
-    
-    item.state = newState;
-  }
+        const iframe = document.createElement('iframe');
+        iframe.style.position = 'absolute';
+        iframe.style.width = '0px';
+        iframe.style.height = '0px';
+        iframe.style.border = 'none';
+        iframe.src = pdfUrl;
+        document.body.appendChild(iframe);
 
+        iframe.onload = () => {
+            
+            iframe.contentWindow?.print();
+
+            
+            setTimeout(() => {
+                document.body.removeChild(iframe);
+            }, 10000); 
+};
+    }
+}
   public async generatePagoPDF(item: any, newState: number, playa: any ){
     let fechaHora = new Date();
     this.totalHoras = this.calcularHorasEntreFechas(item.hora_entrada,fechaHora,15)
@@ -121,15 +144,15 @@ export class jsPDFclient{
       this.errorMessage = 'Error en la Base de Datos, informar del error inmediatamente.';
       this.showAlert = true;
   
-      // Start fade-out after 5 seconds
+      
       setTimeout(() => {
         this.fadingOut = true;
         setTimeout(() => {
           this.showAlert = false;
-          this.fadingOut = false; // Reset fade-out state
-          this.errorMessage = null; // Optionally clear the message
-        }, 1000); // Match this duration with the CSS transition duration
-      }, 10000); // Display alert for 5 seconds
+          this.fadingOut = false; 
+          this.errorMessage = null; 
+        }, 1000); 
+      }, 10000); 
     }
     const doc = new jsPDF({
       unit: 'mm',
@@ -196,7 +219,7 @@ export class jsPDFclient{
   
     
     iframe.onload = () => {
-      iframe.contentWindow?.print();
+     // iframe.contentWindow?.print();
       setTimeout(() => {
         document.body.removeChild(iframe); 
       }, 10000); 
@@ -223,18 +246,41 @@ export class jsPDFclient{
     return res== 0?1:res;
   }
   private convertAmountToWords(amount: number): string {
-    // Configura numeral-words para usar español
+    
     const words = numero2palabra(String(amount));
     
     return `SON: ${words.toUpperCase()} CON ${this.getDecimalPart(amount)}/100 SOLES`;
   }
   private getDecimalPart(amount: number): string {
-    // Obtiene la parte decimal del importe
     return Math.round((amount % 1) * 100).toString().padStart(2, '0');
   }
   public formatHora(date: string | undefined): string {
     return this.datePipe.transform(date, 'hh:mm a') || '';
   }
+  private getImageBase64FromURL(url: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.onload = function() {
+        if (xhr.status === 200) {
+          const reader = new FileReader();
+          reader.onloadend = function() {
+            const base64data = reader.result as string;
+            resolve(base64data);
+          };
+          reader.readAsDataURL(xhr.response);
+        } else {
+          reject(`Failed to load image: ${xhr.status}`);
+        }
+      };
+      xhr.onerror = function() {
+        reject('Error loading image');
+      };
+      xhr.open('GET', url, true);
+      xhr.responseType = 'blob';
+      xhr.send();
+    });
+  }
+  
 }
 
 

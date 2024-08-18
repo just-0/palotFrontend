@@ -5,6 +5,9 @@ import { DatePipe } from '@angular/common';
 import { jsPDFclient } from './utils/jsTicketPDF';
 import { FormBuilder } from '@angular/forms';
 import * as xml2js from 'xml2js';
+import { concatMap } from 'rxjs';
+import { interval } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 @Component({
   selector: 'app-placas',
   templateUrl: './placas.component.html',
@@ -25,53 +28,58 @@ export class PlacasComponent implements OnInit{
   
   playa: any=[];
   ngOnInit(): void {
-    this._servicioApi.getPlacas().subscribe(
-      data => {
+    this._servicioApi.getPlacas().pipe(
+      concatMap(data => {
         this.placas = data;
-        console.log("aa->",this.placas)
-      },
-      error => {
-        console.error('Error al obtener las placas:', error);
-      }
-    );
-    this._servicioApi.getPlacasMotos().subscribe(
-      data => {
+        console.log("aa->", this.placas);
+        return this._servicioApi.getPlacasMotos();
+      }),
+      concatMap(data => {
         this.placas = this.placas.concat(data);
-        
-      },
-      error => {
-        console.error('Error al obtener las placasMotos:', error);
-      }
-    );
-    
-    this._servicioApi.getPlacasCameras().subscribe(
+        return this._servicioApi.getPlacasCameras();
+      })
+    ).subscribe(
       data => {
-        this.placasCamera = data
-        console.log("heehee->",this.placasCamera)
-        
+        this.placasCamera = data;
+        this.placas = this.placas.concat(this.placasCamera);
+        console.log("heehee->", this.placasCamera);
       },
       error => {
-        console.error('Error al obtener las placas de la camara:', error);
+        console.error('Error al obtener los datos:', error);
       }
     );
   
     this.playa = this._servicioApi.getCurrentPlaya();
+    interval(3000).pipe(
+      switchMap(() => this._servicioApi.getPlacasCameras())
+    ).subscribe(
+      data => {
+        this.placasCamera = data;
+        console.log("Datos de placas de cámaras:", this.placasCamera);
+      },
+      error => {
+        console.error('Error al obtener los datos:', error);
+      }
+    );
   }
   datosFiltrados() {
+    
     const datosOrdenados = this.placas.sort((a, b) => {
       const fechaA = a.hora_entrada ? new Date(a.hora_entrada).getTime() : 0;
       const fechaB = b.hora_entrada ? new Date(b.hora_entrada).getTime() : 0;
       return fechaB - fechaA;
     });
   
+    // Filtrar los datos
     if (!this.filtro) {
       return datosOrdenados;
     }
   
     return datosOrdenados.filter(item => 
-      item.placa?.includes(this.filtro) || 
-      item.hora_entrada?.includes(this.filtro) ||
-      item.id_auto.toString().includes(this.filtro)
+      (item.placa && item.placa.includes(this.filtro)) || 
+      (item.hora_entrada && item.hora_entrada.includes(this.filtro)) ||
+      (item.id_auto && item.id_auto.toString().includes(this.filtro)) ||
+      (item.id_moto && item.id_moto.toString().includes(this.filtro))
     );
   }
 

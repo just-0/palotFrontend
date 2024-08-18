@@ -19,13 +19,14 @@ export class ShowPlayasComponent implements OnInit {
     this.showPlayasService.getPlayas().subscribe(
       
       data => {
-        console.log(data[0]);
+        console.log(data);
         this.playas = data;
       },
       error => {
         console.error('Error:', error);
       }
     );
+    
   }
 
 
