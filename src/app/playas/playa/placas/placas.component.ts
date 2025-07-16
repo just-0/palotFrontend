@@ -7,57 +7,54 @@ import { FormBuilder } from '@angular/forms';
 import { environment } from '../../../../environments/environment';
 import * as xml2js from 'xml2js';
 @Component({
-    selector: 'app-placas',
-    templateUrl: './placas.component.html',
-    styleUrl: './placas.component.css',
-    standalone: false
+  selector: 'app-placas',
+  templateUrl: './placas.component.html',
+  styleUrl: './placas.component.css',
+  standalone: false,
 })
-export class PlacasComponent implements OnInit{
+export class PlacasComponent implements OnInit {
   pdfClient: jsPDFclient;
   plateImageBaseUrl = environment.plateImageBaseUrl;
- 
-  placaManual: string = "";
-  constructor (private form: FormBuilder, private datePipe: DatePipe ){
-    this.pdfClient = new jsPDFclient(this.datePipe);
 
-  };
+  placaManual: string = '';
+  constructor(private form: FormBuilder, private datePipe: DatePipe) {
+    this.pdfClient = new jsPDFclient(this.datePipe);
+  }
   private _servicioApi = inject(CurrentPlayaService);
   filtro: string = '';
   placas: any[] = [];
   placasCamera: any[] = [];
-  
-  playa: any=[];
+
+  playa: any = [];
   ngOnInit(): void {
     this._servicioApi.getPlacas().subscribe(
-      data => {
+      (data: Auto[]) => {
         this.placas = data;
-        console.log("aa->",this.placas)
+        console.log('aa->', this.placas);
       },
-      error => {
+      (error: any) => {
         console.error('Error al obtener las placas:', error);
       }
     );
     this._servicioApi.getPlacasMotos().subscribe(
-      data => {
+      (data: any[]) => {
         this.placas = this.placas.concat(data);
-        
       },
-      error => {
+      (error: any) => {
         console.error('Error al obtener las placasMotos:', error);
       }
     );
-    
+
     this._servicioApi.getPlacasCameras().subscribe(
-      data => {
-        this.placasCamera = data
-        console.log("heehee->",this.placasCamera)
-        
+      (data: any) => {
+        this.placasCamera = data;
+        console.log('heehee->', this.placasCamera);
       },
-      error => {
+      (error: any) => {
         console.error('Error al obtener las placas de la camara:', error);
       }
     );
-  
+
     this.playa = this._servicioApi.getCurrentPlaya();
   }
   datosFiltrados() {
@@ -66,81 +63,79 @@ export class PlacasComponent implements OnInit{
       const fechaB = b.hora_entrada ? new Date(b.hora_entrada).getTime() : 0;
       return fechaB - fechaA;
     });
-  
+
     if (!this.filtro) {
       return datosOrdenados;
     }
-  
-    return datosOrdenados.filter(item => 
-      item.placa?.includes(this.filtro) || 
-      item.hora_entrada?.includes(this.filtro) ||
-      item.id_auto.toString().includes(this.filtro)
+
+    return datosOrdenados.filter(
+      (item) =>
+        item.placa?.includes(this.filtro) ||
+        item.hora_entrada?.includes(this.filtro) ||
+        item.id_auto.toString().includes(this.filtro)
     );
   }
 
-  createManualCar(){
-    if(this.placaManual == ""){
+  createManualCar() {
+    if (this.placaManual == '') {
       this.pdfClient.errorMessage = 'La placa no puede estar vacia';
       this.pdfClient.showAlert = true;
 
-        
+      setTimeout(() => {
+        this.pdfClient.fadingOut = true;
         setTimeout(() => {
-          this.pdfClient.fadingOut = true;
-          setTimeout(() => {
-            this.pdfClient.showAlert = false;
-            this.pdfClient.fadingOut = false; 
-            this.pdfClient.errorMessage = null;
-          }, 1000); 
-        }, 5000); 
+          this.pdfClient.showAlert = false;
+          this.pdfClient.fadingOut = false;
+          this.pdfClient.errorMessage = null;
+        }, 1000);
+      }, 5000);
       return;
     }
-    this._servicioApi.createManualCar(this.placaManual, this.playa.id_playa,new Date,2
-    ).subscribe(
-      response => {
-        this.placas.push(response);
-        
-        this.pdfClient.generateTicketPDF(response,2,this.playa);
-      },
-      error => {
-        console.error('Error al obtener las placas:', error);
-      }
-    );
-    
+    this._servicioApi
+      .createManualCar(this.placaManual, this.playa.id_playa, new Date(), 2)
+      .subscribe(
+        (response: Auto) => {
+          this.placas.push(response);
+
+          this.pdfClient.generateTicketPDF(response, 2, this.playa);
+        },
+        (error: any) => {
+          console.error('Error al obtener las placas:', error);
+        }
+      );
   }
-  createManualMotorcycle(){
-    if(this.placaManual == ""){
+  createManualMotorcycle() {
+    if (this.placaManual == '') {
       this.pdfClient.errorMessage = 'La placa no puede estar vacia';
       this.pdfClient.showAlert = true;
 
-       
+      setTimeout(() => {
+        this.pdfClient.fadingOut = true;
         setTimeout(() => {
-          this.pdfClient.fadingOut = true;
-          setTimeout(() => {
-            this.pdfClient.showAlert = false;
-            this.pdfClient.fadingOut = false; 
-            this.pdfClient.errorMessage = null; 
-          }, 1000); 
-        }, 5000); 
+          this.pdfClient.showAlert = false;
+          this.pdfClient.fadingOut = false;
+          this.pdfClient.errorMessage = null;
+        }, 1000);
+      }, 5000);
       return;
     }
-    this._servicioApi.createManualBike(this.placaManual, this.playa.id_playa,new Date,2
-    ).subscribe(
-      response => {
-        this.placas.push(response);
-        
-        this.pdfClient.generateTicketPDF(response,2,this.playa);
-      },
-      error => {
-        console.error('Error al obtener las placas:', error);
-      }
-    );
+    this._servicioApi
+      .createManualBike(this.placaManual, this.playa.id_playa, new Date(), 2)
+      .subscribe(
+        (response: Moto) => {
+          this.placas.push(response);
+
+          this.pdfClient.generateTicketPDF(response, 2, this.playa);
+        },
+        (error: any) => {
+          console.error('Error al obtener las placas:', error);
+        }
+      );
   }
-  printTicket(item:Auto, newState:number ) {
-    this.pdfClient.generateTicketPDF(item,newState,this.playa);
+  printTicket(item: Auto, newState: number) {
+    this.pdfClient.generateTicketPDF(item, newState, this.playa);
   }
-  printPago(item: Auto, newState: number ){
-    
-    this.pdfClient.generatePagoPDF(item,newState,this.playa);
+  printPago(item: Auto, newState: number) {
+    this.pdfClient.generatePagoPDF(item, newState, this.playa);
   }
-  
 }
