@@ -5,9 +5,10 @@ import { Subscription } from 'rxjs';
 
 
 @Component({
-  selector: 'app-playa',
-  templateUrl: './playa.component.html',
-  styleUrl: './playa.component.css'
+    selector: 'app-playa',
+    templateUrl: './playa.component.html',
+    styleUrl: './playa.component.css',
+    standalone: false
 })
 export class PlayaComponent implements OnInit, OnDestroy{
   constructor(private currentPlayaService: CurrentPlayaService){}

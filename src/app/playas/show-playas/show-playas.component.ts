@@ -6,9 +6,10 @@ import { CurrentPlayaService } from '../../services/current-playa.service';
 import { environment } from '../../../environments/environment';
 
 @Component({
-  selector: 'app-show-playas',
-  templateUrl: './show-playas.component.html',
-  styleUrl: './show-playas.component.css'
+    selector: 'app-show-playas',
+    templateUrl: './show-playas.component.html',
+    styleUrl: './show-playas.component.css',
+    standalone: false
 })
 export class ShowPlayasComponent implements OnInit {
   defaultPlayaImageUrl = environment.defaultPlayaImageUrl;

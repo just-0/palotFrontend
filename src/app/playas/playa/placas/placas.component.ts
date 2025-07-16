@@ -7,9 +7,10 @@ import { FormBuilder } from '@angular/forms';
 import { environment } from '../../../../environments/environment';
 import * as xml2js from 'xml2js';
 @Component({
-  selector: 'app-placas',
-  templateUrl: './placas.component.html',
-  styleUrl: './placas.component.css'
+    selector: 'app-placas',
+    templateUrl: './placas.component.html',
+    styleUrl: './placas.component.css',
+    standalone: false
 })
 export class PlacasComponent implements OnInit{
   pdfClient: jsPDFclient;

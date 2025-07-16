@@ -3,9 +3,10 @@ import { OnInit } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { CurrentPlayaService } from '../../../services/current-playa.service';
 @Component({
-  selector: 'app-registro',
-  templateUrl: './registro.component.html',
-  styleUrl: './registro.component.css'
+    selector: 'app-registro',
+    templateUrl: './registro.component.html',
+    styleUrl: './registro.component.css',
+    standalone: false
 })
 export class RegistroComponent implements OnInit {
   public boletas:any[] = [];
