@@ -3,11 +3,13 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
+import { environment } from '../../environments/environment';
+
 @Injectable({
   providedIn: 'root',
 })
 export class LoginService {
-  private baseURL = 'http://localhost:3000/login'; //Cambiarlo por la API backend
+  private baseURL = `${environment.apiBaseUrl}/login`;
   private loggedIn = false;
 
   constructor(private _httpClient: HttpClient, private cookieService: CookieService) {

@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { query } from '@angular/animations';
 import { Auto } from './auto.model';
 import { Moto } from './auto.model';
+import { environment } from '../../environments/environment';
 import * as $ from 'jquery';
 
 
@@ -11,8 +12,8 @@ import * as $ from 'jquery';
   providedIn: 'root'
 })
 export class CurrentPlayaService implements OnInit{
-  private baseURL = 'http://localhost:3000/';
-  private baseURLCAMERA = 'http://192.168.1.64/';
+  private baseURL = environment.apiBaseUrl;
+  private baseURLCAMERA = environment.cameraBaseUrl;
   CurrentPlaya: any = [];
   
   constructor(private _httpClient: HttpClient) {}
@@ -41,29 +42,27 @@ export class CurrentPlayaService implements OnInit{
     return this.CurrentPlaya;
   }
   public getPlacasMotos(): Observable<any[]>{
-    const query = this.baseURL + "getPlacasMotos" + "?idPlaya="+ this.CurrentPlaya.id_playa;
+    const query = `${this.baseURL}/getPlacasMotos?idPlaya=${this.CurrentPlaya.id_playa}`;
     
     return this._httpClient.get<any[]>(query);
   }
 
   public getPlacas(): Observable<Auto[]>{
-    const query = this.baseURL + "getPlacas" + "?idPlaya="+ this.CurrentPlaya.id_playa;
+    const query = `${this.baseURL}/getPlacas?idPlaya=${this.CurrentPlaya.id_playa}`;
     
     return this._httpClient.get<Auto[]>(query);
   }
 
   public updateStatePlaca(placa :any, state: number){
-    //http://localhost:3000/updateStateAuto?state=2&idAuto=2
-    
     let id = 0;
     let query = "" ;
     if("id_auto" in placa){
       id = placa.id_auto;
-      query = this.baseURL + "updateStateAuto/"+ id;
+      query = `${this.baseURL}/updateStateAuto/${id}`;
     }
     else {
       id = placa.id_moto;
-      query = this.baseURL + "updateStateMoto/"+ id;
+      query = `${this.baseURL}/updateStateMoto/${id}`;
     }
  
     return this._httpClient.put<void>(query,{state});
@@ -78,7 +77,7 @@ export class CurrentPlayaService implements OnInit{
       horaSalida,
       Monto
     };
-    const query = `${this.baseURL}carroPagoTicketVenta`;
+    const query = `${this.baseURL}/carroPagoTicketVenta`;
     return this._httpClient.put<any>(query, body);
   }
   public motoPagoTicketVenta(placa :any, state: number, fechaHora: Date, Monto: number){
@@ -92,12 +91,12 @@ export class CurrentPlayaService implements OnInit{
       Monto
     };
     
-    const query = `${this.baseURL}motoPagoTicketVenta`;
+    const query = `${this.baseURL}/motoPagoTicketVenta`;
     return this._httpClient.put<any>(query, body);
 
   }
   public createManualCar(placa :string, id_playa: number, fechaHora: Date, state: number){
-    const query = `${this.baseURL}createManualCar`;
+    const query = `${this.baseURL}/createManualCar`;
     const horaEntrada = fechaHora;
     const body = {
       placa,
@@ -109,7 +108,7 @@ export class CurrentPlayaService implements OnInit{
     return this._httpClient.put<Auto>(query, body);
   }
   public createManualBike(placa :string, id_playa: number, fechaHora: Date, state: number){
-    const query = `${this.baseURL}createManualBike`;
+    const query = `${this.baseURL}/createManualBike`;
     const horaEntrada = fechaHora;
     const body = {
       placa,
@@ -121,13 +120,13 @@ export class CurrentPlayaService implements OnInit{
     return this._httpClient.put<Moto>(query, body);
   }
   public getBoletas(): Observable<any[]>{
-    const query = this.baseURL + "getBoletas"+ "?id_playa="+ this.CurrentPlaya.id_playa;
+    const query = `${this.baseURL}/getBoletas?id_playa=${this.CurrentPlaya.id_playa}`;
    
     return this._httpClient.get<any[]>(query);
   }
   public getPlacasCameras(): Observable<any> {
     
-    const url = "http://localhost:3000/api/ISAPI/Traffic/channels/1/vehicleDetect/plates/?id_playa="+ this.CurrentPlaya.id_playa;
+    const url = `${this.baseURL}/api/ISAPI/Traffic/channels/1/vehicleDetect/plates?id_playa=${this.CurrentPlaya.id_playa}`;
   
     return this._httpClient.get(url);
   }

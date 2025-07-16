@@ -4,6 +4,7 @@ import { Auto, Moto } from '../../../services/auto.model';
 import { DatePipe } from '@angular/common';
 import { jsPDFclient } from './utils/jsTicketPDF';
 import { FormBuilder } from '@angular/forms';
+import { environment } from '../../../../environments/environment';
 import * as xml2js from 'xml2js';
 @Component({
   selector: 'app-placas',
@@ -12,6 +13,7 @@ import * as xml2js from 'xml2js';
 })
 export class PlacasComponent implements OnInit{
   pdfClient: jsPDFclient;
+  plateImageBaseUrl = environment.plateImageBaseUrl;
  
   placaManual: string = "";
   constructor (private form: FormBuilder, private datePipe: DatePipe ){

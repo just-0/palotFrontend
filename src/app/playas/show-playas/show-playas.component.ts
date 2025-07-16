@@ -3,6 +3,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { ShowPlayasService } from '../../services/show-playas.service';
 import { Router } from '@angular/router';
 import { CurrentPlayaService } from '../../services/current-playa.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-show-playas',
@@ -10,7 +11,7 @@ import { CurrentPlayaService } from '../../services/current-playa.service';
   styleUrl: './show-playas.component.css'
 })
 export class ShowPlayasComponent implements OnInit {
-
+  defaultPlayaImageUrl = environment.defaultPlayaImageUrl;
   
   constructor(private showPlayasService: ShowPlayasService, private currentPlayaService: CurrentPlayaService, private router: Router) {}
   playas: any[] = []; // Array para almacenar los datos de las playas
