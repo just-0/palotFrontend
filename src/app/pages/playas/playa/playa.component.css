@@ -5,15 +5,43 @@
   animation: fadeInUp 0.3s ease-out;
 }
 
+.animate-fade-in {
+  animation: fadeInUp 0.4s ease-out;
+}
+
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(15px);
   }
   to {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* Smooth transitions for responsive elements */
+.responsive-transition {
+  transition: all 0.3s ease-in-out;
+}
+
+/* Custom scrollbar for tables */
+.overflow-x-auto::-webkit-scrollbar {
+  height: 6px;
+}
+
+.overflow-x-auto::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 3px;
+}
+
+.overflow-x-auto::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+.overflow-x-auto::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
 }
 
 /* Status indicator pulse animation */
@@ -28,4 +56,36 @@
   50% {
     opacity: .5;
   }
+}
+
+/* Estilos para el deslizador tipo "slide to unlock" */
+.slide-container {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  border: 2px solid #e5e7eb;
+}
+
+.slide-button {
+  transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+  border: 2px solid #f3f4f6;
+}
+
+.slide-button:hover {
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.slide-button:active {
+  transform: scale(0.98);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.slide-button.cursor-grabbing {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Animación para el ícono */
+.rotate-12 {
+  transform: rotate(12deg);
 }

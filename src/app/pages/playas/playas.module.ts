@@ -11,6 +11,8 @@ import { PlacasComponent } from './playa/placas/placas.component';
 import { DatePipe } from '@angular/common';
 import { RegistroComponent } from './playa/registro/registro.component';
 
+// Ya no necesitamos Angular Material para el slider
+
 
 
 

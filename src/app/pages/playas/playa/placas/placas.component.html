@@ -2,12 +2,7 @@
   <div class="row">
     <!-- Columna de la tabla (izquierda) -->
     <div class="col-md-9">
-      <input
-        type="text"
-        class="form-control mb-3"
-        placeholder="Buscar registros"
-        [(ngModel)]="filtro"
-      />
+      <input type="text" class="form-control mb-3" placeholder="Buscar registros" [(ngModel)]="filtro" />
       <table class="table table-striped">
         <thead>
           <tr>
@@ -28,20 +23,14 @@
             </td>
             <td class="col-placa">{{ item.placa }}</td>
             <td class="col-imagen">
-              <img
-                *ngIf="item.img"
-                [src]="plateImageBaseUrl + '/doc/ui/images/plate/' + item.img"
-                alt="No cargo"
-                style="max-width: 200px; max-height: 200px"
-              />
+              <img *ngIf="item.img" [src]="plateImageBaseUrl + '/doc/ui/images/plate/' + item.img" alt="No cargo"
+                style="max-width: 200px; max-height: 200px" />
             </td>
             <td class="col-monto">
-              <p *ngIf="(item.state == 3 || item.state == 4)" >S/.{{  item.total_pagar}}</p>
+              <p *ngIf="(item.state == 3 || item.state == 4)">S/.{{ item.total_pagar}}</p>
               <p *ngIf="item.state == 1 || item.state == 2">S/. 0.00</p>
             </td>
-            <td
-              class="col-estado"
-              [ngStyle]="{
+            <td class="col-estado" [ngStyle]="{
                 'background-color':
                   item.state === 2
                     ? '#FF5353'
@@ -50,8 +39,7 @@
                     : 'transparent',
                 color: item.state === 1 || item.state === 1 ? 'white' : 'black',
                 'text-align': 'center'
-              }"
-            >
+              }">
               <div *ngIf="item.state === 1" class="estado-default">
                 <p class="text-dark">NO TICKET</p>
               </div>
@@ -71,18 +59,10 @@
             <td class="col-opc">
               <div *ngIf="item.state === 2" class="estado-rojo">
                 <div class="btn-group" role="group" aria-label="Basic example">
-                  <button
-                    type="button"
-                    (click)="printTicket(item, 2)"
-                    class="btn0 btn btn-primary"
-                  >
+                  <button type="button" (click)="printTicket(item, 2)" class="btn0 btn btn-primary">
                     <i class="fa-solid fa-car"></i>
                   </button>
-                  <button
-                    type="button"
-                    (click)="printPago(item, 3)"
-                    class="btn0 btn btn-success"
-                  >
+                  <button type="button" (click)="printPago(item, 3)" class="btn0 btn btn-success">
                     <i class="fa-solid fa-money-bill-1-wave"></i>
                   </button>
                   <button type="button" class="btn1 btn btn-dark">
@@ -93,21 +73,21 @@
                   </button>
                 </div>
               </div>
-              
+
               <!-- Estado 3 -->
               <div *ngIf="item.state === 3" class="estado-verde">
                 <button type="button" class="btn1 btn btn-dark">
-                    <i class="fa-solid fa-money-bill-1-wave" ></i>BV Directa
-                  </button>
-                  <button type="button" class="btn1 btn btn-dark">
-                    <i class="fa-solid fa-money-bill-1-wave"></i>BV/FV Cliente
-                  </button>
+                  <i class="fa-solid fa-money-bill-1-wave"></i>BV Directa
+                </button>
+                <button type="button" class="btn1 btn btn-dark">
+                  <i class="fa-solid fa-money-bill-1-wave"></i>BV/FV Cliente
+                </button>
 
               </div>
 
               <div *ngIf="item.state === 4" class="estado-rojo">
                 <div class="btn-group" role="group" aria-label="Basic example">
-                  
+
                   <button type="button" class="btn1 btn btn-dark">
                     <i class="fa-solid fa-money-bill-1-wave"></i>BV Directa
                   </button>
@@ -118,16 +98,9 @@
               </div>
 
               <!-- Otros estados -->
-              <div
-                *ngIf="item.state == 1 "
-                class="estado-default"
-              >
+              <div *ngIf="item.state == 1 " class="estado-default">
                 <div class="btn-group" role="group" aria-label="Basic example">
-                  <button
-                    type="button"
-                    (click)="printTicket(item, 2)"
-                    class="btn0 btn btn-primary"
-                  >
+                  <button type="button" (click)="printTicket(item, 2)" class="btn0 btn btn-primary">
                     <i class="fa-solid fa-car"></i>
                   </button>
                 </div>
@@ -137,19 +110,13 @@
         </tbody>
       </table>
     </div>
-    
+
     <!-- Columna del formulario (derecha) -->
     <div class="col-md-2 align-self-start">
       <p class="h1">Placa Manual</p>
       <form #Formulario="ngForm">
         <div class="m-1">
-          <input
-            type="text"
-            class="form-control"
-            placeholder="Placa"
-            name="placa"
-            [(ngModel)]="placaManual"
-          />
+          <input type="text" class="form-control" placeholder="Placa" name="placa" [(ngModel)]="placaManual" />
         </div>
         <div>
           <button type="button" (click)="createManualCar()" class="px-5 btn btn-primary me-2">
@@ -164,17 +131,8 @@
   </div>
 </div>
 
-<div
-  class="alert alert-danger alert-dismissible fade show"
-  role="alert"
-  *ngIf="this.pdfClient.showAlert || this.pdfClient.fadingOut"
-  [ngClass]="{ 'fade-out': this.pdfClient.fadingOut }"
->
+<div class="alert alert-danger alert-dismissible fade show" role="alert"
+  *ngIf="this.pdfClient.showAlert || this.pdfClient.fadingOut" [ngClass]="{ 'fade-out': this.pdfClient.fadingOut }">
   {{ this.pdfClient.errorMessage }}
-  <button
-    type="button"
-    class="btn-close"
-    aria-label="Close"
-    (click)="this.pdfClient.showAlert = false"
-  ></button>
+  <button type="button" class="btn-close" aria-label="Close" (click)="this.pdfClient.showAlert = false"></button>
 </div>

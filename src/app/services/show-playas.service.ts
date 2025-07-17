@@ -1,21 +1,17 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, Observable} from 'rxjs';
+import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ShowPlayasService {
-  private baseURL = `${environment.apiBaseUrl}/showPlayas`;
-
   constructor(private _httpClient: HttpClient) {}
- 
-  public getPlayas(): Observable<any> {
-    
-    return this._httpClient.get<any>(this.baseURL);
-  }
 
-  
+  public getPlayas(): Observable<any> {
+    // El backend se encarga del filtrado basado en el tipo de usuario
+    // El interceptor enviará automáticamente los headers de autenticación
+    return this._httpClient.get<any>(`${environment.apiBaseUrl}/playas`);
+  }
 }
-/*  */

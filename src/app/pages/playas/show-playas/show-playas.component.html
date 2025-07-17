@@ -1,74 +1,81 @@
 <div class="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
 
 
-  <!-- Quick Stats -->
-  <div class="max-w-7xl mx-auto px-6 py-6">
-    <div class="flex justify-between items-center mb-6">
-      <h2 class="text-lg font-semibold text-gray-900">Resumen General</h2>
-      <button 
-        *ngIf="isAdmin()"
-        (click)="openCreatePlayaModal()"
-        class="btn-primary-modern"
-      >
-        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <!-- Welcome Section -->
+  <div class="w-full px-6 lg:px-12 py-8 lg:py-12">
+    <div class="mb-12">
+      <h1 class="text-4xl lg:text-6xl font-bold text-gray-900 mb-4">Hola {{ currentUser?.nombre || 'Usuario' }}</h1>
+      <p class="text-xl lg:text-2xl text-gray-600">Bienvenido a tu panel de gestión de playas</p>
+    </div>
+
+    <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-12 gap-6">
+      <h2 class="text-2xl lg:text-4xl font-semibold text-gray-900">Resumen General</h2>
+      <button *ngIf="isAdmin()" (click)="openCreatePlayaModal()"
+        class="flex items-center space-x-3 px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200 shadow-lg hover:shadow-xl text-xl font-medium">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
         </svg>
         Nueva Playa
       </button>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-      <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+      <div class="bg-white rounded-xl shadow-lg p-8 border border-gray-200">
         <div class="flex items-center">
-          <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          <div class="w-16 h-16 bg-green-100 rounded-lg flex items-center justify-center">
+            <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
             </svg>
           </div>
-          <div class="ml-4">
-            <p class="text-sm font-medium text-gray-600">Playas Activas</p>
-            <p class="text-2xl font-bold text-gray-900">{{ playas.length || 0 }}</p>
+          <div class="ml-6">
+            <p class="text-lg font-medium text-gray-600">Playas Abiertas</p>
+            <p class="text-4xl font-bold text-gray-900">{{ getPlayasAbiertas() }}</p>
           </div>
         </div>
       </div>
-      
-      <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+
+      <div class="bg-white rounded-xl shadow-lg p-8 border border-gray-200">
         <div class="flex items-center">
-          <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+          <div class="w-16 h-16 bg-blue-100 rounded-lg flex items-center justify-center">
+            <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z">
+              </path>
             </svg>
           </div>
-          <div class="ml-4">
-            <p class="text-sm font-medium text-gray-600">En Operación</p>
-            <p class="text-2xl font-bold text-gray-900">{{ playas.length || 0 }}</p>
+          <div class="ml-6">
+            <p class="text-lg font-medium text-gray-600">En Operación</p>
+            <p class="text-4xl font-bold text-gray-900">{{ playas.length || 0 }}</p>
           </div>
         </div>
       </div>
-      
-      <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+
+      <div class="bg-white rounded-xl shadow-lg p-8 border border-gray-200">
         <div class="flex items-center">
-          <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-            <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          <div class="w-16 h-16 bg-purple-100 rounded-lg flex items-center justify-center">
+            <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
             </svg>
           </div>
-          <div class="ml-4">
-            <p class="text-sm font-medium text-gray-600">Tiempo Promedio</p>
-            <p class="text-2xl font-bold text-gray-900">2.5h</p>
+          <div class="ml-6">
+            <p class="text-lg font-medium text-gray-600">Tiempo Promedio</p>
+            <p class="text-4xl font-bold text-gray-900">2.5h</p>
           </div>
         </div>
       </div>
-      
-      <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+
+      <div class="bg-white rounded-xl shadow-lg p-8 border border-gray-200">
         <div class="flex items-center">
-          <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
-            <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+          <div class="w-16 h-16 bg-orange-100 rounded-lg flex items-center justify-center">
+            <svg class="w-8 h-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1">
+              </path>
             </svg>
           </div>
-          <div class="ml-4">
-            <p class="text-sm font-medium text-gray-600">Ingresos Hoy</p>
-            <p class="text-2xl font-bold text-gray-900">S./ 1,250</p>
+          <div class="ml-6">
+            <p class="text-lg font-medium text-gray-600">Ingresos Hoy</p>
+            <p class="text-4xl font-bold text-gray-900">S./ 1,250</p>
           </div>
         </div>
       </div>
@@ -76,37 +83,35 @@
   </div>
 
   <!-- Playas Grid -->
-  <div class="max-w-7xl mx-auto px-6 pb-8">
+  <div class="w-full px-6 lg:px-12 pb-12">
     <!-- Loading State -->
-    <div *ngIf="!playas || playas.length === 0" class="text-center py-16">
-      <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-500 mx-auto mb-4"></div>
-      <p class="text-gray-500">Cargando playas...</p>
+    <div *ngIf="isLoadingPlayas" class="text-center py-20">
+      <div class="animate-spin rounded-full h-20 w-20 border-b-4 border-blue-500 mx-auto mb-6"></div>
+      <p class="text-xl text-gray-500">Cargando playas...</p>
     </div>
 
     <!-- Playas Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" *ngIf="playas && playas.length > 0">
-      <div 
-        *ngFor="let playa of playas; let i = index" 
-        class="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 border border-gray-200 cursor-pointer group"
-        (click)="abrirPlaya(playa)"
-      >
+    <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8"
+      *ngIf="!isLoadingPlayas && playas && playas.length > 0">
+      <div *ngFor="let playa of playas; let i = index"
+        class="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 border border-gray-200 group">
         <!-- Image Section -->
         <div class="relative h-48 overflow-hidden rounded-t-xl">
-          <img
-            [src]="defaultPlayaImageUrl"
-            [alt]="playa.nombre"
-            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-          />
+          <img [src]="defaultPlayaImageUrl" [alt]="playa.nombre"
+            class="w-full h-full object-cover pointer-events-none" />
           <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
           <div class="absolute top-4 right-4">
-            <span class="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-semibold shadow-lg">
-              Activa
+            <span
+              [class]="playa.estado === 'abierto' ? 'bg-green-500 text-white px-3 py-1 rounded-full text-sm font-semibold shadow-lg' : 'bg-red-500 text-white px-3 py-1 rounded-full text-sm font-semibold shadow-lg'">
+              {{ playa.estado === 'abierto' ? 'Abierta' : 'Cerrada' }}
             </span>
           </div>
           <div class="absolute bottom-4 left-4">
             <div class="flex items-center text-white">
               <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                <path
+                  d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                </path>
               </svg>
               <span class="text-sm font-medium">4.8</span>
             </div>
@@ -114,158 +119,234 @@
         </div>
 
         <!-- Content Section -->
-        <div class="p-6">
-          <div class="flex items-start justify-between mb-4">
-            <h3 class="text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
+        <div class="p-8">
+          <div class="flex items-start justify-between mb-6">
+            <h3 class="text-2xl lg:text-3xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
               {{ playa.nombre }}
             </h3>
-            <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+            <div
+              [class]="playa.estado === 'abierto' ? 'w-4 h-4 bg-green-500 rounded-full animate-pulse' : 'w-4 h-4 bg-red-500 rounded-full'">
+            </div>
+          </div>
+
+          <!-- Estado de la playa más notorio -->
+          <div class="mb-6">
+            <div
+              [class]="playa.estado === 'abierto' ? 'inline-flex items-center px-4 py-2 rounded-full text-lg font-semibold bg-green-100 text-green-800 border border-green-200' : 'inline-flex items-center px-4 py-2 rounded-full text-lg font-semibold bg-red-100 text-red-800 border border-red-200'">
+              <div
+                [class]="playa.estado === 'abierto' ? 'w-3 h-3 bg-green-500 rounded-full mr-3 animate-pulse' : 'w-3 h-3 bg-red-500 rounded-full mr-3'">
+              </div>
+              {{ playa.estado === 'abierto' ? 'PLAYA ABIERTA' : 'PLAYA CERRADA' }}
+            </div>
           </div>
 
           <!-- Info -->
-          <div class="space-y-3 mb-6">
+          <div class="space-y-4 mb-8">
             <div class="flex items-center text-gray-600">
-              <svg class="w-4 h-4 mr-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+              <svg class="w-6 h-6 mr-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
               </svg>
-              <span class="text-sm">{{ playa.direccion }}</span>
+              <span class="text-lg">{{ playa.direccion }}</span>
             </div>
-            
+
             <div class="flex items-center justify-between">
               <div class="flex items-center text-gray-600">
-                <svg class="w-4 h-4 mr-3 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                <svg class="w-6 h-6 mr-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1">
+                  </path>
                 </svg>
-                <span class="text-sm font-semibold text-green-600">S./ {{ playa.tarifaAuto }}</span>
+                <span class="text-lg font-semibold text-green-600">S./ {{ playa.tarifaAuto }}</span>
               </div>
-              <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">por hora</span>
+              <span class="text-base text-gray-500 bg-gray-100 px-3 py-1 rounded-full">por hora</span>
             </div>
           </div>
 
-          <!-- Stats Row -->
-          <div class="grid grid-cols-2 gap-4 mb-6">
-            <div class="text-center p-3 bg-blue-50 rounded-lg">
-              <p class="text-lg font-bold text-blue-600">24</p>
-              <p class="text-xs text-gray-600">Espacios</p>
-            </div>
-            <div class="text-center p-3 bg-green-50 rounded-lg">
-              <p class="text-lg font-bold text-green-600">18</p>
-              <p class="text-xs text-gray-600">Ocupados</p>
-            </div>
-          </div>
+          <!-- Action Buttons -->
+          <div class="space-y-4">
+            <button (click)="handlePlayaAction(playa); $event.stopPropagation()"
+              [class]="getPlayaButtonClass(playa) + ' text-xl py-4'">
+              <span class="flex items-center justify-center">
+                <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    [attr.d]="getPlayaButtonIcon(playa)"></path>
+                </svg>
+                {{ getPlayaButtonText(playa) }}
+              </span>
+            </button>
 
-          <!-- Action Button -->
-          <button
-            (click)="abrirPlaya(playa); $event.stopPropagation()"
-            class="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-semibold py-3 px-4 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
-          >
-            <span class="flex items-center justify-center">
-              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-              </svg>
-              Iniciar Playa
-            </span>
-          </button>
+            <!-- Edit Button - Solo para Admin -->
+            <button *ngIf="isAdmin()" (click)="openEditPlayaModal(playa); $event.stopPropagation()"
+              class="w-full bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-4 px-6 rounded-lg transition-all duration-300 text-xl">
+              <span class="flex items-center justify-center">
+                <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+                  </path>
+                </svg>
+                Editar
+              </span>
+            </button>
+
+            <!-- Delete Button - Solo para Admin -->
+            <button *ngIf="isAdmin()" (click)="openDeletePlayaModal(playa); $event.stopPropagation()"
+              class="w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-4 px-6 rounded-lg transition-all duration-300 text-xl">
+              <span class="flex items-center justify-center">
+                <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                  </path>
+                </svg>
+                Eliminar
+              </span>
+            </button>
+          </div>
         </div>
       </div>
     </div>
 
     <!-- Empty State -->
-    <div *ngIf="playas && playas.length === 0" class="text-center py-16">
-      <div class="w-24 h-24 bg-gray-100 rounded-full mx-auto mb-6 flex items-center justify-center">
-        <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+    <div *ngIf="!isLoadingPlayas && playas && playas.length === 0" class="text-center py-20">
+      <div class="w-32 h-32 bg-gray-100 rounded-full mx-auto mb-8 flex items-center justify-center">
+        <svg class="w-16 h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10">
+          </path>
         </svg>
       </div>
-      <h3 class="text-xl font-semibold text-gray-900 mb-2">No hay playas disponibles</h3>
-      <p class="text-gray-600">Contacta al administrador para configurar las playas</p>
+      <h3 class="text-3xl font-semibold text-gray-900 mb-4">
+        {{ currentUser?.tipo === 'empleado' ? 'No tienes playas asignadas' : 'No hay playas disponibles' }}
+      </h3>
+      <p class="text-xl text-gray-600">
+        {{ currentUser?.tipo === 'empleado' ? 'Contacta al administrador para que te asigne playas' : 'Crea tu primera
+        playa para comenzar' }}
+      </p>
     </div>
   </div>
-<!-- Moda
-l para Crear Playa -->
-<div *ngIf="showPlayaModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-  <div class="bg-white rounded-xl shadow-2xl max-w-md w-full mx-4">
-    <div class="p-6">
-      <div class="flex justify-between items-center mb-6">
-        <h3 class="text-lg font-semibold text-gray-900">Nueva Playa</h3>
-        <button 
-          (click)="closePlayaModal()"
-          class="text-gray-400 hover:text-gray-600"
-        >
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-          </svg>
-        </button>
-      </div>
-
-      <form [formGroup]="playaForm" (ngSubmit)="createPlaya()">
-        <!-- Nombre de la Playa -->
-        <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700 mb-2">Nombre de la Playa</label>
-          <input 
-            type="text" 
-            formControlName="nombre"
-            class="input-modern"
-            placeholder="Ej: Playa Central"
-          >
+  <!-- Modal para Eliminar Playa -->
+  <div *ngIf="showDeleteModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white rounded-xl shadow-2xl max-w-md w-full mx-4">
+      <div class="p-6">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-lg font-semibold text-red-600">Eliminar Playa</h3>
+          <button (click)="closeDeleteModal()" class="text-gray-400 hover:text-gray-600">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
         </div>
 
-        <!-- Dirección -->
-        <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700 mb-2">Dirección</label>
-          <input 
-            type="text" 
-            formControlName="direccion"
-            class="input-modern"
-            placeholder="Ej: Av. Principal 123"
-          >
-        </div>
-
-        <!-- Tarifa Auto -->
-        <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700 mb-2">Tarifa por Hora - Auto (S./)</label>
-          <input 
-            type="number" 
-            formControlName="tarifaAuto"
-            class="input-modern"
-            placeholder="Ej: 5.00"
-            step="0.01"
-            min="0"
-          >
-        </div>
-
-        <!-- Tarifa Moto -->
         <div class="mb-6">
-          <label class="block text-sm font-medium text-gray-700 mb-2">Tarifa por Hora - Moto (S./)</label>
-          <input 
-            type="number" 
-            formControlName="tarifaMoto"
-            class="input-modern"
-            placeholder="Ej: 3.00"
-            step="0.01"
-            min="0"
-          >
+          <div class="w-16 h-16 bg-red-100 rounded-full mx-auto mb-4 flex items-center justify-center">
+            <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z">
+              </path>
+            </svg>
+          </div>
+          <h4 class="text-xl font-bold text-gray-900 text-center mb-2">¿Estás seguro?</h4>
+          <p class="text-gray-600 text-center mb-4">
+            Esta acción eliminará permanentemente la playa <strong>"{{ playaToDelete?.nombre }}"</strong> y todos sus
+            datos asociados.
+          </p>
+          <p class="text-sm text-gray-500 text-center mb-4">
+            Para confirmar, escribe el nombre de la playa:
+          </p>
+          <input type="text" [(ngModel)]="deleteConfirmationText"
+            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
+            placeholder="Nombre de la playa">
         </div>
 
         <!-- Botones -->
         <div class="flex justify-end space-x-3">
-          <button 
-            type="button"
-            (click)="closePlayaModal()"
-            class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
-          >
+          <button type="button" (click)="closeDeleteModal()"
+            class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors">
             Cancelar
           </button>
-          <button 
-            type="submit"
-            [disabled]="!playaForm.valid || isLoading"
-            class="btn-primary-modern"
-          >
-            {{ isLoading ? 'Creando...' : 'Crear Playa' }}
+          <button (click)="confirmDeletePlaya()"
+            [disabled]="deleteConfirmationText !== playaToDelete?.nombre || isDeletingPlaya"
+            class="px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 disabled:bg-gray-300 disabled:cursor-not-allowed rounded-lg transition-colors">
+            {{ isDeletingPlaya ? 'Eliminando...' : 'Eliminar Playa' }}
           </button>
         </div>
-      </form>
+      </div>
     </div>
   </div>
-</div>
+
+  <!-- Modal para Crear/Editar Playa -->
+  <div *ngIf="showPlayaModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white rounded-xl shadow-2xl max-w-md w-full mx-4">
+      <div class="p-6">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-lg font-semibold text-gray-900">{{ editingPlaya ? 'Editar Playa' : 'Nueva Playa' }}</h3>
+          <button (click)="closePlayaModal()" class="text-gray-400 hover:text-gray-600">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+
+        <form [formGroup]="playaForm" (ngSubmit)="createPlaya()">
+          <!-- Nombre de la Playa -->
+          <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700 mb-2">
+              Nombre de la Playa <span class="text-red-500">*</span>
+            </label>
+            <input type="text" formControlName="nombre"
+              [class]="isFieldInvalid('nombre') ? 'input-modern border-red-500 focus:ring-red-500 focus:border-red-500' : 'input-modern'"
+              placeholder="Ej: Playa Central">
+            <div *ngIf="isFieldInvalid('nombre')" class="mt-1 text-sm text-red-600">
+              El nombre de la playa es obligatorio
+            </div>
+          </div>
+
+          <!-- Dirección -->
+          <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Dirección</label>
+            <input type="text" formControlName="direccion" class="input-modern" placeholder="Ej: Av. Principal 123">
+          </div>
+
+          <!-- Tarifa Auto -->
+          <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700 mb-2">
+              Tarifa por Hora - Auto (S./) <span class="text-red-500">*</span>
+            </label>
+            <input type="number" formControlName="tarifaAuto"
+              [class]="isFieldInvalid('tarifaAuto') ? 'input-modern border-red-500 focus:ring-red-500 focus:border-red-500' : 'input-modern'"
+              placeholder="Ej: 5.00" step="0.01" min="0">
+            <div *ngIf="isFieldInvalid('tarifaAuto')" class="mt-1 text-sm text-red-600">
+              La tarifa para autos es obligatoria y debe ser mayor a 0
+            </div>
+          </div>
+
+          <!-- Tarifa Moto -->
+          <div class="mb-6">
+            <label class="block text-sm font-medium text-gray-700 mb-2">
+              Tarifa por Hora - Moto (S./) <span class="text-red-500">*</span>
+            </label>
+            <input type="number" formControlName="tarifaMoto"
+              [class]="isFieldInvalid('tarifaMoto') ? 'input-modern border-red-500 focus:ring-red-500 focus:border-red-500' : 'input-modern'"
+              placeholder="Ej: 3.00" step="0.01" min="0">
+            <div *ngIf="isFieldInvalid('tarifaMoto')" class="mt-1 text-sm text-red-600">
+              La tarifa para motos es obligatoria y debe ser mayor a 0
+            </div>
+          </div>
+
+          <!-- Botones -->
+          <div class="flex justify-end space-x-3">
+            <button type="button" (click)="closePlayaModal()"
+              class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors">
+              Cancelar
+            </button>
+            <button type="submit" [disabled]="!playaForm.valid || isLoading" class="btn-primary-modern">
+              {{ isLoading ? (editingPlaya ? 'Actualizando...' : 'Creando...') : (editingPlaya ? 'Actualizar Playa' :
+              'Crear Playa') }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>

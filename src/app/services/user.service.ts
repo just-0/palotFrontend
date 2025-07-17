@@ -7,7 +7,6 @@ export interface User {
   id: string | number;
   nombre: string;
   tipo: 'admin' | 'empleado';
-  numDias?: number;
   playas: Array<{
     id_playa: number;
     nombre: string;
@@ -18,14 +17,12 @@ export interface CreateUserRequest {
   nombre: string;
   password: string;
   tipo: 'admin' | 'empleado';
-  numDias?: number;
   playasAsignadas?: number[];
 }
 
 export interface UpdateUserRequest {
   nombre?: string;
   password?: string;
-  numDias?: number;
   playasAsignadas?: number[];
   tipo: 'admin' | 'empleado';
 }
@@ -47,7 +44,7 @@ export class UserService {
   }
 
   updateUser(id: string | number, userData: UpdateUserRequest): Observable<{ success: boolean; message: string; data: any }> {
-    return this.http.put<{ success: boolean; message: string; data: any }>(`${this.apiUrl}/${id}`, userData);
+    return this.http.put<{ success: boolean; message: string; data: any }>(`${this.apiUrl}/${id}/${userData.tipo}`, userData);
   }
 
   deleteUser(id: string | number, tipo: 'admin' | 'empleado'): Observable<{ success: boolean; message: string }> {

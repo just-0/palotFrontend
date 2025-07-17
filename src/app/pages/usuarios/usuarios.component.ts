@@ -31,9 +31,8 @@ export class UsuariosComponent implements OnInit {
   ) {
     this.userForm = this.fb.group({
       nombre: ['', Validators.required],
-      password: [''],
-      tipo: ['', Validators.required],
-      numDias: [0],
+      password: ['', Validators.required],
+      tipo: ['empleado', Validators.required], // Por defecto empleado
       playasAsignadas: [[]]
     });
   }
@@ -58,24 +57,27 @@ export class UsuariosComponent implements OnInit {
   }
 
   loadPlayas() {
-    this.http.get<Playa[]>(`${environment.apiBaseUrl}/showPlayas`)
+    this.http.get<Playa[]>(`${environment.apiBaseUrl}/allPlayas`)
       .subscribe({
         next: (playas) => {
           this.availablePlayas = playas;
         },
         error: (error) => {
           console.error('Error loading playas:', error);
+          this.availablePlayas = []; // Asegurar que esté vacío en caso de error
         }
       });
   }
 
   openCreateUserModal() {
     this.editingUser = null;
-    this.selectedPlayas = [];
+    // Por defecto, marcar todas las playas para empleados
+    this.selectedPlayas = this.availablePlayas.map(p => p.id_playa);
     this.userForm.reset();
     this.userForm.patchValue({
-      numDias: 0,
-      playasAsignadas: []
+      tipo: 'empleado', // Por defecto empleado
+      password: '', // Requerida para nuevos usuarios
+      playasAsignadas: this.selectedPlayas
     });
     this.showUserModal = true;
   }
@@ -88,9 +90,12 @@ export class UsuariosComponent implements OnInit {
       nombre: user.nombre,
       password: '', // No mostrar contraseña actual
       tipo: user.tipo,
-      numDias: user.numDias || 0,
       playasAsignadas: this.selectedPlayas
     });
+    
+    // Para edición, la contraseña no es requerida
+    this.userForm.get('password')?.clearValidators();
+    this.userForm.get('password')?.updateValueAndValidity();
     
     this.showUserModal = true;
   }
@@ -100,6 +105,12 @@ export class UsuariosComponent implements OnInit {
     this.editingUser = null;
     this.selectedPlayas = [];
     this.userForm.reset();
+    // Restablecer validadores para nuevos usuarios
+    this.userForm.get('password')?.setValidators([Validators.required]);
+    this.userForm.get('password')?.updateValueAndValidity();
+    this.userForm.patchValue({
+      tipo: 'empleado' // Por defecto empleado
+    });
   }
 
   onPlayaSelectionChange(event: any) {
@@ -143,19 +154,53 @@ export class UsuariosComponent implements OnInit {
     });
   }
 
+  // Verificar si un campo es inválido y ha sido tocado
+  isFieldInvalid(fieldName: string): boolean {
+    const field = this.userForm.get(fieldName);
+    return !!(field && field.invalid && (field.dirty || field.touched));
+  }
+
+  // Modal para eliminar usuario
+  showDeleteUserModal = false;
+  userToDelete: User | null = null;
+  deleteUserConfirmationText = '';
+  isDeletingUser = false;
+
   deleteUser(user: User) {
-    if (confirm(`¿Estás seguro de que quieres eliminar al usuario ${user.nombre}?`)) {
-      this.userService.deleteUser(user.id, user.tipo)
-        .subscribe({
-          next: (response) => {
-            if (response.success) {
-              this.loadUsers();
-            }
-          },
-          error: (error) => {
-            console.error('Error deleting user:', error);
-          }
-        });
+    this.userToDelete = user;
+    this.deleteUserConfirmationText = '';
+    this.showDeleteUserModal = true;
+  }
+
+  closeDeleteUserModal() {
+    this.showDeleteUserModal = false;
+    this.userToDelete = null;
+    this.deleteUserConfirmationText = '';
+  }
+
+  confirmDeleteUser() {
+    if (!this.userToDelete || this.deleteUserConfirmationText !== this.userToDelete.nombre) {
+      return;
     }
+
+    this.isDeletingUser = true;
+    
+    this.userService.deleteUser(this.userToDelete.id, this.userToDelete.tipo)
+      .subscribe({
+        next: (response) => {
+          if (response.success) {
+            this.loadUsers();
+            this.closeDeleteUserModal();
+          } else {
+            alert(response.message || 'Error al eliminar usuario');
+          }
+          this.isDeletingUser = false;
+        },
+        error: (error) => {
+          console.error('Error deleting user:', error);
+          alert('Error al eliminar usuario');
+          this.isDeletingUser = false;
+        }
+      });
   }
 }

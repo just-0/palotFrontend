@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { ReactiveFormsModule } from '@angular/forms';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { provideHttpClient, withInterceptorsFromDi, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -14,6 +14,7 @@ import { DatePipe } from '@angular/common';
 import { ReportesComponent } from './pages/reportes/reportes.component';
 import { ConfiguracionComponent } from './pages/configuracion/configuracion.component';
 import { UsuariosComponent } from './pages/usuarios/usuarios.component';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -30,12 +31,18 @@ import { UsuariosComponent } from './pages/usuarios/usuarios.component';
     AuthModule,
     PlayasModule,
     ReactiveFormsModule,
+    FormsModule,
     DatePipe,
   ],
   providers: [
     provideAnimationsAsync(), 
     DatePipe,
-    provideHttpClient(withInterceptorsFromDi())
+    provideHttpClient(withInterceptorsFromDi()),
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
   ],
   bootstrap: [AppComponent],
 })

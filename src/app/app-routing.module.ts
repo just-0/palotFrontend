@@ -5,6 +5,7 @@ import { AuthComponent } from './auth/auth.component';
 import { PlayasComponent } from './pages/playas/playas.component';
 import { ShowPlayasComponent } from './pages/playas/show-playas/show-playas.component';
 import { guardLoginGuard } from './guards/guard-login.guard';
+import { adminGuard } from './guards/admin.guard';
 import { PlayaComponent } from './pages/playas/playa/playa.component';
 import { ReportesComponent } from './pages/reportes/reportes.component';
 import { ConfiguracionComponent } from './pages/configuracion/configuracion.component';
@@ -25,22 +26,22 @@ const routes: Routes = [
     component: ShowPlayasComponent, 
     canActivate: [guardLoginGuard] 
   },
-  // Dashboard con estadísticas y reportes
+  // Dashboard con estadísticas y reportes - Solo para Admin
   { 
     path: 'dashboard', 
     component: ReportesComponent, 
-    canActivate: [guardLoginGuard] 
+    canActivate: [guardLoginGuard, adminGuard] 
   },
   { 
     path: 'configuracion', 
     component: ConfiguracionComponent, 
-    canActivate: [guardLoginGuard] 
+    canActivate: [guardLoginGuard, adminGuard] 
   },
   // Usuarios - Solo para Admin
   { 
     path: 'usuarios', 
     component: UsuariosComponent, 
-    canActivate: [guardLoginGuard] 
+    canActivate: [guardLoginGuard, adminGuard] 
   },
   // Playa individual (sin navbar) - usando ruta diferente
   { 
