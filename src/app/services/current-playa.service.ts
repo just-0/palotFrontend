@@ -16,14 +16,16 @@ export class CurrentPlayaService implements OnInit{
   private baseURLCAMERA = environment.cameraBaseUrl;
   CurrentPlaya: any = [];
   
-  constructor(private _httpClient: HttpClient) {}
-
-  ngOnInit(): void {
-    
+  constructor(private _httpClient: HttpClient) {
+    // Cargar la playa desde localStorage al inicializar el servicio
     const storedPlaya = localStorage.getItem('currentPlaya');
     if (storedPlaya) {
       this.CurrentPlaya = JSON.parse(storedPlaya);
     }
+  }
+
+  ngOnInit(): void {
+    // Este método ya no es necesario, pero lo mantenemos por compatibilidad
   }
 
   public setCurrentPlaya(selectedPlaya: any): void {
@@ -40,6 +42,11 @@ export class CurrentPlayaService implements OnInit{
     }
     //console.log('Current Playa:', this.CurrentPlaya);
     return this.CurrentPlaya;
+  }
+
+  public clearCurrentPlaya(): void {
+    this.CurrentPlaya = null;
+    localStorage.removeItem('currentPlaya');
   }
   public getPlacasMotos(): Observable<any[]>{
     const query = `${this.baseURL}/getPlacasMotos?idPlaya=${this.CurrentPlaya.id_playa}`;

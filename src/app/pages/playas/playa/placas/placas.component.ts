@@ -1,10 +1,10 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { CurrentPlayaService } from '../../../services/current-playa.service';
-import { Auto, Moto } from '../../../services/auto.model';
+import { CurrentPlayaService } from '../../../../services/current-playa.service';
+import { Auto, Moto } from '../../../../services/auto.model';
 import { DatePipe } from '@angular/common';
 import { jsPDFclient } from './utils/jsTicketPDF';
 import { FormBuilder } from '@angular/forms';
-import { environment } from '../../../../environments/environment';
+import { environment } from '../../../../../environments/environment';
 import * as xml2js from 'xml2js';
 @Component({
   selector: 'app-placas',

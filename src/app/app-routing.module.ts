@@ -2,10 +2,12 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './auth/login/login.component';
 import { AuthComponent } from './auth/auth.component';
-import { PlayasComponent } from './playas/playas.component';
-import { ShowPlayasComponent } from './playas/show-playas/show-playas.component';
+import { PlayasComponent } from './pages/playas/playas.component';
+import { ShowPlayasComponent } from './pages/playas/show-playas/show-playas.component';
 import { guardLoginGuard } from './guards/guard-login.guard';
-import { PlayaComponent } from './playas/playa/playa.component';
+import { PlayaComponent } from './pages/playas/playa/playa.component';
+import { ReportesComponent } from './pages/reportes/reportes.component';
+import { ConfiguracionComponent } from './pages/configuracion/configuracion.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
@@ -16,14 +18,28 @@ const routes: Routes = [
       { path: 'login', component: LoginComponent }
     ]
   },
-  {
-    path: 'playas',
-    component: PlayasComponent,
-    canActivate: [guardLoginGuard],
-    children: [
-      { path: 'showPlayas', component: ShowPlayasComponent },
-      { path: ':Playa', component: PlayaComponent } // Esta ruta también está protegida
-    ]
+  // Lista de playas
+  { 
+    path: 'playas', 
+    component: ShowPlayasComponent, 
+    canActivate: [guardLoginGuard] 
+  },
+  // Dashboard con estadísticas y reportes
+  { 
+    path: 'dashboard', 
+    component: ReportesComponent, 
+    canActivate: [guardLoginGuard] 
+  },
+  { 
+    path: 'configuracion', 
+    component: ConfiguracionComponent, 
+    canActivate: [guardLoginGuard] 
+  },
+  // Playa individual (sin navbar) - usando ruta diferente
+  { 
+    path: 'playa/:Playa', 
+    component: PlayaComponent, 
+    canActivate: [guardLoginGuard] 
   }
 ];
 @NgModule({

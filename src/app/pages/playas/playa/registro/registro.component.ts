@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { OnInit } from '@angular/core';
 import { DatePipe } from '@angular/common';
-import { CurrentPlayaService } from '../../../services/current-playa.service';
+import { CurrentPlayaService } from '../../../../services/current-playa.service';
 @Component({
     selector: 'app-registro',
     templateUrl: './registro.component.html',

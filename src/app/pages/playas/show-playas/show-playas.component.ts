@@ -1,9 +1,9 @@
 
 import { Component, OnInit, inject } from '@angular/core';
-import { ShowPlayasService } from '../../services/show-playas.service';
+import { ShowPlayasService } from '../../../services/show-playas.service';
 import { Router } from '@angular/router';
-import { CurrentPlayaService } from '../../services/current-playa.service';
-import { environment } from '../../../environments/environment';
+import { CurrentPlayaService } from '../../../services/current-playa.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
     selector: 'app-show-playas',
@@ -31,10 +31,22 @@ export class ShowPlayasComponent implements OnInit {
   }
 
 
-  abrirPlaya( selectedPlaya: any){
-    console.log(selectedPlaya);
+  abrirPlaya(selectedPlaya: any){
+    console.log('=== ABRIENDO PLAYA ===');
+    console.log('Playa seleccionada:', selectedPlaya);
+    console.log('Nombre de la playa:', selectedPlaya.nombre);
+    
+    // Guardar la playa actual
     this.currentPlayaService.setCurrentPlaya(selectedPlaya);
-    //this.router.navigate(['/playas/playa']);
+    
+    // Verificar que se guardó correctamente
+    const playaGuardada = this.currentPlayaService.getCurrentPlaya();
+    console.log('Playa guardada en servicio:', playaGuardada);
+    
+    // Navegar a la playa
+    const ruta = ['/playa', selectedPlaya.nombre];
+    console.log('Navegando a:', ruta);
+    this.router.navigate(ruta);
   }
 }
 

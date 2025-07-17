@@ -16,7 +16,10 @@ export class LoginService {
     private _httpClient: HttpClient,
     private cookieService: CookieService
   ) {
-    this.loggedIn = this.cookieService.get('isLoggedIn') === 'true';
+    // Verificar si hay una cookie válida
+    const cookieValue = this.cookieService.get('isLoggedIn');
+    this.loggedIn = cookieValue === 'true';
+    console.log('LoginService -> Cookie value:', cookieValue, 'LoggedIn:', this.loggedIn);
   }
   login() {
     this.loggedIn = true;
@@ -37,7 +40,14 @@ export class LoginService {
   }
 
   isLoggedIn() {
+    console.log('LoginService -> isLoggedIn() called, returning:', this.loggedIn);
     return this.loggedIn;
+  }
+
+  logout() {
+    console.log('LoginService -> Logging out user');
+    this.loggedIn = false;
+    this.cookieService.delete('isLoggedIn');
   }
   public checkLogin(username: string, password: string): Observable<boolean> {
     const data = {

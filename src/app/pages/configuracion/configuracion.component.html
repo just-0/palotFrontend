@@ -1,0 +1,255 @@
+<div class="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+
+
+  <!-- Configuration Sections -->
+  <div class="max-w-7xl mx-auto px-6 py-8">
+    <div class="flex justify-between items-center mb-6">
+      <h2 class="text-lg font-semibold text-gray-900">Configuración del Sistema</h2>
+      <button class="btn-primary-modern">
+        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+        </svg>
+        Guardar Cambios
+      </button>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      
+      <!-- Sidebar Navigation -->
+      <div class="lg:col-span-1">
+        <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-200 sticky top-8">
+          <h3 class="text-lg font-semibold text-gray-900 mb-4">Configuraciones</h3>
+          <nav class="space-y-2">
+            <button 
+              *ngFor="let section of configSections; let i = index"
+              (click)="activeSection = i"
+              [class]="activeSection === i 
+                ? 'bg-blue-50 text-blue-700 border-blue-200' 
+                : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'"
+              class="w-full text-left px-4 py-3 rounded-lg border transition-colors flex items-center space-x-3"
+            >
+              <svg class="w-5 h-5" [innerHTML]="section.icon"></svg>
+              <span class="font-medium">{{ section.name }}</span>
+            </button>
+          </nav>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="lg:col-span-2 space-y-8">
+        
+        <!-- Apariencia -->
+        <div *ngIf="activeSection === 0" class="bg-white rounded-xl shadow-lg p-6 border border-gray-200">
+          <h3 class="text-xl font-bold text-gray-900 mb-6 flex items-center">
+            <svg class="w-6 h-6 mr-3 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM21 5a2 2 0 00-2-2h-4a2 2 0 00-2 2v12a4 4 0 004 4h4a2 2 0 002-2V5z"></path>
+            </svg>
+            Apariencia
+          </h3>
+          
+          <div class="space-y-6">
+            <!-- Tema -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-3">Tema del Sistema</label>
+              <div class="grid grid-cols-2 gap-4">
+                <div class="relative">
+                  <input type="radio" id="light" name="theme" value="light" class="sr-only" checked>
+                  <label for="light" class="flex items-center p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-blue-300 transition-colors">
+                    <div class="w-8 h-8 bg-white border border-gray-300 rounded mr-3"></div>
+                    <div>
+                      <p class="font-medium text-gray-900">Claro</p>
+                      <p class="text-sm text-gray-500">Tema predeterminado</p>
+                    </div>
+                  </label>
+                </div>
+                
+                <div class="relative">
+                  <input type="radio" id="dark" name="theme" value="dark" class="sr-only">
+                  <label for="dark" class="flex items-center p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-blue-300 transition-colors">
+                    <div class="w-8 h-8 bg-gray-800 border border-gray-600 rounded mr-3"></div>
+                    <div>
+                      <p class="font-medium text-gray-900">Oscuro</p>
+                      <p class="text-sm text-gray-500">Próximamente</p>
+                    </div>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Logo del Sistema -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-3">Logo del Sistema</label>
+              <div class="flex items-center space-x-4">
+                <div class="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+                  <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                  </svg>
+                </div>
+                <div>
+                  <button class="btn-secondary-modern">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                    </svg>
+                    Cambiar Logo
+                  </button>
+                  <p class="text-sm text-gray-500 mt-1">PNG, JPG hasta 2MB</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sistema -->
+        <div *ngIf="activeSection === 1" class="bg-white rounded-xl shadow-lg p-6 border border-gray-200">
+          <h3 class="text-xl font-bold text-gray-900 mb-6 flex items-center">
+            <svg class="w-6 h-6 mr-3 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"></path>
+            </svg>
+            Configuración del Sistema
+          </h3>
+          
+          <div class="space-y-6">
+            <!-- Nombre del Sistema -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Nombre del Sistema</label>
+              <input 
+                type="text" 
+                value="Playas System" 
+                class="input-modern"
+                placeholder="Ingresa el nombre del sistema"
+              >
+            </div>
+
+            <!-- Moneda -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Moneda</label>
+              <select class="input-modern">
+                <option value="PEN">Soles Peruanos (S./)</option>
+                <option value="USD">Dólares Americanos ($)</option>
+                <option value="EUR">Euros (€)</option>
+              </select>
+            </div>
+
+            <!-- Zona Horaria -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Zona Horaria</label>
+              <select class="input-modern">
+                <option value="America/Lima">Lima, Perú (UTC-5)</option>
+                <option value="America/New_York">Nueva York (UTC-5)</option>
+                <option value="Europe/Madrid">Madrid (UTC+1)</option>
+              </select>
+            </div>
+
+            <!-- Auto-backup -->
+            <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+              <div>
+                <h4 class="font-medium text-gray-900">Respaldo Automático</h4>
+                <p class="text-sm text-gray-500">Crear respaldos automáticos diarios</p>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" class="sr-only peer" checked>
+                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Notificaciones -->
+        <div *ngIf="activeSection === 2" class="bg-white rounded-xl shadow-lg p-6 border border-gray-200">
+          <h3 class="text-xl font-bold text-gray-900 mb-6 flex items-center">
+            <svg class="w-6 h-6 mr-3 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5v-5zM11 17H6l5 5v-5zM12 3v9m0 0l3-3m-3 3l-3-3"></path>
+            </svg>
+            Notificaciones
+          </h3>
+          
+          <div class="space-y-4">
+            <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+              <div>
+                <h4 class="font-medium text-gray-900">Notificaciones de Entrada</h4>
+                <p class="text-sm text-gray-500">Alertas cuando un vehículo ingresa</p>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" class="sr-only peer" checked>
+                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+              </label>
+            </div>
+
+            <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+              <div>
+                <h4 class="font-medium text-gray-900">Notificaciones de Salida</h4>
+                <p class="text-sm text-gray-500">Alertas cuando un vehículo sale</p>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" class="sr-only peer" checked>
+                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+              </label>
+            </div>
+
+            <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+              <div>
+                <h4 class="font-medium text-gray-900">Reportes Diarios</h4>
+                <p class="text-sm text-gray-500">Resumen diario por email</p>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" class="sr-only peer">
+                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Seguridad -->
+        <div *ngIf="activeSection === 3" class="bg-white rounded-xl shadow-lg p-6 border border-gray-200">
+          <h3 class="text-xl font-bold text-gray-900 mb-6 flex items-center">
+            <svg class="w-6 h-6 mr-3 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+            </svg>
+            Seguridad
+          </h3>
+          
+          <div class="space-y-6">
+            <!-- Cambiar Contraseña -->
+            <div>
+              <h4 class="font-medium text-gray-900 mb-4">Cambiar Contraseña</h4>
+              <div class="space-y-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Contraseña Actual</label>
+                  <input type="password" class="input-modern" placeholder="Ingresa tu contraseña actual">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Nueva Contraseña</label>
+                  <input type="password" class="input-modern" placeholder="Ingresa tu nueva contraseña">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Confirmar Nueva Contraseña</label>
+                  <input type="password" class="input-modern" placeholder="Confirma tu nueva contraseña">
+                </div>
+                <button class="btn-primary-modern">
+                  Actualizar Contraseña
+                </button>
+              </div>
+            </div>
+
+            <!-- Sesiones Activas -->
+            <div class="border-t pt-6">
+              <h4 class="font-medium text-gray-900 mb-4">Sesiones Activas</h4>
+              <div class="space-y-3">
+                <div class="flex items-center justify-between p-4 bg-green-50 border border-green-200 rounded-lg">
+                  <div class="flex items-center space-x-3">
+                    <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                    <div>
+                      <p class="font-medium text-gray-900">Sesión Actual</p>
+                      <p class="text-sm text-gray-500">Chrome en Windows • IP: 192.168.1.100</p>
+                    </div>
+                  </div>
+                  <span class="text-sm text-green-600 font-medium">Activa</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
