@@ -6,7 +6,7 @@ import { AppRoutingModule } from '../../app-routing.module';
 import { PlayaComponent } from './playa/playa.component';
 import { RouterModule } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PlacasComponent } from './playa/placas/placas.component';
 import { DatePipe } from '@angular/common';
 import { RegistroComponent } from './playa/registro/registro.component';
@@ -29,6 +29,7 @@ import { RegistroComponent } from './playa/registro/registro.component';
     RouterModule,
     NgbModule,
     FormsModule,
+    ReactiveFormsModule,
     
   ]
 })

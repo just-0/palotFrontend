@@ -38,6 +38,18 @@
             </svg>
             Dashboard
           </a>
+          <!-- Usuarios - Solo para Admin -->
+          <a 
+            *ngIf="currentUser?.tipo === 'admin'"
+            routerLink="/usuarios" 
+            routerLinkActive="text-blue-600 border-b-2 border-blue-600" 
+            class="text-gray-700 hover:text-blue-600 transition-colors font-semibold pb-1 text-base"
+          >
+            <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
+            </svg>
+            Usuarios
+          </a>
           <a 
             routerLink="/configuracion" 
             routerLinkActive="text-blue-600 border-b-2 border-blue-600" 

@@ -12,6 +12,7 @@ import { LoginService } from './services/login.service';
 export class AppComponent implements OnInit {
   title = 'PaLotFrontend';
   showNavbar = false;
+  currentUser: any = null;
 
   constructor(private router: Router, private loginService: LoginService) {}
 
@@ -22,8 +23,14 @@ export class AppComponent implements OnInit {
       .subscribe((event) => {
         if (event instanceof NavigationEnd) {
           const url = event.url;
-          // Show navbar only on main routes
-          this.showNavbar = url === '/playas' || url.startsWith('/dashboard') || url.startsWith('/configuracion');
+          // Actualizar información del usuario actual
+          this.currentUser = this.loginService.getCurrentUser();
+          
+          // Show navbar only on main routes (incluir /usuarios para admin)
+          this.showNavbar = url === '/playas' || 
+                           url.startsWith('/dashboard') || 
+                           url.startsWith('/configuracion') ||
+                           url.startsWith('/usuarios');
         }
       });
   }

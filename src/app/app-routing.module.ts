@@ -8,6 +8,7 @@ import { guardLoginGuard } from './guards/guard-login.guard';
 import { PlayaComponent } from './pages/playas/playa/playa.component';
 import { ReportesComponent } from './pages/reportes/reportes.component';
 import { ConfiguracionComponent } from './pages/configuracion/configuracion.component';
+import { UsuariosComponent } from './pages/usuarios/usuarios.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
@@ -33,6 +34,12 @@ const routes: Routes = [
   { 
     path: 'configuracion', 
     component: ConfiguracionComponent, 
+    canActivate: [guardLoginGuard] 
+  },
+  // Usuarios - Solo para Admin
+  { 
+    path: 'usuarios', 
+    component: UsuariosComponent, 
     canActivate: [guardLoginGuard] 
   },
   // Playa individual (sin navbar) - usando ruta diferente

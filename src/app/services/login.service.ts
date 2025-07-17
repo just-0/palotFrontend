@@ -12,6 +12,8 @@ export class LoginService {
   private baseURL = `${environment.apiBaseUrl}/login`;
   private loggedIn = false;
 
+  private currentUser: any = null;
+
   constructor(
     private _httpClient: HttpClient,
     private cookieService: CookieService
@@ -19,6 +21,13 @@ export class LoginService {
     // Verificar si hay una cookie válida
     const cookieValue = this.cookieService.get('isLoggedIn');
     this.loggedIn = cookieValue === 'true';
+    
+    // Cargar información del usuario desde localStorage
+    const userData = localStorage.getItem('currentUser');
+    if (userData) {
+      this.currentUser = JSON.parse(userData);
+    }
+    
     console.log('LoginService -> Cookie value:', cookieValue, 'LoggedIn:', this.loggedIn);
   }
   login() {
@@ -47,16 +56,37 @@ export class LoginService {
   logout() {
     console.log('LoginService -> Logging out user');
     this.loggedIn = false;
+    this.currentUser = null;
     this.cookieService.delete('isLoggedIn');
+    localStorage.removeItem('currentUser');
+  }
+
+  getCurrentUser() {
+    return this.currentUser;
+  }
+
+  isAdmin(): boolean {
+    return this.currentUser?.tipo === 'admin';
+  }
+
+  isEmpleado(): boolean {
+    return this.currentUser?.tipo === 'empleado';
+  }
+
+  getUserPlayas() {
+    return this.currentUser?.playas || [];
   }
   public checkLogin(username: string, password: string): Observable<boolean> {
     const data = {
       username: username,
       password: password,
     };
-    return this._httpClient.post<{success: boolean}>(this.baseURL, data).pipe(
-      map((response: {success: boolean}) => {
-        if (response.success) {
+    return this._httpClient.post<{success: boolean, user?: any}>(this.baseURL, data).pipe(
+      map((response: {success: boolean, user?: any}) => {
+        if (response.success && response.user) {
+          // Guardar información del usuario
+          this.currentUser = response.user;
+          localStorage.setItem('currentUser', JSON.stringify(response.user));
           this.login();
         }
         return response.success;

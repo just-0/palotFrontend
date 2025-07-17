@@ -1,0 +1,51 @@
+/* Estilos específicos para el componente de usuarios */
+.btn-primary-modern {
+  @apply inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2;
+}
+
+.input-modern {
+  @apply w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200;
+}
+
+/* Animaciones para el modal */
+.modal-enter {
+  animation: modalEnter 0.3s ease-out;
+}
+
+@keyframes modalEnter {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Hover effects para las filas de la tabla */
+.table-row-hover {
+  @apply hover:bg-gray-50 transition-colors duration-150;
+}
+
+/* Estilos para los badges de estado */
+.status-badge {
+  @apply inline-flex px-2 py-1 text-xs font-semibold rounded-full;
+}
+
+.status-active {
+  @apply bg-green-100 text-green-800;
+}
+
+.status-inactive {
+  @apply bg-red-100 text-red-800;
+}
+
+/* Estilos para los tipos de usuario */
+.user-type-admin {
+  @apply bg-purple-100 text-purple-800;
+}
+
+.user-type-empleado {
+  @apply bg-blue-100 text-blue-800;
+}
