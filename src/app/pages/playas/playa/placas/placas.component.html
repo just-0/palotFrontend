@@ -62,38 +62,52 @@
                   <button type="button" (click)="printTicket(item, 2)" class="btn0 btn btn-primary">
                     <i class="fa-solid fa-car"></i>
                   </button>
+                  
+                  <!-- Botón de pago simple (siempre disponible) -->
                   <button type="button" (click)="printPago(item, 3)" class="btn0 btn btn-success">
                     <i class="fa-solid fa-money-bill-1-wave"></i>
                   </button>
-                  <button type="button" class="btn1 btn btn-dark">
-                    <i class="fa-solid fa-money-bill-1-wave"></i>BV Directa
-                  </button>
-                  <button type="button" class="btn1 btn btn-dark">
-                    <i class="fa-solid fa-money-bill-1-wave"></i>BV/FV Cliente
-                  </button>
+                  
+                  <!-- Botones adicionales solo si la playa requiere facturación -->
+                  <ng-container *ngIf="playa.facturacion">
+                    <button type="button" class="btn1 btn btn-warning" title="Boleta/Factura Directa">
+                      <i class="fa-solid fa-receipt"></i>BV Directa
+                    </button>
+                    <button type="button" class="btn1 btn btn-info" title="Boleta/Factura con Cliente">
+                      <i class="fa-solid fa-user-plus"></i>BV/FV Cliente
+                    </button>
+                  </ng-container>
                 </div>
               </div>
 
-              <!-- Estado 3 -->
+              <!-- Estado 3 - Vehículo pagado -->
               <div *ngIf="item.state === 3" class="estado-verde">
-                <button type="button" class="btn1 btn btn-dark">
-                  <i class="fa-solid fa-money-bill-1-wave"></i>BV Directa
-                </button>
-                <button type="button" class="btn1 btn btn-dark">
-                  <i class="fa-solid fa-money-bill-1-wave"></i>BV/FV Cliente
-                </button>
-
+                <ng-container *ngIf="playa.facturacion">
+                  <button type="button" class="btn1 btn btn-secondary" title="Generar Boleta/Factura Directa">
+                    <i class="fa-solid fa-receipt"></i>BV Directa
+                  </button>
+                  <button type="button" class="btn1 btn btn-secondary" title="Generar Boleta/Factura con Cliente">
+                    <i class="fa-solid fa-user-plus"></i>BV/FV Cliente
+                  </button>
+                </ng-container>
+                <span *ngIf="!playa.facturacion" class="text-success">
+                  <i class="fa-solid fa-check-circle"></i> Pagado
+                </span>
               </div>
 
-              <div *ngIf="item.state === 4" class="estado-rojo">
+              <div *ngIf="item.state === 4" class="estado-verde">
                 <div class="btn-group" role="group" aria-label="Basic example">
-
-                  <button type="button" class="btn1 btn btn-dark">
-                    <i class="fa-solid fa-money-bill-1-wave"></i>BV Directa
-                  </button>
-                  <button type="button" class="btn1 btn btn-dark">
-                    <i class="fa-solid fa-money-bill-1-wave"></i>BV/FV Cliente
-                  </button>
+                  <ng-container *ngIf="playa.facturacion">
+                    <button type="button" class="btn1 btn btn-secondary" title="Generar Boleta/Factura Directa">
+                      <i class="fa-solid fa-receipt"></i>BV Directa
+                    </button>
+                    <button type="button" class="btn1 btn btn-secondary" title="Generar Boleta/Factura con Cliente">
+                      <i class="fa-solid fa-user-plus"></i>BV/FV Cliente
+                    </button>
+                  </ng-container>
+                  <span *ngIf="!playa.facturacion" class="text-success">
+                    <i class="fa-solid fa-check-circle"></i> Pagado
+                  </span>
                 </div>
               </div>
 

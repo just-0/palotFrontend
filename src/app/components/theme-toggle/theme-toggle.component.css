@@ -1,0 +1,32 @@
+/* Estilos para el botón flotante de tema */
+.theme-toggle-button {
+  position: relative;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.theme-toggle-button:hover {
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  background-color: rgba(255, 255, 255, 0.95);
+}
+
+.dark .theme-toggle-button:hover {
+  background-color: rgba(31, 41, 55, 0.95);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* Animación de pulso sutil al hacer clic */
+.theme-toggle-button:active {
+  transform: scale(0.95);
+}
+
+/* Efecto de resplandor para el icono */
+.theme-toggle-button svg {
+  filter: drop-shadow(0 0 8px currentColor);
+}
+
+/* Animación de rotación suave */
+.theme-toggle-button:hover svg {
+  filter: drop-shadow(0 0 12px currentColor);
+}

@@ -106,14 +106,14 @@ export class jsPDFclient{
       if ("id_auto" in item) {
         const response = await this.toPromise(this._servicioApi.carroPagoTicketVenta(item, newState, fechaHora, this.totalHoras * tarifa));
         console.log('Carro pago correcto:', response);
-        numBoleta = response.boletaId;
+        numBoleta = response.documentId;
       } else {
         const response = await this.toPromise(this._servicioApi.motoPagoTicketVenta(item, newState, fechaHora, this.totalHoras * tarifa));
         console.log('Moto pago correcto:', response);
-        numBoleta = response.boletaId;
+        numBoleta = response.documentId;
       }
   
-      numBoleta = numBoleta.toString().padStart(5, '0');
+      numBoleta = numBoleta ? numBoleta.toString().padStart(5, '0') : '00000';
       console.log("despues", numBoleta);
   
     } catch (error) {

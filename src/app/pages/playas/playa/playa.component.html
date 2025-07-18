@@ -5,7 +5,8 @@
       <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
         <!-- Left Section -->
         <div class="flex items-center space-x-6">
-          <div class="w-16 h-16 lg:w-20 lg:h-20 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
+          <div
+            class="w-16 h-16 lg:w-20 lg:h-20 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
             <svg class="w-8 h-8 lg:w-10 lg:h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4">
@@ -13,7 +14,8 @@
             </svg>
           </div>
           <div>
-            <h1 class="text-3xl lg:text-5xl xl:text-6xl font-bold text-gray-900">{{ Playa?.nombre || 'Cargando...' }}</h1>
+            <h1 class="text-3xl lg:text-5xl xl:text-6xl font-bold text-gray-900">{{ Playa?.nombre || 'Cargando...' }}
+            </h1>
             <p class="text-lg lg:text-xl text-gray-600">Panel de Control</p>
           </div>
         </div>
@@ -42,7 +44,9 @@
               class="flex items-center space-x-3 px-6 py-4 bg-orange-500 hover:bg-orange-600 text-white rounded-lg transition-colors duration-200 shadow-lg hover:shadow-xl text-lg lg:text-xl"
               title="Cerrar playa">
               <svg class="w-6 h-6 lg:w-8 lg:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
+                </path>
               </svg>
               <span>Cerrar Playa</span>
             </button>
@@ -73,7 +77,8 @@
           class="whitespace-nowrap py-6 px-8 border-b-4 font-medium text-xl lg:text-2xl transition-all duration-200 rounded-t-lg flex items-center justify-center lg:justify-start space-x-4 min-w-0 flex-shrink-0">
           <svg class="w-6 h-6 lg:w-8 lg:h-8 flex-shrink-0" [innerHTML]="tab.icon"></svg>
           <span class="truncate">{{ tab.name }}</span>
-          <span *ngIf="tab.badge" class="ml-3 bg-red-100 text-red-800 text-sm font-medium px-3 py-1 rounded-full flex-shrink-0">
+          <span *ngIf="tab.badge"
+            class="ml-3 bg-red-100 text-red-800 text-sm font-medium px-3 py-1 rounded-full flex-shrink-0">
             {{ tab.badge }}
           </span>
         </button>
@@ -94,7 +99,8 @@
               <div class="p-8">
                 <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-8 gap-4">
                   <h2 class="text-2xl lg:text-4xl font-bold text-gray-900 flex items-center">
-                    <svg class="w-8 h-8 lg:w-12 lg:h-12 mr-4 text-blue-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-8 h-8 lg:w-12 lg:h-12 mr-4 text-blue-500 flex-shrink-0" fill="none"
+                      stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
@@ -109,14 +115,12 @@
                 <!-- Search Bar -->
                 <div class="mb-8">
                   <div class="relative">
-                    <input 
-                      type="text" 
-                      placeholder="Buscar registros por placa, cliente, etc..."
-                      [(ngModel)]="filtro"
-                      class="w-full pl-16 pr-6 py-4 lg:py-6 border-2 border-gray-300 rounded-lg focus:ring-4 focus:ring-blue-500 focus:border-blue-500 text-lg lg:text-xl"
-                    >
-                    <svg class="absolute left-5 top-1/2 transform -translate-y-1/2 w-6 h-6 lg:w-8 lg:h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    <input type="text" placeholder="Buscar registros por placa, cliente, etc..." [(ngModel)]="filtro"
+                      class="w-full pl-16 pr-6 py-4 lg:py-6 border-2 border-gray-300 rounded-lg focus:ring-4 focus:ring-blue-500 focus:border-blue-500 text-lg lg:text-xl">
+                    <svg class="absolute left-5 top-1/2 transform -translate-y-1/2 w-6 h-6 lg:w-8 lg:h-8 text-gray-400"
+                      fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                     </svg>
                   </div>
                 </div>
@@ -126,13 +130,27 @@
                   <table class="min-w-full divide-y-2 divide-gray-200">
                     <thead class="bg-gray-50">
                       <tr>
-                        <th class="px-6 py-6 text-left text-lg font-bold text-gray-700 uppercase tracking-wider whitespace-nowrap">ID</th>
-                        <th class="px-6 py-6 text-left text-lg font-bold text-gray-700 uppercase tracking-wider whitespace-nowrap">Ingreso</th>
-                        <th class="px-6 py-6 text-left text-lg font-bold text-gray-700 uppercase tracking-wider whitespace-nowrap">Placa</th>
-                        <th class="px-6 py-6 text-left text-lg font-bold text-gray-700 uppercase tracking-wider whitespace-nowrap">Imagen</th>
-                        <th class="px-6 py-6 text-left text-lg font-bold text-gray-700 uppercase tracking-wider whitespace-nowrap">Monto</th>
-                        <th class="px-6 py-6 text-left text-lg font-bold text-gray-700 uppercase tracking-wider whitespace-nowrap">Estado</th>
-                        <th class="px-6 py-6 text-left text-lg font-bold text-gray-700 uppercase tracking-wider whitespace-nowrap">Opciones</th>
+                        <th
+                          class="px-6 py-6 text-left text-lg font-bold text-gray-700 uppercase tracking-wider whitespace-nowrap">
+                          ID</th>
+                        <th
+                          class="px-6 py-6 text-left text-lg font-bold text-gray-700 uppercase tracking-wider whitespace-nowrap">
+                          Ingreso</th>
+                        <th
+                          class="px-6 py-6 text-left text-lg font-bold text-gray-700 uppercase tracking-wider whitespace-nowrap">
+                          Placa</th>
+                        <th
+                          class="px-6 py-6 text-left text-lg font-bold text-gray-700 uppercase tracking-wider whitespace-nowrap">
+                          Imagen</th>
+                        <th
+                          class="px-6 py-6 text-left text-lg font-bold text-gray-700 uppercase tracking-wider whitespace-nowrap">
+                          Monto</th>
+                        <th
+                          class="px-6 py-6 text-left text-lg font-bold text-gray-700 uppercase tracking-wider whitespace-nowrap">
+                          Estado</th>
+                        <th
+                          class="px-6 py-6 text-left text-lg font-bold text-gray-700 uppercase tracking-wider whitespace-nowrap">
+                          Opciones</th>
                       </tr>
                     </thead>
                     <tbody class="bg-white divide-y-2 divide-gray-200">
@@ -142,32 +160,32 @@
                         <td class="px-6 py-6 text-lg text-gray-700">{{ formatHora(item.hora_entrada) }}</td>
                         <td class="px-6 py-6 text-xl font-bold text-blue-600">{{ item.placa }}</td>
                         <td class="px-6 py-6">
-                          <img
-                            *ngIf="item.img"
-                            [src]="plateImageBaseUrl + '/doc/ui/images/plate/' + item.img"
-                            alt="Imagen de placa"
-                            class="max-w-48 max-h-32 rounded-lg shadow-md"
-                          />
+                          <img *ngIf="item.img" [src]="plateImageBaseUrl + '/doc/ui/images/plate/' + item.img"
+                            alt="Imagen de placa" class="max-w-48 max-h-32 rounded-lg shadow-md" />
                           <span *ngIf="!item.img" class="text-gray-400 text-lg">Sin imagen</span>
                         </td>
                         <td class="px-6 py-6">
-                          <span *ngIf="(item.state == 3 || item.state == 4)" class="text-xl font-bold text-green-600">S/. {{ item.total_pagar }}</span>
-                          <span *ngIf="item.state == 1 || item.state == 2" class="text-xl font-bold text-gray-500">S/. 0.00</span>
+                          <span *ngIf="(item.state == 3 || item.state == 4)"
+                            class="text-xl font-bold text-green-600">S/. {{ item.total_pagar }}</span>
+                          <span *ngIf="item.state == 1 || item.state == 2" class="text-xl font-bold text-gray-500">S/.
+                            0.00</span>
                         </td>
                         <td class="px-6 py-6">
-                          <span *ngIf="item.state === 1" class="inline-flex px-4 py-2 rounded-full text-lg font-medium bg-gray-100 text-gray-800">NO TICKET</span>
-                          <span *ngIf="item.state === 2" class="inline-flex px-4 py-2 rounded-full text-lg font-medium bg-red-100 text-red-800">PENDIENTE</span>
-                          <span *ngIf="item.state === 3 || item.state === 4" class="inline-flex px-4 py-2 rounded-full text-lg font-medium bg-green-100 text-green-800">CANCELADO</span>
+                          <span *ngIf="item.state === 1"
+                            class="inline-flex px-4 py-2 rounded-full text-lg font-medium bg-gray-100 text-gray-800">NO
+                            TICKET</span>
+                          <span *ngIf="item.state === 2"
+                            class="inline-flex px-4 py-2 rounded-full text-lg font-medium bg-red-100 text-red-800">PENDIENTE</span>
+                          <span *ngIf="item.state === 3 || item.state === 4"
+                            class="inline-flex px-4 py-2 rounded-full text-lg font-medium bg-green-100 text-green-800">CANCELADO</span>
                         </td>
                         <td class="px-6 py-6">
                           <div class="flex flex-wrap gap-2">
-                            <button *ngIf="item.state === 1 || item.state === 2" 
-                              (click)="printTicket(item, 2)"
+                            <button *ngIf="item.state === 1 || item.state === 2" (click)="printTicket(item, 2)"
                               class="px-4 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg text-lg font-medium transition-colors">
                               <i class="fa-solid fa-car mr-2"></i>Ticket
                             </button>
-                            <button *ngIf="item.state === 2" 
-                              (click)="printPago(item, 3)"
+                            <button *ngIf="item.state === 2" (click)="printPago(item, 3)"
                               class="px-4 py-3 bg-green-500 hover:bg-green-600 text-white rounded-lg text-lg font-medium transition-colors">
                               <i class="fa-solid fa-money-bill-1-wave mr-2"></i>Pago
                             </button>
@@ -178,8 +196,11 @@
                       <tr *ngIf="datosFiltrados().length === 0">
                         <td colspan="7" class="px-6 py-16 text-center">
                           <div class="flex flex-col items-center">
-                            <svg class="w-20 h-20 text-gray-300 mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                            <svg class="w-20 h-20 text-gray-300 mb-6" fill="none" stroke="currentColor"
+                              viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2">
+                              </path>
                             </svg>
                             <p class="text-gray-500 text-xl">No hay registros disponibles</p>
                             <p class="text-gray-400 text-lg mt-2">Los vehículos registrados aparecerán aquí</p>
@@ -198,8 +219,11 @@
             <div class="bg-white rounded-xl shadow-lg border border-gray-200">
               <div class="p-8">
                 <h3 class="text-2xl lg:text-3xl font-bold text-gray-900 mb-8 flex items-center">
-                  <svg class="w-8 h-8 lg:w-10 lg:h-10 mr-4 text-purple-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                  <svg class="w-8 h-8 lg:w-10 lg:h-10 mr-4 text-purple-500 flex-shrink-0" fill="none"
+                    stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+                    </path>
                   </svg>
                   <span>Placa Manual</span>
                 </h3>
@@ -208,56 +232,35 @@
                 <div class="space-y-6">
                   <div>
                     <label class="block text-lg font-medium text-gray-700 mb-3">Número de Placa</label>
-                    <input 
-                      type="text" 
-                      placeholder="Ej: ABC-123"
-                      [(ngModel)]="placaManual"
+                    <input type="text" placeholder="Ej: ABC-123" [(ngModel)]="placaManual"
                       class="w-full px-6 py-4 border-2 border-gray-300 rounded-lg focus:ring-4 focus:ring-purple-500 focus:border-purple-500 text-xl uppercase font-bold"
-                      style="text-transform: uppercase;"
-                    >
+                      style="text-transform: uppercase;">
                   </div>
 
                   <!-- Vehicle Type Buttons -->
                   <div class="space-y-4">
                     <label class="block text-lg font-medium text-gray-700">Tipo de Vehículo</label>
                     <div class="grid grid-cols-1 gap-4">
-                      <button 
-                        (click)="createManualCar()"
-                        class="flex items-center justify-center space-x-3 px-6 py-6 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors duration-200 text-xl font-medium">
+                      <button (click)="createManualCar()"
+                        class="btn-auto-manual flex items-center justify-center space-x-3 px-6 py-6 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors duration-200 text-xl font-medium"
+                        style="background-color: #3b82f6 !important; background-image: none !important;">
                         <svg class="w-8 h-8 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M5 11l1.5-4.5h11L19 11m-1.5 5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5m-11 0C5.67 16 5 15.33 5 14.5S5.67 13 6.5 13 8 13.67 8 14.5 7.33 16 6.5 16M17.5 5H6.5c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1h11c.55 0 1-.45 1-1V6c0-.55-.45-1-1-1z"/>
+                          <path d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.22.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-.83 0-1.5-.67-1.5-1.5S5.67 13 6.5 13s1.5.67 1.5 1.5S7.33 16 6.5 16zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 11l1.5-4.5h11L19 11H5z"/>
                         </svg>
                         <span>Auto</span>
                       </button>
-                      <button 
-                        (click)="createManualMotorcycle()"
-                        class="flex items-center justify-center space-x-3 px-6 py-6 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors duration-200 text-xl font-medium">
+                      <button (click)="createManualMotorcycle()"
+                        class="btn-moto-manual flex items-center justify-center space-x-3 px-6 py-6 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors duration-200 text-xl font-medium"
+                        style="background-color: #10b981 !important; background-image: none !important;">
                         <svg class="w-8 h-8 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M5 16c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3H5v3zM19 10c0-.55-.45-1-1-1H6c-.55 0-1 .45-1 1v1h14v-1zM12 6.5c-.83 0-1.5-.67-1.5-1.5S11.17 3.5 12 3.5s1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM8.5 8C7.67 8 7 7.33 7 6.5S7.67 5 8.5 5 10 5.67 10 6.5 9.33 8 8.5 8zm7 0c-.83 0-1.5-.67-1.5-1.5S14.67 5 15.5 5 17 5.67 17 6.5 16.33 8 15.5 8z"/>
+                          <path d="M19.44 9.03L15.41 5H11v2h3.59l2 2H5c-2.8 0-5 2.2-5 5s2.2 5 5 5c2.46 0 4.45-1.69 4.9-4h1.65l2.77-2.77c-.21-.54-.32-1.14-.32-1.73 0-.21.02-.41.05-.61L19.44 9.03zM7.82 15c-.4 1.17-1.49 2-2.82 2-1.68 0-3-1.32-3-3s1.32-3 3-3c1.33 0 2.42.83 2.82 2H5v2h2.82zM19 9c-1.68 0-3 1.32-3 3s1.32 3 3 3 3-1.32 3-3-1.32-3-3-3zm0 4c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z"/>
                         </svg>
                         <span>Moto</span>
                       </button>
                     </div>
                   </div>
 
-                  <!-- Quick Stats -->
-                  <div class="mt-8 pt-6 border-t-2 border-gray-200">
-                    <h4 class="text-lg font-medium text-gray-700 mb-4">Estadísticas Rápidas</h4>
-                    <div class="space-y-3">
-                      <div class="flex justify-between items-center">
-                        <span class="text-base text-gray-600">Vehículos Hoy:</span>
-                        <span class="text-lg font-semibold text-gray-900">{{ datosFiltrados().length }}</span>
-                      </div>
-                      <div class="flex justify-between items-center">
-                        <span class="text-base text-gray-600">Ingresos Hoy:</span>
-                        <span class="text-lg font-semibold text-green-600">S/. {{ calcularIngresosDia() }}</span>
-                      </div>
-                      <div class="flex justify-between items-center">
-                        <span class="text-base text-gray-600">Activos:</span>
-                        <span class="text-lg font-semibold text-blue-600">{{ contarVehiculosActivos() }}</span>
-                      </div>
-                    </div>
-                  </div>
+
                 </div>
               </div>
             </div>
@@ -267,60 +270,95 @@
 
       <!-- Registro Diario Tab -->
       <div *ngIf="activeTab === 1" class="space-y-8">
-        <!-- Stats Cards -->
+        <!-- Stats Cards - Hidden by default, shown on hover -->
         <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
-          <div class="bg-white rounded-xl shadow-lg p-8 border border-gray-200">
+          <div
+            class="bg-white rounded-xl shadow-lg p-8 border border-gray-200 hover:shadow-xl transition-all duration-300 cursor-pointer overflow-hidden hover-card">
             <div class="flex items-center">
-              <div class="w-16 h-16 bg-blue-100 rounded-lg flex items-center justify-center">
+              <div
+                class="w-16 h-16 bg-blue-100 rounded-lg flex items-center justify-center transition-colors duration-300">
                 <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2v0M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"></path>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2v0M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2">
+                  </path>
                 </svg>
               </div>
-              <div class="ml-6">
+              <div class="ml-6 flex-1 min-w-0">
                 <p class="text-lg font-medium text-gray-600">Total Vehículos</p>
-                <p class="text-3xl font-bold text-gray-900">{{ datosFiltrados().length }}</p>
+                <div class="h-12 flex items-center">
+                  <p
+                    class="text-3xl font-bold text-gray-900 hidden-number transition-all duration-500 whitespace-nowrap">
+                    {{ datosFiltrados().length }}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
-          
-          <div class="bg-white rounded-xl shadow-lg p-8 border border-gray-200">
+
+          <div
+            class="bg-white rounded-xl shadow-lg p-8 border border-gray-200 hover:shadow-xl transition-all duration-300 cursor-pointer overflow-hidden hover-card">
             <div class="flex items-center">
-              <div class="w-16 h-16 bg-green-100 rounded-lg flex items-center justify-center">
+              <div
+                class="w-16 h-16 bg-green-100 rounded-lg flex items-center justify-center transition-colors duration-300">
                 <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1">
+                  </path>
                 </svg>
               </div>
-              <div class="ml-6">
+              <div class="ml-6 flex-1 min-w-0">
                 <p class="text-lg font-medium text-gray-600">Ingresos Hoy</p>
-                <p class="text-3xl font-bold text-green-600">S/. {{ calcularIngresosDia() }}</p>
+                <div class="h-12 flex items-center">
+                  <p
+                    class="text-3xl font-bold text-green-600 hidden-number transition-all duration-500 whitespace-nowrap">
+                    S/. {{ calcularIngresosDia() }}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
-          
-          <div class="bg-white rounded-xl shadow-lg p-8 border border-gray-200">
+
+          <div
+            class="bg-white rounded-xl shadow-lg p-8 border border-gray-200 hover:shadow-xl transition-all duration-300 cursor-pointer overflow-hidden hover-card">
             <div class="flex items-center">
-              <div class="w-16 h-16 bg-purple-100 rounded-lg flex items-center justify-center">
+              <div
+                class="w-16 h-16 bg-purple-100 rounded-lg flex items-center justify-center transition-colors duration-300">
                 <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
               </div>
-              <div class="ml-6">
+              <div class="ml-6 flex-1 min-w-0">
                 <p class="text-lg font-medium text-gray-600">Activos</p>
-                <p class="text-3xl font-bold text-purple-600">{{ contarVehiculosActivos() }}</p>
+                <div class="h-12 flex items-center">
+                  <p
+                    class="text-3xl font-bold text-purple-600 hidden-number transition-all duration-500 whitespace-nowrap">
+                    {{ contarVehiculosActivos() }}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
-          
-          <div class="bg-white rounded-xl shadow-lg p-8 border border-gray-200">
+
+          <div
+            class="bg-white rounded-xl shadow-lg p-8 border border-gray-200 hover:shadow-xl transition-all duration-300 cursor-pointer overflow-hidden hover-card">
             <div class="flex items-center">
-              <div class="w-16 h-16 bg-orange-100 rounded-lg flex items-center justify-center">
+              <div
+                class="w-16 h-16 bg-orange-100 rounded-lg flex items-center justify-center transition-colors duration-300">
                 <svg class="w-8 h-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z">
+                  </path>
                 </svg>
               </div>
-              <div class="ml-6">
+              <div class="ml-6 flex-1 min-w-0">
                 <p class="text-lg font-medium text-gray-600">Finalizados</p>
-                <p class="text-3xl font-bold text-orange-600">{{ contarVehiculosFinalizados() }}</p>
+                <div class="h-12 flex items-center">
+                  <p
+                    class="text-3xl font-bold text-orange-600 hidden-number transition-all duration-500 whitespace-nowrap">
+                    {{ contarVehiculosFinalizados() }}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -331,7 +369,8 @@
           <div class="p-8">
             <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-8 gap-4">
               <h2 class="text-2xl lg:text-4xl font-bold text-gray-900 flex items-center">
-                <svg class="w-8 h-8 lg:w-12 lg:h-12 mr-4 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-8 h-8 lg:w-12 lg:h-12 mr-4 text-green-500 flex-shrink-0" fill="none" stroke="currentColor"
+                  viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2">
                   </path>
@@ -339,9 +378,12 @@
                 <span>Registro Diario</span>
               </h2>
               <div class="flex flex-col lg:flex-row gap-4">
-                <button (click)="loadVehicleData()" class="flex items-center justify-center space-x-3 px-6 py-4 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors duration-200 text-lg">
+                <button (click)="loadVehicleData()"
+                  class="flex items-center justify-center space-x-3 px-6 py-4 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors duration-200 text-lg">
                   <svg class="w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15">
+                    </path>
                   </svg>
                   <span>Actualizar</span>
                 </button>
@@ -351,14 +393,12 @@
             <!-- Search Bar -->
             <div class="mb-8">
               <div class="relative">
-                <input 
-                  type="text" 
-                  placeholder="Buscar por placa, ID..."
-                  [(ngModel)]="filtroRegistroDiario"
-                  class="w-full pl-16 pr-6 py-4 lg:py-6 border-2 border-gray-300 rounded-lg focus:ring-4 focus:ring-blue-500 focus:border-blue-500 text-lg lg:text-xl"
-                >
-                <svg class="absolute left-5 top-1/2 transform -translate-y-1/2 w-6 h-6 lg:w-8 lg:h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                <input type="text" placeholder="Buscar por placa, ID..." [(ngModel)]="filtroRegistroDiario"
+                  class="w-full pl-16 pr-6 py-4 lg:py-6 border-2 border-gray-300 rounded-lg focus:ring-4 focus:ring-blue-500 focus:border-blue-500 text-lg lg:text-xl">
+                <svg class="absolute left-5 top-1/2 transform -translate-y-1/2 w-6 h-6 lg:w-8 lg:h-8 text-gray-400"
+                  fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                 </svg>
               </div>
             </div>
@@ -368,14 +408,27 @@
               <table class="min-w-full divide-y-2 divide-gray-200">
                 <thead class="bg-gray-50">
                   <tr>
-                    <th class="px-6 py-6 text-left text-lg font-bold text-gray-700 uppercase tracking-wider whitespace-nowrap">ID</th>
-                    <th class="px-6 py-6 text-left text-lg font-bold text-gray-700 uppercase tracking-wider whitespace-nowrap">Placa</th>
-                    <th class="px-6 py-6 text-left text-lg font-bold text-gray-700 uppercase tracking-wider whitespace-nowrap">Tipo</th>
-                    <th class="px-6 py-6 text-left text-lg font-bold text-gray-700 uppercase tracking-wider whitespace-nowrap">Ingreso</th>
-                    <th class="px-6 py-6 text-left text-lg font-bold text-gray-700 uppercase tracking-wider whitespace-nowrap">Salida</th>
-                    <th class="px-6 py-6 text-left text-lg font-bold text-gray-700 uppercase tracking-wider whitespace-nowrap">Monto</th>
-                    <th class="px-6 py-6 text-left text-lg font-bold text-gray-700 uppercase tracking-wider whitespace-nowrap">Estado</th>
-                    <th class="px-6 py-6 text-left text-lg font-bold text-gray-700 uppercase tracking-wider whitespace-nowrap">Acciones</th>
+                    <th
+                      class="px-6 py-6 text-left text-lg font-bold text-gray-700 uppercase tracking-wider whitespace-nowrap">
+                      ID</th>
+                    <th
+                      class="px-6 py-6 text-left text-lg font-bold text-gray-700 uppercase tracking-wider whitespace-nowrap">
+                      Placa</th>
+                    <th
+                      class="px-6 py-6 text-left text-lg font-bold text-gray-700 uppercase tracking-wider whitespace-nowrap">
+                      Ingreso</th>
+                    <th
+                      class="px-6 py-6 text-left text-lg font-bold text-gray-700 uppercase tracking-wider whitespace-nowrap">
+                      Salida</th>
+                    <th
+                      class="px-6 py-6 text-left text-lg font-bold text-gray-700 uppercase tracking-wider whitespace-nowrap">
+                      Monto</th>
+                    <th
+                      class="px-6 py-6 text-left text-lg font-bold text-gray-700 uppercase tracking-wider whitespace-nowrap">
+                      Estado</th>
+                    <th
+                      class="px-6 py-6 text-left text-lg font-bold text-gray-700 uppercase tracking-wider whitespace-nowrap">
+                      Acciones</th>
                   </tr>
                 </thead>
                 <tbody class="bg-white divide-y-2 divide-gray-200">
@@ -383,44 +436,49 @@
                   <tr *ngFor="let item of datosRegistroDiarioFiltrados()" class="hover:bg-gray-50">
                     <td class="px-6 py-6 text-lg font-medium text-gray-900">{{ item.id_auto || item.id_moto }}</td>
                     <td class="px-6 py-6 text-xl font-bold text-blue-600">{{ item.placa }}</td>
-                    <td class="px-6 py-6 text-lg text-gray-700">
-                      <span *ngIf="item.id_auto" class="inline-flex px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">Auto</span>
-                      <span *ngIf="item.id_moto" class="inline-flex px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">Moto</span>
-                    </td>
                     <td class="px-6 py-6 text-lg text-gray-700">{{ formatHora(item.hora_entrada) }}</td>
                     <td class="px-6 py-6 text-lg text-gray-700">
                       <span *ngIf="item.hora_salida">{{ formatHora(item.hora_salida) }}</span>
-                      <span *ngIf="!item.hora_salida" class="text-gray-400">-</span>
+                      <span *ngIf="!item.hora_salida" class="text-gray-400 text-lg">-</span>
                     </td>
                     <td class="px-6 py-6">
-                      <span *ngIf="(item.state == 3 || item.state == 4)" class="text-xl font-bold text-green-600">S/. {{ item.total_pagar }}</span>
-                      <span *ngIf="item.state == 1 || item.state == 2" class="text-xl font-bold text-gray-500">S/. 0.00</span>
+                      <span *ngIf="(item.state == 3 || item.state == 4)" class="text-xl font-bold text-green-600">S/. {{
+                        item.total_pagar }}</span>
+                      <span *ngIf="item.state == 1 || item.state == 2" class="text-xl font-bold text-gray-500">S/.
+                        0.00</span>
                     </td>
                     <td class="px-6 py-6">
-                      <span *ngIf="item.state === 1" class="inline-flex px-4 py-2 rounded-full text-lg font-medium bg-gray-100 text-gray-800">NO TICKET</span>
-                      <span *ngIf="item.state === 2" class="inline-flex px-4 py-2 rounded-full text-lg font-medium bg-red-100 text-red-800">PENDIENTE</span>
-                      <span *ngIf="item.state === 3 || item.state === 4" class="inline-flex px-4 py-2 rounded-full text-lg font-medium bg-green-100 text-green-800">FINALIZADO</span>
+                      <span *ngIf="item.state === 1"
+                        class="inline-flex px-4 py-2 rounded-full text-lg font-medium bg-gray-100 text-gray-800">NO
+                        TICKET</span>
+                      <span *ngIf="item.state === 2"
+                        class="inline-flex px-4 py-2 rounded-full text-lg font-medium bg-red-100 text-red-800">PENDIENTE</span>
+                      <span *ngIf="item.state === 3 || item.state === 4"
+                        class="inline-flex px-4 py-2 rounded-full text-lg font-medium bg-green-100 text-green-800">FINALIZADO</span>
                     </td>
                     <td class="px-6 py-6">
                       <div class="flex flex-wrap gap-2">
-                        <button *ngIf="item.state === 3 || item.state === 4" 
-                          (click)="printTicket(item, item.state)"
-                          class="px-4 py-3 bg-green-500 hover:bg-green-600 text-white rounded-lg text-lg font-medium transition-colors">
+                        <button *ngIf="item.state === 3 || item.state === 4" (click)="printTicket(item, item.state)"
+                          class="px-6 py-3 bg-green-500 hover:bg-green-600 text-white rounded-lg text-lg font-medium transition-colors">
                           <i class="fa-solid fa-print mr-2"></i>Imprimir Ticket
                         </button>
-                        <span *ngIf="item.state === 1 || item.state === 2" class="text-gray-400 text-lg">Sin acciones</span>
+                        <span *ngIf="item.state === 1 || item.state === 2" class="text-gray-400 text-lg">Sin
+                          acciones</span>
                       </div>
                     </td>
                   </tr>
                   <!-- Empty state -->
                   <tr *ngIf="datosRegistroDiarioFiltrados().length === 0">
-                    <td colspan="8" class="px-6 py-16 text-center">
+                    <td colspan="7" class="px-6 py-16 text-center">
                       <div class="flex flex-col items-center">
                         <svg class="w-20 h-20 text-gray-300 mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2">
+                          </path>
                         </svg>
                         <h3 class="text-xl font-medium text-gray-900 mb-2">No hay registros disponibles</h3>
-                        <p class="text-gray-500 text-lg">Los registros de vehículos aparecerán aquí cuando ingresen a la playa</p>
+                        <p class="text-gray-500 text-lg">Los registros de vehículos aparecerán aquí cuando ingresen a la
+                          playa</p>
                       </div>
                     </td>
                   </tr>
@@ -431,7 +489,8 @@
             <!-- Pagination Info -->
             <div class="flex flex-col lg:flex-row items-center justify-between mt-8 gap-4">
               <div class="text-lg text-gray-700">
-                Mostrando <span class="font-medium">{{ datosRegistroDiarioFiltrados().length }}</span> de <span class="font-medium">{{ datosFiltrados().length }}</span> registros
+                Mostrando <span class="font-medium">{{ datosRegistroDiarioFiltrados().length }}</span> de <span
+                  class="font-medium">{{ datosFiltrados().length }}</span> registros
               </div>
             </div>
           </div>
@@ -473,10 +532,7 @@
     <div class="p-6">
       <div class="flex justify-between items-center mb-6">
         <h3 class="text-lg font-semibold text-orange-600">Cerrar Playa</h3>
-        <button 
-          (click)="closeCerrarPlayaModal()"
-          class="text-gray-400 hover:text-gray-600"
-        >
+        <button (click)="closeCerrarPlayaModal()" class="text-gray-400 hover:text-gray-600">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
           </svg>
@@ -486,64 +542,58 @@
       <div class="mb-6">
         <div class="w-16 h-16 bg-orange-100 rounded-full mx-auto mb-4 flex items-center justify-center">
           <svg class="w-8 h-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
+            </path>
           </svg>
         </div>
         <h4 class="text-xl font-bold text-gray-900 text-center mb-2">¿Cerrar la playa?</h4>
         <p class="text-gray-600 text-center mb-6">
           Esta acción cerrará la playa <strong>"{{ Playa?.nombre }}"</strong> y registrará la hora de cierre.
         </p>
-        
+
         <!-- Deslizador tipo "Slide to Unlock" -->
         <div class="mb-6">
           <p class="text-sm text-gray-500 text-center mb-6">
             Desliza para cerrar la playa
           </p>
-          
+
           <!-- Contenedor del deslizador -->
-          <div class="slide-container relative mx-auto bg-gray-100 rounded-full overflow-hidden shadow-inner" style="width: 300px; height: 60px;">
+          <div class="slide-container relative mx-auto bg-gray-100 rounded-full overflow-hidden shadow-inner"
+            style="width: 300px; height: 60px;">
             <!-- Fondo con gradiente -->
-            <div 
+            <div
               class="absolute top-0 left-0 h-full bg-gradient-to-r from-orange-400 to-red-500 rounded-full transition-all duration-300 ease-out"
-              [style.width.px]="slidePosition + 60"
-            ></div>
-            
+              [style.width.px]="slidePosition + 60"></div>
+
             <!-- Texto de fondo -->
             <div class="absolute inset-0 flex items-center justify-center z-10">
-              <span class="font-semibold text-sm select-none pointer-events-none transition-colors duration-200" 
-                    [class.text-white]="slidePosition > 120" 
-                    [class.text-gray-600]="slidePosition <= 120">
+              <span class="font-semibold text-sm select-none pointer-events-none transition-colors duration-200"
+                [class.text-white]="slidePosition > 120" [class.text-gray-600]="slidePosition <= 120">
                 {{ slidePosition > 200 ? 'Cerrando playa...' : 'Desliza para cerrar →' }}
               </span>
             </div>
-            
+
             <!-- Botón deslizable -->
-            <div 
+            <div
               class="slide-button absolute top-1 left-1 w-14 h-14 bg-white rounded-full shadow-lg cursor-grab active:cursor-grabbing flex items-center justify-center z-20"
-              [style.transform]="'translateX(' + slidePosition + 'px)'"
-              (mousedown)="startSlide($event)"
-              (touchstart)="startSlide($event)"
-              [class.cursor-grabbing]="isSliding"
-            >
-              <svg class="w-6 h-6 text-gray-600 transition-transform duration-200" 
-                   [class.rotate-12]="isSliding" 
-                   fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              [style.transform]="'translateX(' + slidePosition + 'px)'" (mousedown)="startSlide($event)"
+              (touchstart)="startSlide($event)" [class.cursor-grabbing]="isSliding">
+              <svg class="w-6 h-6 text-gray-600 transition-transform duration-200" [class.rotate-12]="isSliding"
+                fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
               </svg>
             </div>
           </div>
-          
+
 
         </div>
       </div>
 
       <!-- Botón Cancelar -->
       <div class="flex justify-center">
-        <button 
-          type="button"
-          (click)="closeCerrarPlayaModal()"
-          class="px-6 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
-        >
+        <button type="button" (click)="closeCerrarPlayaModal()"
+          class="px-6 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors">
           Cancelar
         </button>
       </div>
@@ -552,24 +602,20 @@
 </div>
 
 <!-- Alert for PDF Client Errors -->
-<div
-  class="fixed top-4 right-4 z-50 max-w-sm"
-  *ngIf="pdfClient.showAlert || pdfClient.fadingOut"
-  [ngClass]="{ 'opacity-0 transform translate-x-full transition-all duration-1000': pdfClient.fadingOut }"
->
+<div class="fixed top-4 right-4 z-50 max-w-sm" *ngIf="pdfClient.showAlert || pdfClient.fadingOut"
+  [ngClass]="{ 'opacity-0 transform translate-x-full transition-all duration-1000': pdfClient.fadingOut }">
   <div class="bg-red-500 text-white px-6 py-4 rounded-lg shadow-lg">
     <div class="flex items-center justify-between">
       <div class="flex items-center">
         <svg class="w-5 h-5 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z">
+          </path>
         </svg>
         <span class="text-sm font-medium">{{ pdfClient.errorMessage }}</span>
       </div>
-      <button
-        type="button"
-        class="ml-4 text-white hover:text-gray-200 transition-colors"
-        (click)="pdfClient.showAlert = false"
-      >
+      <button type="button" class="ml-4 text-white hover:text-gray-200 transition-colors"
+        (click)="pdfClient.showAlert = false">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
         </svg>

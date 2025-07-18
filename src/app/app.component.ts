@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { LoginService } from './services/login.service';
+import { ThemeService } from './services/theme.service';
 
 @Component({
   selector: 'app-root',
@@ -12,9 +13,16 @@ import { LoginService } from './services/login.service';
 export class AppComponent implements OnInit {
   title = 'PaLotFrontend';
   showNavbar = false;
+  showThemeToggle = true;
   currentUser: any = null;
 
-  constructor(private router: Router, private loginService: LoginService) {}
+  constructor(
+    private router: Router, 
+    private loginService: LoginService,
+    private themeService: ThemeService
+  ) {
+    // El servicio de tema se inicializa automáticamente al ser inyectado
+  }
 
   ngOnInit() {
     // Show navbar only on main routes, not on auth or individual playa routes
@@ -31,6 +39,9 @@ export class AppComponent implements OnInit {
                            url.startsWith('/dashboard') || 
                            url.startsWith('/configuracion') ||
                            url.startsWith('/usuarios');
+          
+          // Hide theme toggle on login page
+          this.showThemeToggle = !url.startsWith('/auth/login');
         }
       });
   }

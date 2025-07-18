@@ -45,7 +45,8 @@ export class ShowPlayasComponent implements OnInit {
       nombre: ['', Validators.required],
       direccion: [''],
       tarifaAuto: ['', [Validators.required, Validators.min(0)]],
-      tarifaMoto: ['', [Validators.required, Validators.min(0)]]
+      tarifaMoto: ['', [Validators.required, Validators.min(0)]],
+      facturacion: [false] // Campo para facturación SUNAT
     });
   }
   ngOnInit(): void {
@@ -167,7 +168,8 @@ export class ShowPlayasComponent implements OnInit {
       nombre: playa.nombre,
       direccion: playa.direccion || '',
       tarifaAuto: playa.tarifaAuto || '',
-      tarifaMoto: playa.tarifaMoto || ''
+      tarifaMoto: playa.tarifaMoto || '',
+      facturacion: playa.facturacion || false
     });
     this.showPlayaModal = true;
   }
@@ -284,6 +286,12 @@ export class ShowPlayasComponent implements OnInit {
   isFieldInvalid(fieldName: string): boolean {
     const field = this.playaForm.get(fieldName);
     return !!(field && field.invalid && (field.dirty || field.touched));
+  }
+
+  // Manejar el toggle de facturación
+  onFacturacionToggle(event: any) {
+    const isChecked = event.target.checked;
+    this.playaForm.patchValue({ facturacion: isChecked });
   }
 
   // Obtener número de playas abiertas

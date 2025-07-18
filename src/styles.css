@@ -29,20 +29,927 @@ body {
 }
 
 .btn-primary-modern {
-  @apply btn-modern bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 focus:ring-blue-300;
+  @apply btn-modern bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 focus:ring-blue-300 dark:focus:ring-blue-800;
 }
 
 .btn-secondary-modern {
-  @apply btn-modern bg-gradient-to-r from-teal-500 to-cyan-600 hover:from-teal-600 hover:to-cyan-700 focus:ring-teal-300;
+  @apply btn-modern bg-gradient-to-r from-teal-500 to-cyan-600 hover:from-teal-600 hover:to-cyan-700 focus:ring-teal-300 dark:focus:ring-teal-800;
 }
 
 .card-modern {
-  @apply bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden;
+  @apply bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden border border-transparent dark:border-gray-700;
 }
 
 .input-modern {
-  @apply w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 bg-white/90 backdrop-blur-sm;
+  @apply w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-800 transition-all duration-200 bg-white/90 dark:bg-gray-700/90 backdrop-blur-sm text-gray-900 dark:text-white;
 }
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+/* Hover cards for stats */
+.hover-card .hidden-number {
+  opacity: 0;
+  transform: scale(0.75);
+}
+
+.hover-card:hover .hidden-number {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Dark mode transitions */
+* {
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+/* Dark mode base styles */
+.dark {
+  color-scheme: dark;
+}
+
+/* Forzar estilos de modo oscuro para elementos específicos */
+.dark body {
+  background: linear-gradient(135deg, #1f2937 0%, #111827 100%) !important;
+  color: #f9fafb !important;
+}
+
+.dark nav {
+  background-color: #1f2937 !important;
+  border-color: #374151 !important;
+}
+
+/* Fondos principales */
+.dark .bg-white {
+  background-color: #1f2937 !important;
+}
+
+.dark .bg-gray-50 {
+  background-color: #111827 !important;
+}
+
+.dark .bg-gray-100 {
+  background-color: #374151 !important;
+}
+
+.dark .bg-gray-200 {
+  background-color: #4b5563 !important;
+}
+
+/* Fondos con gradientes - EXCLUIR BOTONES */
+.dark .bg-gradient-to-br:not(button) {
+  background: linear-gradient(135deg, #1f2937 0%, #111827 100%) !important;
+}
+
+.dark .bg-gradient-to-r:not(button):not([class*="bg-gradient-to-r from-"]) {
+  background: linear-gradient(90deg, #1f2937 0%, #111827 100%) !important;
+}
+
+/* Textos */
+.dark .text-gray-900 {
+  color: #f9fafb !important;
+}
+
+.dark .text-gray-800 {
+  color: #e5e7eb !important;
+}
+
+.dark .text-gray-700 {
+  color: #d1d5db !important;
+}
+
+.dark .text-gray-600 {
+  color: #9ca3af !important;
+}
+
+.dark .text-gray-500 {
+  color: #6b7280 !important;
+}
+
+.dark .text-gray-400 {
+  color: #9ca3af !important;
+}
+
+.dark .text-gray-300 {
+  color: #d1d5db !important;
+}
+
+/* Bordes */
+.dark .border-gray-200 {
+  border-color: #374151 !important;
+}
+
+.dark .border-gray-300 {
+  border-color: #4b5563 !important;
+}
+
+.dark .border-gray-400 {
+  border-color: #6b7280 !important;
+}
+
+/* Sombras */
+.dark .shadow-sm {
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3) !important;
+}
+
+.dark .shadow {
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px 0 rgba(0, 0, 0, 0.2) !important;
+}
+
+.dark .shadow-lg {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2) !important;
+}
+
+.dark .shadow-xl {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2) !important;
+}
+
+.dark .shadow-2xl {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Inputs y formularios */
+.dark input {
+  background-color: #374151 !important;
+  border-color: #4b5563 !important;
+  color: #f9fafb !important;
+}
+
+.dark input:focus {
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
+}
+
+.dark select {
+  background-color: #374151 !important;
+  border-color: #4b5563 !important;
+  color: #f9fafb !important;
+}
+
+.dark textarea {
+  background-color: #374151 !important;
+  border-color: #4b5563 !important;
+  color: #f9fafb !important;
+}
+
+/* Botones específicos que NO deben cambiar - mantener colores originales */
+/* Anular los estilos globales para botones de acción específicos */
+.dark button.bg-blue-500,
+.dark button.bg-blue-600,
+.dark button.bg-green-500,
+.dark button.bg-green-600,
+.dark button.bg-red-500,
+.dark button.bg-red-600,
+.dark button.bg-yellow-500,
+.dark button.bg-yellow-600,
+.dark button.bg-purple-500,
+.dark button.bg-purple-600,
+.dark button.bg-orange-500,
+.dark button.bg-orange-600 {
+  background-color: revert !important;
+}
+
+/* Específicamente para botones de gradiente que deben mantener sus colores */
+.dark button.bg-gradient-to-r,
+.dark .bg-gradient-to-r.from-green-500,
+.dark .bg-gradient-to-r.from-blue-500,
+.dark .bg-gradient-to-r.from-orange-500,
+.dark .bg-gradient-to-r.from-red-500,
+.dark .bg-gradient-to-r.from-yellow-500,
+.dark .bg-gradient-to-r.from-purple-500 {
+  background: revert !important;
+}
+
+/* Mantener gradientes específicos de botones - más específicos */
+.dark .bg-gradient-to-r.from-green-500.to-emerald-600,
+.dark button.bg-gradient-to-r.from-green-500.to-emerald-600 {
+  background: linear-gradient(to right, #10b981, #059669) !important;
+}
+
+.dark .bg-gradient-to-r.from-blue-500.to-purple-600,
+.dark button.bg-gradient-to-r.from-blue-500.to-purple-600 {
+  background: linear-gradient(to right, #3b82f6, #9333ea) !important;
+}
+
+.dark .bg-gradient-to-r.from-orange-500.to-amber-600,
+.dark button.bg-gradient-to-r.from-orange-500.to-amber-600 {
+  background: linear-gradient(to right, #f97316, #d97706) !important;
+}
+
+/* Botones de Bootstrap que deben mantener sus colores */
+.dark .btn-primary {
+  background-color: #0d6efd !important;
+  border-color: #0d6efd !important;
+  color: #ffffff !important;
+}
+
+.dark .btn-primary:hover {
+  background-color: #0b5ed7 !important;
+  border-color: #0a58ca !important;
+}
+
+.dark .btn-success {
+  background-color: #198754 !important;
+  border-color: #198754 !important;
+  color: #ffffff !important;
+}
+
+.dark .btn-success:hover {
+  background-color: #157347 !important;
+  border-color: #146c43 !important;
+}
+
+.dark .btn-warning {
+  background-color: #ffc107 !important;
+  border-color: #ffc107 !important;
+  color: #000000 !important;
+}
+
+.dark .btn-warning:hover {
+  background-color: #ffca2c !important;
+  border-color: #ffc720 !important;
+}
+
+.dark .btn-info {
+  background-color: #0dcaf0 !important;
+  border-color: #0dcaf0 !important;
+  color: #000000 !important;
+}
+
+.dark .btn-info:hover {
+  background-color: #31d2f2 !important;
+  border-color: #25cff2 !important;
+}
+
+.dark .btn-secondary {
+  background-color: #6c757d !important;
+  border-color: #6c757d !important;
+  color: #ffffff !important;
+}
+
+.dark .btn-secondary:hover {
+  background-color: #5c636a !important;
+  border-color: #565e64 !important;
+}
+
+/* Botones específicos de colores sólidos */
+.dark .bg-blue-600,
+.dark button.bg-blue-600 {
+  background-color: #2563eb !important;
+}
+
+.dark .bg-green-500,
+.dark button.bg-green-500 {
+  background-color: #10b981 !important;
+}
+
+.dark .bg-red-500,
+.dark button.bg-red-500 {
+  background-color: #ef4444 !important;
+}
+
+.dark .bg-red-600,
+.dark button.bg-red-600 {
+  background-color: #dc2626 !important;
+}
+
+.dark .bg-yellow-500,
+.dark button.bg-yellow-500 {
+  background-color: #eab308 !important;
+}
+
+.dark .bg-yellow-600,
+.dark button.bg-yellow-600 {
+  background-color: #ca8a04 !important;
+}
+
+.dark .bg-orange-500,
+.dark button.bg-orange-500 {
+  background-color: #f97316 !important;
+}
+
+.dark .bg-purple-500,
+.dark button.bg-purple-500 {
+  background-color: #a855f7 !important;
+}
+
+/* Botones con hover específicos para mantener colores */
+.dark button.bg-yellow-500:hover,
+.dark .bg-yellow-500:hover {
+  background-color: #d97706 !important;
+}
+
+.dark button.bg-red-500:hover,
+.dark .bg-red-500:hover {
+  background-color: #dc2626 !important;
+}
+
+.dark button.bg-red-600:hover,
+.dark .bg-red-600:hover {
+  background-color: #b91c1c !important;
+}
+
+.dark button.bg-blue-600:hover,
+.dark .bg-blue-600:hover {
+  background-color: #1d4ed8 !important;
+}
+
+/* Forzar colores específicos para botones de acción en modo oscuro */
+.dark button[class*="bg-yellow-500"],
+.dark button[class*="bg-red-500"],
+.dark button[class*="bg-red-600"],
+.dark button[class*="bg-blue-600"],
+.dark button[class*="bg-green-500"] {
+  color: white !important;
+}
+
+/* Arreglar hover en tablas */
+.dark tr:hover {
+  background-color: #374151 !important; /* gray-700 */
+}
+
+.dark .hover\\:bg-gray-50:hover {
+  background-color: #374151 !important; /* gray-700 */
+}
+
+/* Arreglar tablas de Bootstrap en modo oscuro */
+.dark .table {
+  background-color: #1f2937 !important; /* gray-800 */
+  color: #f9fafb !important; /* gray-50 */
+}
+
+.dark .table th {
+  background-color: #374151 !important; /* gray-700 */
+  color: #f9fafb !important; /* gray-50 */
+  border-color: #4b5563 !important; /* gray-600 */
+}
+
+.dark .table td {
+  background-color: #1f2937 !important; /* gray-800 */
+  color: #f9fafb !important; /* gray-50 */
+  border-color: #4b5563 !important; /* gray-600 */
+}
+
+.dark .table-striped tbody tr:nth-of-type(odd) {
+  background-color: #374151 !important; /* gray-700 */
+}
+
+.dark .table tbody tr:hover {
+  background-color: #4b5563 !important; /* gray-600 */
+}
+
+/* Arreglar inputs de Bootstrap */
+.dark .form-control {
+  background-color: #374151 !important; /* gray-700 */
+  border-color: #4b5563 !important; /* gray-600 */
+  color: #f9fafb !important; /* gray-50 */
+}
+
+.dark .form-control:focus {
+  background-color: #374151 !important; /* gray-700 */
+  border-color: #3b82f6 !important; /* blue-500 */
+  color: #f9fafb !important; /* gray-50 */
+  box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.25) !important;
+}
+
+/* Arreglar barra de progreso del slider */
+.dark .slide-container {
+  background-color: #374151 !important; /* gray-700 */
+}
+
+.dark .slide-container .bg-gradient-to-r.from-orange-400 {
+  background: linear-gradient(to right, #fb923c, #ef4444) !important; /* mantener naranja a rojo */
+}
+
+/* Scrollbar styling for dark mode */
+.dark::-webkit-scrollbar {
+  width: 8px;
+}
+
+.dark::-webkit-scrollbar-track {
+  background: #374151;
+}
+
+.dark::-webkit-scrollbar-thumb {
+  background: #6b7280;
+  border-radius: 4px;
+}
+
+.dark::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+/* REGLAS ESPECÍFICAS PARA BOTONES DE COLORES EN MODO OSCURO - MÁXIMA PRIORIDAD */
+/* Estas reglas deben ir al final para tener la mayor especificidad */
+
+/* Botones amarillos (Editar) - Forzar color amarillo */
+.dark button.bg-yellow-500,
+.dark .bg-yellow-500,
+html.dark button.bg-yellow-500,
+html.dark .bg-yellow-500 {
+  background-color: #eab308 !important;
+  background-image: none !important;
+  background: #eab308 !important;
+}
+
+.dark button.bg-yellow-500:hover,
+.dark .bg-yellow-500:hover,
+html.dark button.bg-yellow-500:hover,
+html.dark .bg-yellow-500:hover {
+  background-color: #ca8a04 !important;
+  background-image: none !important;
+  background: #ca8a04 !important;
+}
+
+/* Botones rojos (Eliminar) - Forzar color rojo */
+.dark button.bg-red-500,
+.dark .bg-red-500,
+html.dark button.bg-red-500,
+html.dark .bg-red-500 {
+  background-color: #ef4444 !important;
+  background-image: none !important;
+  background: #ef4444 !important;
+}
+
+.dark button.bg-red-500:hover,
+.dark .bg-red-500:hover,
+html.dark button.bg-red-500:hover,
+html.dark .bg-red-500:hover {
+  background-color: #dc2626 !important;
+  background-image: none !important;
+  background: #dc2626 !important;
+}
+
+.dark button.bg-red-600,
+.dark .bg-red-600,
+html.dark button.bg-red-600,
+html.dark .bg-red-600 {
+  background-color: #dc2626 !important;
+  background-image: none !important;
+  background: #dc2626 !important;
+}
+
+.dark button.bg-red-600:hover,
+.dark .bg-red-600:hover,
+html.dark button.bg-red-600:hover,
+html.dark .bg-red-600:hover {
+  background-color: #b91c1c !important;
+  background-image: none !important;
+  background: #b91c1c !important;
+}
+
+/* Botones azules - Forzar color azul */
+.dark button.bg-blue-600,
+.dark .bg-blue-600,
+html.dark button.bg-blue-600,
+html.dark .bg-blue-600 {
+  background-color: #2563eb !important;
+  background-image: none !important;
+  background: #2563eb !important;
+}
+
+.dark button.bg-blue-600:hover,
+.dark .bg-blue-600:hover,
+html.dark button.bg-blue-600:hover,
+html.dark .bg-blue-600:hover {
+  background-color: #1d4ed8 !important;
+  background-image: none !important;
+  background: #1d4ed8 !important;
+}
+
+/* Anular TODAS las reglas de gradiente para botones de colores sólidos */
+.dark button.bg-yellow-500,
+.dark button.bg-red-500,
+.dark button.bg-red-600,
+.dark button.bg-blue-600,
+html.dark button.bg-yellow-500,
+html.dark button.bg-red-500,
+html.dark button.bg-red-600,
+html.dark button.bg-blue-600 {
+  background-image: none !important;
+}
+
+/* Forzar texto blanco en todos los botones de colores */
+.dark button.bg-yellow-500,
+.dark button.bg-red-500,
+.dark button.bg-red-600,
+.dark button.bg-blue-600,
+html.dark button.bg-yellow-500,
+html.dark button.bg-red-500,
+html.dark button.bg-red-600,
+html.dark button.bg-blue-600 {
+  color: #ffffff !important;
+}
+
+/* Regla específica para botones amarillos con texto negro si es necesario */
+.dark button.bg-yellow-500,
+html.dark button.bg-yellow-500 {
+  color: #000000 !important;
+}/* MEJORAS 
+ESPECÍFICAS PARA MODO OSCURO EN PLAYA INDIVIDUAL */
+
+/* Mejorar el fondo principal de la playa */
+.dark .min-h-screen.bg-gradient-to-br.from-slate-50.to-blue-50 {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%) !important;
+}
+
+/* Header mejorado en modo oscuro */
+.dark .bg-white.shadow-lg.border-b.border-gray-200 {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* PESTAÑAS DE NAVEGACIÓN MEJORADAS */
+.dark nav[aria-label="Tabs"] {
+  background-color: #1e293b !important;
+}
+
+/* Pestaña activa - Color más atractivo que el blanco */
+.dark button.border-blue-500.text-blue-600.bg-blue-50 {
+  background-color: #1e40af !important;
+  color: #ffffff !important;
+  border-color: #3b82f6 !important;
+  box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.3) !important;
+}
+
+/* Pestañas inactivas - Mejor contraste */
+.dark button.border-transparent.text-gray-500 {
+  color: #94a3b8 !important;
+  background-color: #334155 !important;
+  border-color: transparent !important;
+}
+
+.dark button.border-transparent.text-gray-500:hover {
+  color: #e2e8f0 !important;
+  background-color: #475569 !important;
+  border-color: #64748b !important;
+}
+
+/* TARJETAS Y CONTENEDORES PRINCIPALES */
+.dark .bg-white.rounded-xl.shadow-lg.border.border-gray-200 {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* TABLAS MEJORADAS */
+.dark .bg-gray-50 {
+  background-color: #334155 !important;
+}
+
+.dark thead.bg-gray-50 {
+  background-color: #334155 !important;
+}
+
+.dark th.text-gray-700 {
+  color: #e2e8f0 !important;
+}
+
+.dark .divide-gray-200 {
+  border-color: #475569 !important;
+}
+
+.dark .hover\\:bg-gray-50:hover {
+  background-color: #334155 !important;
+}
+
+/* INPUTS Y FORMULARIOS MEJORADOS */
+.dark input.border-gray-300 {
+  background-color: #334155 !important;
+  border-color: #475569 !important;
+  color: #f1f5f9 !important;
+}
+
+.dark input.border-gray-300:focus {
+  background-color: #334155 !important;
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
+}
+
+/* BADGES Y ESTADOS MEJORADOS */
+.dark .bg-gray-100.text-gray-800 {
+  background-color: #475569 !important;
+  color: #e2e8f0 !important;
+}
+
+.dark .bg-red-100.text-red-800 {
+  background-color: #7f1d1d !important;
+  color: #fecaca !important;
+}
+
+.dark .bg-green-100.text-green-800 {
+  background-color: #14532d !important;
+  color: #bbf7d0 !important;
+}
+
+/* ICONOS Y ELEMENTOS DECORATIVOS */
+.dark .bg-blue-100 {
+  background-color: #1e3a8a !important;
+}
+
+.dark .bg-green-100 {
+  background-color: #14532d !important;
+}
+
+.dark .bg-purple-100 {
+  background-color: #581c87 !important;
+}
+
+.dark .bg-orange-100 {
+  background-color: #9a3412 !important;
+}
+
+.dark .bg-yellow-100 {
+  background-color: #92400e !important;
+}
+
+/* BOTONES DE BOOTSTRAP ESPECÍFICOS PARA PLACA MANUAL */
+.dark .btn.btn-primary {
+  background-color: #2563eb !important;
+  border-color: #2563eb !important;
+  color: #ffffff !important;
+}
+
+.dark .btn.btn-primary:hover {
+  background-color: #1d4ed8 !important;
+  border-color: #1d4ed8 !important;
+}
+
+/* FORZAR COLORES ESPECÍFICOS PARA BOTONES DE VEHÍCULOS */
+.dark button.bg-blue-500.hover\\:bg-blue-600,
+.dark .bg-blue-500.hover\\:bg-blue-600 {
+  background-color: #3b82f6 !important;
+}
+
+.dark button.bg-blue-500.hover\\:bg-blue-600:hover,
+.dark .bg-blue-500.hover\\:bg-blue-600:hover {
+  background-color: #2563eb !important;
+}
+
+.dark button.bg-green-500.hover\\:bg-green-600,
+.dark .bg-green-500.hover\\:bg-green-600 {
+  background-color: #10b981 !important;
+}
+
+.dark button.bg-green-500.hover\\:bg-green-600:hover,
+.dark .bg-green-500.hover\\:bg-green-600:hover {
+  background-color: #059669 !important;
+}
+
+/* MEJORAR CONTRASTE DE TEXTOS */
+.dark .text-gray-600 {
+  color: #94a3b8 !important;
+}
+
+.dark .text-gray-700 {
+  color: #cbd5e1 !important;
+}
+
+.dark .text-gray-500 {
+  color: #94a3b8 !important;
+}
+
+.dark .text-gray-400 {
+  color: #64748b !important;
+}
+
+/* EMPTY STATES MEJORADOS */
+.dark .text-gray-300 {
+  color: #64748b !important;
+}
+
+/* SCROLLBAR PERSONALIZADA PARA MODO OSCURO */
+.dark .overflow-x-auto::-webkit-scrollbar-track {
+  background: #334155 !important;
+}
+
+.dark .overflow-x-auto::-webkit-scrollbar-thumb {
+  background: #475569 !important;
+}
+
+.dark .overflow-x-auto::-webkit-scrollbar-thumb:hover {
+  background: #64748b !important;
+}
+
+/* MEJORAR SOMBRAS EN MODO OSCURO */
+.dark .shadow-lg {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.3) !important;
+}
+
+.dark .hover\\:shadow-xl:hover {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 10px 10px -5px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* GRADIENTES DE FONDO PARA ICONOS */
+.dark .bg-gradient-to-r.from-blue-500.to-purple-600 {
+  background: linear-gradient(to right, #3b82f6, #8b5cf6) !important;
+}
+
+/* MEJORAR DIVISORES */
+.dark .border-gray-200 {
+  border-color: #334155 !important;
+}
+
+.dark .divide-y-2.divide-gray-200 > * + * {
+  border-color: #334155 !important;
+}
+
+/* ESTADOS HOVER MEJORADOS */
+.dark .transition-all.duration-300:hover {
+  transform: translateY(-2px) !important;
+}/* BOTONES 
+ESPECÍFICOS DE PLACA MANUAL - MÁXIMA PRIORIDAD */
+
+/* Botón Auto Manual - Forzar color azul en modo oscuro */
+.dark .btn-auto-manual,
+.dark button.btn-auto-manual,
+html.dark .btn-auto-manual,
+html.dark button.btn-auto-manual {
+  background-color: #3b82f6 !important;
+  background-image: none !important;
+  background: #3b82f6 !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+
+.dark .btn-auto-manual:hover,
+.dark button.btn-auto-manual:hover,
+html.dark .btn-auto-manual:hover,
+html.dark button.btn-auto-manual:hover {
+  background-color: #2563eb !important;
+  background-image: none !important;
+  background: #2563eb !important;
+  color: #ffffff !important;
+}
+
+/* Botón Moto Manual - Forzar color verde en modo oscuro */
+.dark .btn-moto-manual,
+.dark button.btn-moto-manual,
+html.dark .btn-moto-manual,
+html.dark button.btn-moto-manual {
+  background-color: #10b981 !important;
+  background-image: none !important;
+  background: #10b981 !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+
+.dark .btn-moto-manual:hover,
+.dark button.btn-moto-manual:hover,
+html.dark .btn-moto-manual:hover,
+html.dark button.btn-moto-manual:hover {
+  background-color: #059669 !important;
+  background-image: none !important;
+  background: #059669 !important;
+  color: #ffffff !important;
+}
+
+/* Reglas adicionales para asegurar que los botones mantengan sus colores */
+.dark button[class*="btn-auto-manual"],
+.dark button[class*="btn-moto-manual"],
+html.dark button[class*="btn-auto-manual"],
+html.dark button[class*="btn-moto-manual"] {
+  background-image: none !important;
+  border: none !important;
+}
+
+/* Anular cualquier regla global que pueda afectar estos botones */
+.dark .btn-auto-manual.bg-blue-500,
+.dark .btn-moto-manual.bg-green-500,
+html.dark .btn-auto-manual.bg-blue-500,
+html.dark .btn-moto-manual.bg-green-500 {
+  background-color: revert !important;
+  background: revert !important;
+}
+
+/* Forzar colores específicos con selectores muy específicos */
+.dark button.btn-auto-manual.bg-blue-500.hover\\:bg-blue-600,
+html.dark button.btn-auto-manual.bg-blue-500.hover\\:bg-blue-600 {
+  background-color: #3b82f6 !important;
+  background: #3b82f6 !important;
+}
+
+.dark button.btn-auto-manual.bg-blue-500.hover\\:bg-blue-600:hover,
+html.dark button.btn-auto-manual.bg-blue-500.hover\\:bg-blue-600:hover {
+  background-color: #2563eb !important;
+  background: #2563eb !important;
+}
+
+.dark button.btn-moto-manual.bg-green-500.hover\\:bg-green-600,
+html.dark button.btn-moto-manual.bg-green-500.hover\\:bg-green-600 {
+  background-color: #10b981 !important;
+  background: #10b981 !important;
+}
+
+.dark button.btn-moto-manual.bg-green-500.hover\\:bg-green-600:hover,
+html.dark button.btn-moto-manual.bg-green-500.hover\\:bg-green-600:hover {
+  background-color: #059669 !important;
+  background: #059669 !important;
+}/* SOLUC
+IÓN DEFINITIVA PARA BOTONES DE PLACA MANUAL EN MODO OSCURO */
+/* Estas reglas tienen la máxima especificidad posible */
+
+/* Botón Auto - Estado inicial y hover */
+body.dark .btn-auto-manual,
+html.dark body .btn-auto-manual,
+.dark .btn-auto-manual,
+html.dark .btn-auto-manual,
+body.dark button.btn-auto-manual,
+html.dark body button.btn-auto-manual,
+.dark button.btn-auto-manual,
+html.dark button.btn-auto-manual,
+body.dark button.btn-auto-manual.bg-blue-500,
+html.dark body button.btn-auto-manual.bg-blue-500,
+.dark button.btn-auto-manual.bg-blue-500,
+html.dark button.btn-auto-manual.bg-blue-500 {
+  background-color: #3b82f6 !important;
+  background-image: none !important;
+  background: #3b82f6 !important;
+  color: #ffffff !important;
+  border-color: #3b82f6 !important;
+}
+
+body.dark .btn-auto-manual:hover,
+html.dark body .btn-auto-manual:hover,
+.dark .btn-auto-manual:hover,
+html.dark .btn-auto-manual:hover,
+body.dark button.btn-auto-manual:hover,
+html.dark body button.btn-auto-manual:hover,
+.dark button.btn-auto-manual:hover,
+html.dark button.btn-auto-manual:hover {
+  background-color: #2563eb !important;
+  background-image: none !important;
+  background: #2563eb !important;
+  color: #ffffff !important;
+  border-color: #2563eb !important;
+}
+
+/* Botón Moto - Estado inicial y hover */
+body.dark .btn-moto-manual,
+html.dark body .btn-moto-manual,
+.dark .btn-moto-manual,
+html.dark .btn-moto-manual,
+body.dark button.btn-moto-manual,
+html.dark body button.btn-moto-manual,
+.dark button.btn-moto-manual,
+html.dark button.btn-moto-manual,
+body.dark button.btn-moto-manual.bg-green-500,
+html.dark body button.btn-moto-manual.bg-green-500,
+.dark button.btn-moto-manual.bg-green-500,
+html.dark button.btn-moto-manual.bg-green-500 {
+  background-color: #10b981 !important;
+  background-image: none !important;
+  background: #10b981 !important;
+  color: #ffffff !important;
+  border-color: #10b981 !important;
+}
+
+body.dark .btn-moto-manual:hover,
+html.dark body .btn-moto-manual:hover,
+.dark .btn-moto-manual:hover,
+html.dark .btn-moto-manual:hover,
+body.dark button.btn-moto-manual:hover,
+html.dark body button.btn-moto-manual:hover,
+.dark button.btn-moto-manual:hover,
+html.dark button.btn-moto-manual:hover {
+  background-color: #059669 !important;
+  background-image: none !important;
+  background: #059669 !important;
+  color: #ffffff !important;
+  border-color: #059669 !important;
+}
+
+/* Reglas adicionales para anular cualquier estilo global */
+.dark button[class*="btn-auto-manual"],
+.dark button[class*="btn-moto-manual"] {
+  background-image: none !important;
+}
+
+/* Forzar colores con atributos de estilo inline si es necesario */
+.dark .btn-auto-manual[style],
+.dark .btn-moto-manual[style] {
+  background-color: revert !important;
+}
+
+/* Reglas específicas para las clases de Tailwind */
+.dark .bg-blue-500.btn-auto-manual,
+.dark .bg-green-500.btn-moto-manual {
+  background-color: revert !important;
+}
+
+/* Anular transiciones que puedan estar causando el problema */
+.dark .btn-auto-manual,
+.dark .btn-moto-manual {
+  transition: all 0.2s ease !important;
+}
+
+/* Reglas de emergencia con especificidad máxima */
+html body.dark .btn-auto-manual,
+html body.dark button.btn-auto-manual {
+  background: #3b82f6 !important;
+}
+
+html body.dark .btn-moto-manual,
+html body.dark button.btn-moto-manual {
+  background: #10b981 !important;
+}

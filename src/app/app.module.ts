@@ -15,6 +15,7 @@ import { ReportesComponent } from './pages/reportes/reportes.component';
 import { ConfiguracionComponent } from './pages/configuracion/configuracion.component';
 import { UsuariosComponent } from './pages/usuarios/usuarios.component';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { ThemeToggleComponent } from './components/theme-toggle/theme-toggle.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
     ReactiveFormsModule,
     FormsModule,
     DatePipe,
+    ThemeToggleComponent,
   ],
   providers: [
     provideAnimationsAsync(), 

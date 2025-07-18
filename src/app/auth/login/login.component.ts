@@ -1,6 +1,7 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LoginService } from '../../services/login.service';
+import { ThemeService } from '../../services/theme.service';
 import { Router } from '@angular/router';
 @Component({
   selector: 'app-login',
@@ -8,17 +9,33 @@ import { Router } from '@angular/router';
   styleUrl: './login.component.css',
   standalone: false,
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit, OnDestroy {
   formularioContacto: FormGroup;
   private _servicioApi = inject(LoginService);
   isLoading = false;
   errorMessage = '';
+  private previousTheme: boolean = false;
 
-  constructor(private form: FormBuilder, private router: Router) {
+  constructor(
+    private form: FormBuilder, 
+    private router: Router,
+    private themeService: ThemeService
+  ) {
     this.formularioContacto = this.form.group({
       name: ['', Validators.required],
       password: ['', Validators.required],
     });
+  }
+
+  ngOnInit() {
+    // Guardar el tema actual y forzar modo claro
+    this.previousTheme = this.themeService.getCurrentTheme();
+    this.themeService.setDarkMode(false);
+  }
+
+  ngOnDestroy() {
+    // Restaurar el tema anterior cuando se salga del login
+    this.themeService.setDarkMode(this.previousTheme);
   }
   enviar() {
     if (this.formularioContacto.valid) {
