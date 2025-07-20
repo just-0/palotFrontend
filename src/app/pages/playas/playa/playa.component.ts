@@ -16,12 +16,20 @@ interface Tab {
   badge?: number;
 }
 
+interface Notification {
+  id: number;
+  message: string;
+  type: 'success' | 'error' | 'info';
+  timestamp: number;
+}
+
 @Component({
   selector: 'app-playa',
   templateUrl: './playa.component.html',
   styleUrl: './playa.component.css',
   standalone: false,
 })
+
 export class PlayaComponent implements OnInit, OnDestroy {
   constructor(
     private currentPlayaService: CurrentPlayaService,
@@ -48,12 +56,16 @@ export class PlayaComponent implements OnInit, OnDestroy {
   // PDF Client y Placa Manual
   pdfClient: jsPDFclient;
   placaManual: string = '';
-  
+
   // Datos de vehículos
   placas: any[] = [];
   filtro: string = '';
   filtroRegistroDiario: string = '';
   plateImageBaseUrl = environment.plateImageBaseUrl;
+
+  // Sistema de notificaciones mejorado
+  notifications: Notification[] = [];
+  private notificationIdCounter = 0;
 
   tabs: Tab[] = [
     {
@@ -224,39 +236,96 @@ export class PlayaComponent implements OnInit, OnDestroy {
       });
   }
 
-  // Mostrar notificaciones sin bloquear la página
+  // Sistema de notificaciones mejorado - aparecen en cola
   showNotification(
     message: string,
     type: 'success' | 'error' | 'info' = 'info'
   ) {
-    // Crear elemento de notificación
-    const notification = document.createElement('div');
-    notification.className = `fixed top-4 right-4 z-50 px-6 py-3 rounded-lg shadow-lg text-white font-medium transition-all duration-300 transform translate-x-full`;
+    // Crear nueva notificación
+    const newNotification: Notification = {
+      id: ++this.notificationIdCounter,
+      message,
+      type,
+      timestamp: Date.now()
+    };
+
+    // Agregar a la cola de notificaciones
+    this.notifications.push(newNotification);
+
+    // Crear elemento DOM
+    this.createNotificationElement(newNotification);
+
+    // Auto-remover después de 4 segundos
+    setTimeout(() => {
+      this.removeNotification(newNotification.id);
+    }, 4000);
+  }
+
+  private createNotificationElement(notification: Notification) {
+    const element = document.createElement('div');
+    element.id = `notification-${notification.id}`;
+
+    // Calcular posición basada en notificaciones existentes
+    const existingNotifications = document.querySelectorAll('[id^="notification-"]');
+    const topPosition = 16 + (existingNotifications.length * 80); // 16px inicial + 80px por cada notificación
+
+    element.className = `fixed right-4 z-50 px-6 py-3 rounded-lg shadow-lg text-white font-medium transition-all duration-300 transform translate-x-full max-w-sm`;
+    element.style.top = `${topPosition}px`;
 
     // Aplicar colores según el tipo
-    if (type === 'success') {
-      notification.className += ' bg-green-500';
-    } else if (type === 'error') {
-      notification.className += ' bg-red-500';
+    if (notification.type === 'success') {
+      element.className += ' bg-green-500';
+    } else if (notification.type === 'error') {
+      element.className += ' bg-red-500';
     } else {
-      notification.className += ' bg-blue-500';
+      element.className += ' bg-blue-500';
     }
 
-    notification.textContent = message;
-    document.body.appendChild(notification);
+    // Agregar contenido con botón de cerrar
+    element.innerHTML = `
+      <div class="flex items-center justify-between">
+        <span class="flex-1 pr-2">${notification.message}</span>
+        <button onclick="this.parentElement.parentElement.style.transform='translateX(100%)'" 
+                class="ml-2 text-white hover:text-gray-200 transition-colors flex-shrink-0">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+    `;
+
+    document.body.appendChild(element);
 
     // Animar entrada
     setTimeout(() => {
-      notification.classList.remove('translate-x-full');
+      element.classList.remove('translate-x-full');
     }, 100);
+  }
 
-    // Remover después de 3 segundos
-    setTimeout(() => {
-      notification.classList.add('translate-x-full');
+  private removeNotification(id: number) {
+    // Remover de la lista
+    this.notifications = this.notifications.filter(n => n.id !== id);
+
+    // Remover elemento DOM
+    const element = document.getElementById(`notification-${id}`);
+    if (element) {
+      element.classList.add('translate-x-full');
       setTimeout(() => {
-        document.body.removeChild(notification);
+        if (element.parentNode) {
+          element.parentNode.removeChild(element);
+        }
+        // Reposicionar notificaciones restantes
+        this.repositionNotifications();
       }, 300);
-    }, 3000);
+    }
+  }
+
+  private repositionNotifications() {
+    const existingNotifications = document.querySelectorAll('[id^="notification-"]');
+    existingNotifications.forEach((element, index) => {
+      const topPosition = 16 + (index * 80);
+      (element as HTMLElement).style.top = `${topPosition}px`;
+    });
   }
 
   // Métodos para crear vehículos manuales con generación de PDF
@@ -444,5 +513,28 @@ export class PlayaComponent implements OnInit, OnDestroy {
 
   contarVehiculosFinalizados(): number {
     return this.placas.filter(item => item.state === 3 || item.state === 4).length;
+  }
+
+  // Método para reimprimir documentos (ticket, boleta o factura)
+  reprintDocument(item: Auto | Moto) {
+    console.log('Reimprimiendo documento para vehículo:', item);
+
+    // Por ahora solo manejamos tickets, ya que boletas y facturas están en desarrollo
+    // En el futuro aquí se consultará la base de datos para determinar qué tipo de documento se generó
+
+    // Mostrar notificación de que se está buscando el documento
+    this.showNotification('Buscando documento para reimprimir...', 'info');
+
+    // Simular búsqueda en base de datos (por ahora solo reimprime ticket)
+    setTimeout(() => {
+      try {
+        // Por el momento solo reimprimimos el ticket de pago
+        this.pdfClient.generatePagoPDF(item, item.state, this.Playa);
+        this.showNotification('Documento reimpreso exitosamente', 'success');
+      } catch (error) {
+        console.error('Error al reimprimir documento:', error);
+        this.showNotification('Error al reimprimir el documento', 'error');
+      }
+    }, 500);
   }
 }

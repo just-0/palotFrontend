@@ -169,6 +169,7 @@
                         </td>
                         <td class="px-6 py-6">
                           <div class="flex flex-wrap gap-2">
+                            <!-- Botones para estados pendientes -->
                             <button *ngIf="item.state === 1 || item.state === 2" (click)="printTicket(item, 2)"
                               class="w-10 h-10 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-medium transition-colors flex items-center justify-center"
                               title="Generar Ticket">
@@ -178,6 +179,13 @@
                               class="w-10 h-10 bg-green-500 hover:bg-green-600 text-white rounded-lg font-medium transition-colors flex items-center justify-center"
                               title="Procesar Pago">
                               <i class="fa-solid fa-money-bill-1-wave text-lg"></i>
+                            </button>
+                            
+                            <!-- Botón para estados cancelados/pagados - SOLO ESTE EN MORADO -->
+                            <button *ngIf="item.state === 3 || item.state === 4" (click)="reprintDocument(item)"
+                              class="w-10 h-10 bg-purple-500 hover:bg-purple-600 text-white rounded-lg font-medium transition-colors flex items-center justify-center"
+                              title="Reimprimir Documento">
+                              <i class="fa-solid fa-print text-lg"></i>
                             </button>
                           </div>
                         </td>

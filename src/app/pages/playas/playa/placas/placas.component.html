@@ -62,12 +62,12 @@
                   <button type="button" (click)="printTicket(item, 2)" class="btn0 btn btn-primary">
                     <i class="fa-solid fa-car"></i>
                   </button>
-                  
+
                   <!-- Botón de pago simple (siempre disponible) -->
                   <button type="button" (click)="printPago(item, 3)" class="btn0 btn btn-success">
                     <i class="fa-solid fa-money-bill-1-wave"></i>
                   </button>
-                  
+
                   <!-- Botones adicionales solo si la playa requiere facturación -->
                   <ng-container *ngIf="playa.facturacion">
                     <button type="button" class="btn1 btn btn-warning" title="Boleta/Factura Directa">
