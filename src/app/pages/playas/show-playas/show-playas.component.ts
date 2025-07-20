@@ -46,7 +46,11 @@ export class ShowPlayasComponent implements OnInit {
       direccion: [''],
       tarifaAuto: ['', [Validators.required, Validators.min(0)]],
       tarifaMoto: ['', [Validators.required, Validators.min(0)]],
-      facturacion: [false] // Campo para facturación SUNAT
+      tolerancia: ['', [Validators.required, Validators.min(0), Validators.pattern(/^\d+$/)]], // Tolerancia en minutos (obligatorio, entero)
+      facturacion: [false], // Campo para facturación SUNAT
+      cam_url: [''], // URL de la cámara
+      cam_user: [''], // Usuario de la cámara
+      cam_password: [''] // Contraseña de la cámara
     });
   }
   ngOnInit(): void {
@@ -169,7 +173,11 @@ export class ShowPlayasComponent implements OnInit {
       direccion: playa.direccion || '',
       tarifaAuto: playa.tarifaAuto || '',
       tarifaMoto: playa.tarifaMoto || '',
-      facturacion: playa.facturacion || false
+      tolerancia: playa.tolerancia || '',
+      facturacion: playa.facturacion || false,
+      cam_url: playa.cam_url || '',
+      cam_user: playa.cam_user || '',
+      cam_password: playa.cam_password || ''
     });
     this.showPlayaModal = true;
   }
