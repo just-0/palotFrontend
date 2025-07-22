@@ -27,14 +27,14 @@
                 style="max-width: 200px; max-height: 200px" />
             </td>
             <td class="col-monto">
-              <p *ngIf="(item.state == 3 || item.state == 4)">S/.{{ item.total_pagar}}</p>
+              <p *ngIf="item.state == 3">S/.{{ item.total_pagar}}</p>
               <p *ngIf="item.state == 1 || item.state == 2">S/. 0.00</p>
             </td>
             <td class="col-estado" [ngStyle]="{
                 'background-color':
                   item.state === 2
                     ? '#FF5353'
-                    : item.state === 3 || item.state == 4
+                    : item.state === 3
                     ? '#53FF7A'
                     : 'transparent',
                 color: item.state === 1 || item.state === 1 ? 'white' : 'black',
@@ -49,9 +49,6 @@
 
               <!-- Estado 3 -->
               <div *ngIf="item.state === 3" class="estado-verde">
-                <p class="text-dark">CANCELADO</p>
-              </div>
-              <div *ngIf="item.state === 4" class="estado-verde">
                 <p class="text-dark">CANCELADO</p>
               </div>
             </td>
@@ -95,21 +92,7 @@
                 </span>
               </div>
 
-              <div *ngIf="item.state === 4" class="estado-verde">
-                <div class="btn-group" role="group" aria-label="Basic example">
-                  <ng-container *ngIf="playa.facturacion">
-                    <button type="button" class="btn1 btn btn-secondary" title="Generar Boleta/Factura Directa">
-                      <i class="fa-solid fa-receipt"></i>BV Directa
-                    </button>
-                    <button type="button" class="btn1 btn btn-secondary" title="Generar Boleta/Factura con Cliente">
-                      <i class="fa-solid fa-user-plus"></i>BV/FV Cliente
-                    </button>
-                  </ng-container>
-                  <span *ngIf="!playa.facturacion" class="text-success">
-                    <i class="fa-solid fa-check-circle"></i> Pagado
-                  </span>
-                </div>
-              </div>
+
 
               <!-- Otros estados -->
               <div *ngIf="item.state == 1 " class="estado-default">
