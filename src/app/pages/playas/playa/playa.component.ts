@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CurrentPlayaService } from '../../../services/current-playa.service';
+import { WebSocketService, VehicleDetectedEvent } from '../../../services/websocket.service';
 import { Router } from '@angular/router';
 import { interval } from 'rxjs';
 import { Subscription } from 'rxjs';
@@ -33,6 +34,7 @@ interface Notification {
 export class PlayaComponent implements OnInit, OnDestroy {
   constructor(
     private currentPlayaService: CurrentPlayaService,
+    private webSocketService: WebSocketService,
     private router: Router,
     private http: HttpClient,
     private loginService: LoginService,
@@ -83,33 +85,37 @@ export class PlayaComponent implements OnInit, OnDestroy {
   ];
 
   ngOnInit(): void {
-    console.log('=== COMPONENTE PLAYA INICIANDO ===');
     this.Playa = this.currentPlayaService.getCurrentPlaya();
     this.currentUser = this.loginService.getCurrentUser();
-    console.log('Playa obtenida del servicio:', this.Playa);
 
     if (!this.Playa || this.Playa === null) {
       console.error('No hay playa seleccionada, redirigiendo al dashboard');
-      // Dar un pequeño delay para que se complete la navegación
       setTimeout(() => {
         this.router.navigate(['/playas']);
       }, 100);
       return;
     }
 
-    console.log('Playa válida encontrada, iniciando componente');
+    // Solo actualizar la hora cada segundo (sin polling de datos)
     this.subscription.add(
       interval(1000).subscribe(() => {
         this.fechaHora = new Date();
       })
     );
 
-    // Cargar datos de vehículos
+    // Cargar datos iniciales de vehículos (sin polling)
     this.loadVehicleData();
+    
+    // Configurar WebSocket para recibir notificaciones en tiempo real
+    this.setupWebSocket();
   }
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+    
+    // Desconectar WebSocket al salir del componente
+    this.webSocketService.leavePlayaRoom();
+    this.webSocketService.disconnect();
   }
 
   salirPlaya() {
@@ -536,5 +542,131 @@ export class PlayaComponent implements OnInit, OnDestroy {
         this.showNotification('Error al reimprimir el documento', 'error');
       }
     }, 500);
+  }
+
+  /**
+   * Configura WebSocket para recibir notificaciones de vehículos detectados en tiempo real
+   * Solo se activa si la playa tiene una cámara configurada
+   */
+  private setupWebSocket(): void {
+    // Verificar si la playa tiene cámara configurada
+    if (!this.hasCameraConfigured()) {
+      console.log('📷 Playa sin cámara configurada - WebSocket no necesario');
+      return;
+    }
+
+    console.log('📷 Playa con cámara detectada - Activando WebSocket');
+    
+    // Conectar al WebSocket
+    this.webSocketService.connect();
+    
+    // Unirse a la sala de la playa actual
+    this.webSocketService.joinPlayaRoom(this.Playa.id_playa);
+    
+    // Escuchar eventos de vehículos detectados por cámaras
+    this.subscription.add(
+      this.webSocketService.onVehicleDetected().subscribe({
+        next: (event: VehicleDetectedEvent) => {
+          this.handleVehicleDetected(event);
+        },
+        error: (error) => {
+          console.error('Error en WebSocket:', error);
+        }
+      })
+    );
+
+    // Monitorear estado de conexión
+    this.subscription.add(
+      this.webSocketService.getConnectionStatus().subscribe({
+        next: (connected: boolean) => {
+          if (connected) {
+            console.log('✅ WebSocket conectado - Listo para recibir detecciones de cámara');
+          } else {
+            console.log('❌ WebSocket desconectado');
+          }
+        }
+      })
+    );
+  }
+
+  /**
+   * Verifica si la playa tiene una cámara configurada
+   */
+  private hasCameraConfigured(): boolean {
+    return !!(this.Playa?.cam_url && this.Playa.cam_url.trim() !== '');
+  }
+
+  /**
+   * Obtiene el estado de la cámara para mostrar en la UI
+   */
+  getCameraStatus(): { hasCamera: boolean; status: string; color: string } {
+    const hasCamera = this.hasCameraConfigured();
+    const isWebSocketConnected = this.webSocketService.isConnected();
+
+    if (!hasCamera) {
+      return {
+        hasCamera: false,
+        status: 'Sin cámara configurada - Solo registro manual',
+        color: 'text-gray-500'
+      };
+    }
+
+    if (isWebSocketConnected) {
+      return {
+        hasCamera: true,
+        status: 'Cámara conectada - Detección automática activa',
+        color: 'text-green-500'
+      };
+    }
+
+    return {
+      hasCamera: true,
+      status: 'Cámara configurada - Conectando...',
+      color: 'text-yellow-500'
+    };
+  }
+
+  /**
+   * Maneja la llegada de un nuevo vehículo detectado por cámara
+   */
+  private handleVehicleDetected(event: VehicleDetectedEvent): void {
+    console.log('🚗 Nueva detección de cámara:', event.vehicle);
+    
+    // Verificar que el vehículo pertenece a esta playa
+    if (event.vehicle.id_playa !== this.Playa.id_playa) {
+      return;
+    }
+
+    // Crear objeto compatible con la estructura existente
+    const newVehicle = {
+      id_auto: event.vehicle.id_auto,
+      id_playa: event.vehicle.id_playa,
+      placa: event.vehicle.placa,
+      hora_entrada: event.vehicle.hora_entrada,
+      hora_salida: null,
+      image: null,
+      state: event.vehicle.state,
+      total_pagar: null
+    };
+
+    // Verificar si el vehículo ya existe en la lista (evitar duplicados)
+    const existingIndex = this.placas.findIndex(p => 
+      p.id_auto === newVehicle.id_auto || 
+      (p.placa === newVehicle.placa && p.state === 1)
+    );
+
+    if (existingIndex === -1) {
+      // Agregar al inicio de la lista (más reciente primero)
+      this.placas.unshift(newVehicle);
+      console.log(`✅ Vehículo agregado: ${newVehicle.placa} (Total: ${this.placas.length})`);
+      
+      // Mostrar notificación de nueva detección
+      this.showNotification(
+        `Nueva placa detectada: ${newVehicle.placa}`,
+        'success'
+      );
+    } else {
+      console.log(`⚠️ Vehículo ya existe: ${newVehicle.placa}`);
+    }
   }
 }
