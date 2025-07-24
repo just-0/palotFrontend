@@ -10,6 +10,7 @@ export interface VehicleDetectedEvent {
     id_playa: number;
     placa: string;
     hora_entrada: string;
+    image?: string;
     state: number;
   };
   timestamp: string;

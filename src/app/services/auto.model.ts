@@ -5,7 +5,7 @@ export interface Auto {
     hora_entrada: string; // Almacena el timestamp como cadena
     hora_salida: string;  // Almacena el timestamp como cadena
     state: number;
-    img?: string;          // Almacena la imagen en base64 como cadena
+    image?: string;        // Almacena la URL de la imagen
   }
 export interface Moto {
     id_moto: number;
@@ -14,5 +14,5 @@ export interface Moto {
     hora_entrada: string; // Almacena el timestamp como cadena
     hora_salida: string;  // Almacena el timestamp como cadena
     state: number;
-    img?: string;          // Almacena la imagen en base64 como cadena
+    image?: string;        // Almacena la URL de la imagen
   }

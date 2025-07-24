@@ -23,7 +23,7 @@
             </td>
             <td class="col-placa">{{ item.placa }}</td>
             <td class="col-imagen">
-              <img *ngIf="item.img" [src]="plateImageBaseUrl + '/doc/ui/images/plate/' + item.img" alt="No cargo"
+              <img *ngIf="item.image" [src]="item.image" alt="No cargo"
                 style="max-width: 200px; max-height: 200px" />
             </td>
             <td class="col-monto">

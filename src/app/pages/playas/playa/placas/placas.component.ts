@@ -100,7 +100,7 @@ export class PlacasComponent implements OnInit, OnDestroy {
     }
 
     console.log('📷 Playa con cámara detectada - Activando WebSocket');
-    
+
     // Conectar al WebSocket
     this._webSocketService.connect();
 
@@ -153,7 +153,7 @@ export class PlacasComponent implements OnInit, OnDestroy {
       return {
         hasCamera: false,
         status: 'Sin cámara configurada',
-        color: 'text-gray-500'
+        color: 'text-gray-500',
       };
     }
 
@@ -161,14 +161,14 @@ export class PlacasComponent implements OnInit, OnDestroy {
       return {
         hasCamera: true,
         status: 'Cámara conectada - Detección automática activa',
-        color: 'text-green-500'
+        color: 'text-green-500',
       };
     }
 
     return {
       hasCamera: true,
       status: 'Cámara configurada - Conectando...',
-      color: 'text-yellow-500'
+      color: 'text-yellow-500',
     };
   }
 
@@ -190,7 +190,7 @@ export class PlacasComponent implements OnInit, OnDestroy {
       placa: event.vehicle.placa,
       hora_entrada: event.vehicle.hora_entrada,
       hora_salida: null,
-      image: null,
+      image: event.vehicle.image,
       state: event.vehicle.state,
       total_pagar: null,
     };
