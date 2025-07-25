@@ -8,7 +8,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { LoginService } from '../../../services/login.service';
 import { DatePipe } from '@angular/common';
-import { jsPDFclient } from './placas/utils/jsTicketPDF';
+import { jsPDFclient } from './utils/jsTicketPDF';
 import { Auto, Moto } from '../../../services/auto.model';
 
 interface Tab {

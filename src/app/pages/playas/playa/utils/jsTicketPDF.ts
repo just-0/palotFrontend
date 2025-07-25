@@ -1,8 +1,8 @@
 import { inject } from "@angular/core";
-import { Auto } from "../../../../../services/auto.model";
+import { Auto } from "../../../../services/auto.model";
 import jsPDF from 'jspdf';
 import { DatePipe } from '@angular/common';
-import { CurrentPlayaService } from "../../../../../services/current-playa.service";
+import { CurrentPlayaService } from "../../../../services/current-playa.service";
 import numero2palabra from "./numero2palabra";
 import { Observable } from "rxjs";
 export class jsPDFclient{
