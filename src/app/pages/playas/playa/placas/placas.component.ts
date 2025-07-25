@@ -177,6 +177,7 @@ export class PlacasComponent implements OnInit, OnDestroy {
    */
   private handleVehicleDetected(event: VehicleDetectedEvent): void {
     console.log('🚗 Nueva detección de cámara:', event.vehicle);
+    console.log('🖼️ URL de imagen recibida:', event.vehicle.image);
 
     // Verificar que el vehículo pertenece a esta playa
     if (event.vehicle.id_playa !== this.playa.id_playa) {
