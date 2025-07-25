@@ -644,7 +644,7 @@ export class PlayaComponent implements OnInit, OnDestroy {
       placa: event.vehicle.placa,
       hora_entrada: event.vehicle.hora_entrada,
       hora_salida: null,
-      image: null,
+      image: event.vehicle.image, // ✅ Usar la URL de imagen del backend
       state: event.vehicle.state,
       total_pagar: null
     };

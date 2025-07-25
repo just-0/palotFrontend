@@ -148,9 +148,9 @@
                         <td class="px-6 py-6 text-lg text-gray-700">{{ formatHora(item.hora_entrada) }}</td>
                         <td class="px-6 py-6 text-xl font-bold text-blue-600">{{ item.placa }}</td>
                         <td class="px-6 py-6">
-                          <img *ngIf="item.img" [src]="plateImageBaseUrl + '/doc/ui/images/plate/' + item.img"
-                            alt="Imagen de placa" class="max-w-48 max-h-32 rounded-lg shadow-md" />
-                          <span *ngIf="!item.img" class="text-gray-400 text-lg">Sin imagen</span>
+                          <img *ngIf="item.image" [src]="item.image" alt="Imagen de placa"
+                            class="max-w-48 max-h-32 rounded-lg shadow-md" />
+                          <span *ngIf="!item.image" class="text-gray-400 text-lg">Sin imagen</span>
                         </td>
                         <td class="px-6 py-6">
                           <span *ngIf="(item.state == 3 || item.state == 4)"
@@ -180,7 +180,7 @@
                               title="Procesar Pago">
                               <i class="fa-solid fa-money-bill-1-wave text-lg"></i>
                             </button>
-                            
+
                             <!-- Botón para estados cancelados/pagados - SOLO ESTE EN MORADO -->
                             <button *ngIf="item.state === 3 || item.state === 4" (click)="reprintDocument(item)"
                               class="w-10 h-10 bg-purple-500 hover:bg-purple-600 text-white rounded-lg font-medium transition-colors flex items-center justify-center"
