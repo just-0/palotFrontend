@@ -51,23 +51,19 @@ export class LoginComponent implements OnInit, OnDestroy {
           next: (response) => {
             this.isLoading = false;
             if (response) {
-              console.log('Componente Login -> Logueado correctamente');
               this.router.navigate(['/playas']);
             } else {
-              console.log('Componente Login -> Credenciales incorrectas');
               this.errorMessage =
                 'Credenciales incorrectas. Por favor, verifica tu usuario y contraseña.';
             }
           },
           error: (error) => {
             this.isLoading = false;
-            console.error('Componente Login -> Error en el login:', error);
             this.errorMessage =
               'Error de conexión. Por favor, intenta de nuevo.';
           },
         });
     } else {
-      console.log('Componente Login -> Formulario inválido');
       this.errorMessage = 'Por favor, completa todos los campos.';
     }
   }

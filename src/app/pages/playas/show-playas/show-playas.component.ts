@@ -62,14 +62,8 @@ export class ShowPlayasComponent implements OnInit {
     this.isLoadingPlayas = true;
     this.showPlayasService.getPlayas().subscribe(
       data => {
-        console.log('Playas cargadas:', data);
         this.playas = data || [];
         this.isLoadingPlayas = false;
-        
-        // Si es empleado y no tiene playas asignadas, mostrar mensaje
-        if (this.currentUser?.tipo === 'empleado' && (!data || data.length === 0)) {
-          console.log('Empleado sin playas asignadas');
-        }
       },
       error => {
         console.error('Error al cargar playas:', error);
@@ -81,11 +75,6 @@ export class ShowPlayasComponent implements OnInit {
 
 
   abrirPlaya(selectedPlaya: any){
-    console.log('=== ABRIENDO PLAYA ===');
-    console.log('Playa seleccionada:', selectedPlaya);
-    console.log('Nombre de la playa:', selectedPlaya.nombre);
-    
-    // Primero abrir la playa en la base de datos
     const abrirData = {
       usuarioAbrio: this.currentUser?.nombre || this.currentUser?.id
     };
@@ -94,25 +83,17 @@ export class ShowPlayasComponent implements OnInit {
       .subscribe({
         next: (response: any) => {
           if (response.success) {
-            console.log('Playa abierta exitosamente en la base de datos');
-            
-            // Recargar las playas para actualizar el estado
             this.loadPlayas();
             
-            // Guardar la playa actual con el estado actualizado
             const playaActualizada = { ...selectedPlaya, estado: 'abierto' };
             this.currentPlayaService.setCurrentPlaya(playaActualizada);
             
-            // Navegar a la playa
-            const ruta = ['/playa', selectedPlaya.nombre];
-            console.log('Navegando a:', ruta);
-            this.router.navigate(ruta);
+            this.router.navigate(['/playa', selectedPlaya.nombre]);
           } else {
             this.showNotification(response.message || 'Error al abrir la playa', 'error');
           }
         },
         error: (error) => {
-          console.error('Error abriendo playa:', error);
           const errorMessage = error.error?.message || 'Error al abrir la playa';
           this.showNotification(errorMessage, 'error');
         }
@@ -355,16 +336,8 @@ export class ShowPlayasComponent implements OnInit {
 
   // Navegar a la playa sin abrirla (cuando ya está abierta)
   irAPlaya(selectedPlaya: any) {
-    console.log('=== NAVEGANDO A PLAYA ABIERTA ===');
-    console.log('Playa seleccionada:', selectedPlaya);
-    
-    // Guardar la playa actual
     this.currentPlayaService.setCurrentPlaya(selectedPlaya);
-    
-    // Navegar a la playa
-    const ruta = ['/playa', selectedPlaya.nombre];
-    console.log('Navegando a:', ruta);
-    this.router.navigate(ruta);
+    this.router.navigate(['/playa', selectedPlaya.nombre]);
   }
 }
 

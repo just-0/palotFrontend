@@ -35,16 +35,10 @@ export class ThemeService {
     if (isDark) {
       htmlElement.classList.add('dark');
       bodyElement.classList.add('dark');
-      console.log('Aplicando modo oscuro - clases agregadas');
     } else {
       htmlElement.classList.remove('dark');
       bodyElement.classList.remove('dark');
-      console.log('Aplicando modo claro - clases removidas');
     }
-    
-    // Debug: verificar que las clases se aplicaron
-    console.log('HTML classes:', htmlElement.className);
-    console.log('Body classes:', bodyElement.className);
   }
 
   toggleTheme() {

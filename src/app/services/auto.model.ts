@@ -6,6 +6,8 @@ export interface Auto {
     hora_salida: string;  // Almacena el timestamp como cadena
     state: number;
     image?: string;        // Almacena la URL de la imagen
+    total_pagar?: string;  // Total a pagar calculado
+    ticket_id?: number;    // ID del ticket generado
   }
 export interface Moto {
     id_moto: number;
@@ -15,4 +17,6 @@ export interface Moto {
     hora_salida: string;  // Almacena el timestamp como cadena
     state: number;
     image?: string;        // Almacena la URL de la imagen
+    total_pagar?: string;  // Total a pagar calculado
+    ticket_id?: number;    // ID del ticket generado
   }

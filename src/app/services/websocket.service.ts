@@ -42,7 +42,6 @@ export class WebSocketService {
       });
 
       this.socket.on('connect', () => {
-        console.log('✅ WebSocket conectado');
         this.connectionStatus.next(true);
         
         // Si hay una playa seleccionada, unirse a su sala
@@ -52,12 +51,10 @@ export class WebSocketService {
       });
 
       this.socket.on('disconnect', () => {
-        console.log('❌ WebSocket desconectado');
         this.connectionStatus.next(false);
       });
 
       this.socket.on('connect_error', (error) => {
-        console.error('❌ Error de conexión WebSocket:', error);
         this.connectionStatus.next(false);
       });
 
@@ -84,14 +81,12 @@ export class WebSocketService {
    */
   joinPlayaRoom(playaId: number): void {
     if (!this.socket?.connected) {
-      console.warn('⚠️ WebSocket no conectado, guardando playa para conectar después');
       this.currentPlayaId = playaId;
       return;
     }
 
     this.currentPlayaId = playaId;
     this.socket.emit('join-playa', playaId);
-    console.log(`📍 Unido a la sala de playa: ${playaId}`);
   }
 
   /**
@@ -100,7 +95,6 @@ export class WebSocketService {
   leavePlayaRoom(): void {
     if (this.socket?.connected && this.currentPlayaId) {
       this.socket.emit('leave-playa', this.currentPlayaId);
-      console.log(`📍 Saliendo de la sala de playa: ${this.currentPlayaId}`);
     }
     this.currentPlayaId = null;
   }
@@ -116,7 +110,6 @@ export class WebSocketService {
       }
 
       this.socket.on('vehicle-detected', (data: VehicleDetectedEvent) => {
-        console.log('🚗 Vehículo detectado por cámara:', data);
         observer.next(data);
       });
 

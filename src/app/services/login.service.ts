@@ -28,7 +28,7 @@ export class LoginService {
       this.currentUser = JSON.parse(userData);
     }
     
-    console.log('LoginService -> Cookie value:', cookieValue, 'LoggedIn:', this.loggedIn);
+
   }
   login() {
     this.loggedIn = true;
@@ -49,12 +49,10 @@ export class LoginService {
   }
 
   isLoggedIn() {
-    console.log('LoginService -> isLoggedIn() called, returning:', this.loggedIn);
     return this.loggedIn;
   }
 
   logout() {
-    console.log('LoginService -> Logging out user');
     this.loggedIn = false;
     this.currentUser = null;
     this.cookieService.delete('isLoggedIn');

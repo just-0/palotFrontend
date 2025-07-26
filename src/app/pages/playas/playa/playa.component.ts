@@ -1,6 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CurrentPlayaService } from '../../../services/current-playa.service';
-import { WebSocketService, VehicleDetectedEvent } from '../../../services/websocket.service';
+import {
+  WebSocketService,
+  VehicleDetectedEvent,
+} from '../../../services/websocket.service';
 import { Router } from '@angular/router';
 import { interval } from 'rxjs';
 import { Subscription } from 'rxjs';
@@ -30,7 +33,6 @@ interface Notification {
   styleUrl: './playa.component.css',
   standalone: false,
 })
-
 export class PlayaComponent implements OnInit, OnDestroy {
   constructor(
     private currentPlayaService: CurrentPlayaService,
@@ -89,7 +91,6 @@ export class PlayaComponent implements OnInit, OnDestroy {
     this.currentUser = this.loginService.getCurrentUser();
 
     if (!this.Playa || this.Playa === null) {
-      console.error('No hay playa seleccionada, redirigiendo al dashboard');
       setTimeout(() => {
         this.router.navigate(['/playas']);
       }, 100);
@@ -105,14 +106,14 @@ export class PlayaComponent implements OnInit, OnDestroy {
 
     // Cargar datos iniciales de vehículos (sin polling)
     this.loadVehicleData();
-    
+
     // Configurar WebSocket para recibir notificaciones en tiempo real
     this.setupWebSocket();
   }
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
-    
+
     // Desconectar WebSocket al salir del componente
     this.webSocketService.leavePlayaRoom();
     this.webSocketService.disconnect();
@@ -215,9 +216,7 @@ export class PlayaComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (response: any) => {
           if (response.success) {
-            console.log('Playa cerrada exitosamente');
             this.showNotification('Playa cerrada exitosamente', 'success');
-            // Cerrar modal y regresar al dashboard
             this.closeCerrarPlayaModal();
             setTimeout(() => {
               this.salirPlaya();
@@ -232,7 +231,6 @@ export class PlayaComponent implements OnInit, OnDestroy {
           }
         },
         error: (error) => {
-          console.error('Error cerrando playa:', error);
           const errorMessage =
             error.error?.message || 'Error al cerrar la playa';
           this.showNotification(errorMessage, 'error');
@@ -252,7 +250,7 @@ export class PlayaComponent implements OnInit, OnDestroy {
       id: ++this.notificationIdCounter,
       message,
       type,
-      timestamp: Date.now()
+      timestamp: Date.now(),
     };
 
     // Agregar a la cola de notificaciones
@@ -272,8 +270,10 @@ export class PlayaComponent implements OnInit, OnDestroy {
     element.id = `notification-${notification.id}`;
 
     // Calcular posición basada en notificaciones existentes
-    const existingNotifications = document.querySelectorAll('[id^="notification-"]');
-    const topPosition = 16 + (existingNotifications.length * 80); // 16px inicial + 80px por cada notificación
+    const existingNotifications = document.querySelectorAll(
+      '[id^="notification-"]'
+    );
+    const topPosition = 16 + existingNotifications.length * 80; // 16px inicial + 80px por cada notificación
 
     element.className = `fixed right-4 z-50 px-6 py-3 rounded-lg shadow-lg text-white font-medium transition-all duration-300 transform translate-x-full max-w-sm`;
     element.style.top = `${topPosition}px`;
@@ -310,7 +310,7 @@ export class PlayaComponent implements OnInit, OnDestroy {
 
   private removeNotification(id: number) {
     // Remover de la lista
-    this.notifications = this.notifications.filter(n => n.id !== id);
+    this.notifications = this.notifications.filter((n) => n.id !== id);
 
     // Remover elemento DOM
     const element = document.getElementById(`notification-${id}`);
@@ -327,9 +327,11 @@ export class PlayaComponent implements OnInit, OnDestroy {
   }
 
   private repositionNotifications() {
-    const existingNotifications = document.querySelectorAll('[id^="notification-"]');
+    const existingNotifications = document.querySelectorAll(
+      '[id^="notification-"]'
+    );
     existingNotifications.forEach((element, index) => {
-      const topPosition = 16 + (index * 80);
+      const topPosition = 16 + index * 80;
       (element as HTMLElement).style.top = `${topPosition}px`;
     });
   }
@@ -355,21 +357,15 @@ export class PlayaComponent implements OnInit, OnDestroy {
       .createManualCar(this.placaManual, this.Playa.id_playa, new Date(), 1)
       .subscribe({
         next: (response: Auto) => {
-          console.log('Auto manual creado:', response);
-          // Agregar a la lista de vehículos
           this.updateVehicleDataAfterCreation(response);
-          // Generar PDF del ticket
           this.pdfClient.generateTicketPDF(response, 1, this.Playa);
-          // Limpiar el campo de placa
           this.placaManual = '';
-          // Mostrar notificación de éxito
           this.showNotification(
             'Ticket de auto generado exitosamente',
             'success'
           );
         },
         error: (error: any) => {
-          console.error('Error al crear auto manual:', error);
           this.showNotification('Error al crear el registro del auto', 'error');
         },
       });
@@ -395,21 +391,15 @@ export class PlayaComponent implements OnInit, OnDestroy {
       .createManualBike(this.placaManual, this.Playa.id_playa, new Date(), 1)
       .subscribe({
         next: (response: Moto) => {
-          console.log('Moto manual creada:', response);
-          // Agregar a la lista de vehículos
           this.updateVehicleDataAfterCreation(response);
-          // Generar PDF del ticket
           this.pdfClient.generateTicketPDF(response, 1, this.Playa);
-          // Limpiar el campo de placa
           this.placaManual = '';
-          // Mostrar notificación de éxito
           this.showNotification(
             'Ticket de moto generado exitosamente',
             'success'
           );
         },
         error: (error: any) => {
-          console.error('Error al crear moto manual:', error);
           this.showNotification(
             'Error al crear el registro de la moto',
             'error'
@@ -424,22 +414,20 @@ export class PlayaComponent implements OnInit, OnDestroy {
     this.currentPlayaService.getPlacas().subscribe({
       next: (data: Auto[]) => {
         this.placas = data;
-        console.log('Autos cargados:', this.placas);
       },
       error: (error: any) => {
-        console.error('Error al obtener las placas:', error);
-      }
+        // Error silencioso para no saturar logs
+      },
     });
 
     // Cargar motos
     this.currentPlayaService.getPlacasMotos().subscribe({
       next: (data: any[]) => {
         this.placas = this.placas.concat(data);
-        console.log('Motos cargadas, total vehículos:', this.placas.length);
       },
       error: (error: any) => {
-        console.error('Error al obtener las placas de motos:', error);
-      }
+        // Error silencioso para no saturar logs
+      },
     });
   }
 
@@ -471,7 +459,13 @@ export class PlayaComponent implements OnInit, OnDestroy {
 
   // Métodos para imprimir tickets y pagos
   printTicket(item: Auto, newState: number) {
-    this.pdfClient.generateTicketPDF(item, newState, this.Playa);
+    if (newState === 2 && item.total_pagar) {
+      // Estado 2: Usar datos ya almacenados para generar ticket de venta
+      this.pdfClient.generateTicketVentaPDF(item, this.Playa);
+    } else {
+      // Estados 0 y 1: Generar ticket normal
+      this.pdfClient.generateTicketPDF(item, newState, this.Playa);
+    }
   }
 
   printPago(item: Auto, newState: number) {
@@ -482,7 +476,6 @@ export class PlayaComponent implements OnInit, OnDestroy {
   private updateVehicleDataAfterCreation(newVehicle: Auto | Moto) {
     // Agregar el nuevo vehículo a la lista
     this.placas.unshift(newVehicle);
-    console.log('Vehículo agregado a la lista:', newVehicle);
   }
 
   // Métodos para el registro diario
@@ -499,46 +492,42 @@ export class PlayaComponent implements OnInit, OnDestroy {
 
     return datosOrdenados.filter(
       (item) =>
-        item.placa?.toLowerCase().includes(this.filtroRegistroDiario.toLowerCase()) ||
-        (item.id_auto && item.id_auto.toString().includes(this.filtroRegistroDiario)) ||
-        (item.id_moto && item.id_moto.toString().includes(this.filtroRegistroDiario))
+        item.placa
+          ?.toLowerCase()
+          .includes(this.filtroRegistroDiario.toLowerCase()) ||
+        (item.id_auto &&
+          item.id_auto.toString().includes(this.filtroRegistroDiario)) ||
+        (item.id_moto &&
+          item.id_moto.toString().includes(this.filtroRegistroDiario))
     );
   }
 
   // Métodos para estadísticas
   calcularIngresosDia(): string {
     const total = this.placas
-      .filter(item => item.state === 2)
+      .filter((item) => item.state === 2)
       .reduce((sum, item) => sum + (parseFloat(item.total_pagar) || 0), 0);
     return total.toFixed(2);
   }
 
   contarVehiculosActivos(): number {
-    return this.placas.filter(item => item.state === 0 || item.state === 1).length;
+    return this.placas.filter((item) => item.state === 0 || item.state === 1)
+      .length;
   }
 
   contarVehiculosFinalizados(): number {
-    return this.placas.filter(item => item.state === 2).length;
+    return this.placas.filter((item) => item.state === 2).length;
   }
 
   // Método para reimprimir documentos (ticket, boleta o factura)
   reprintDocument(item: Auto | Moto) {
-    console.log('Reimprimiendo documento para vehículo:', item);
-
-    // Por ahora solo manejamos tickets, ya que boletas y facturas están en desarrollo
-    // En el futuro aquí se consultará la base de datos para determinar qué tipo de documento se generó
-
-    // Mostrar notificación de que se está buscando el documento
     this.showNotification('Buscando documento para reimprimir...', 'info');
 
-    // Simular búsqueda en base de datos (por ahora solo reimprime ticket)
     setTimeout(() => {
       try {
-        // Por el momento solo reimprimimos el ticket de pago
         this.pdfClient.generatePagoPDF(item, item.state, this.Playa);
         this.showNotification('Documento reimpreso exitosamente', 'success');
       } catch (error) {
-        console.error('Error al reimprimir documento:', error);
         this.showNotification('Error al reimprimir el documento', 'error');
       }
     }, 500);
@@ -548,13 +537,13 @@ export class PlayaComponent implements OnInit, OnDestroy {
     if (!this.hasCameraConfigured()) {
       return;
     }
-    
+
     // Conectar al WebSocket
     this.webSocketService.connect();
-    
+
     // Unirse a la sala de la playa actual
     this.webSocketService.joinPlayaRoom(this.Playa.id_playa);
-    
+
     // Escuchar eventos de vehículos detectados por cámaras
     this.subscription.add(
       this.webSocketService.onVehicleDetected().subscribe({
@@ -563,7 +552,7 @@ export class PlayaComponent implements OnInit, OnDestroy {
         },
         error: (error) => {
           console.error('Error en WebSocket:', error);
-        }
+        },
       })
     );
 
@@ -576,7 +565,7 @@ export class PlayaComponent implements OnInit, OnDestroy {
           } else {
             console.log('WebSocket desconectado');
           }
-        }
+        },
       })
     );
   }
@@ -599,7 +588,7 @@ export class PlayaComponent implements OnInit, OnDestroy {
       return {
         hasCamera: false,
         status: 'Sin cámara configurada - Solo registro manual',
-        color: 'text-gray-500'
+        color: 'text-gray-500',
       };
     }
 
@@ -607,14 +596,14 @@ export class PlayaComponent implements OnInit, OnDestroy {
       return {
         hasCamera: true,
         status: 'Cámara conectada - Detección automática activa',
-        color: 'text-green-500'
+        color: 'text-green-500',
       };
     }
 
     return {
       hasCamera: true,
       status: 'Cámara configurada - Conectando...',
-      color: 'text-yellow-500'
+      color: 'text-yellow-500',
     };
   }
 
@@ -634,12 +623,13 @@ export class PlayaComponent implements OnInit, OnDestroy {
       hora_salida: null,
       image: event.vehicle.image,
       state: event.vehicle.state,
-      total_pagar: null
+      total_pagar: null,
     };
 
-    const existingIndex = this.placas.findIndex(p => 
-      p.id_auto === newVehicle.id_auto || 
-      (p.placa === newVehicle.placa && p.state === 1)
+    const existingIndex = this.placas.findIndex(
+      (p) =>
+        p.id_auto === newVehicle.id_auto ||
+        (p.placa === newVehicle.placa && p.state === 1)
     );
 
     if (existingIndex === -1) {
@@ -673,50 +663,76 @@ export class PlayaComponent implements OnInit, OnDestroy {
 
   processPayment(item: Auto | Moto): void {
     const fechaHora = new Date();
-    const totalHoras = this.calcularHorasEntreFechas(item.hora_entrada, fechaHora, this.Playa.tolerancia);
-    const tarifa = (item as any).id_moto ? this.Playa.tarifaMoto : this.Playa.tarifaAuto;
+    const totalHoras = this.calcularHorasEntreFechas(
+      item.hora_entrada,
+      fechaHora,
+      this.Playa.tolerancia
+    );
+    const tarifa = (item as any).id_moto
+      ? this.Playa.tarifaMoto
+      : this.Playa.tarifaAuto;
     const montoTotal = totalHoras * tarifa;
 
     // Determinar si es auto o moto y llamar al método correspondiente
-    const paymentObservable = (item as any).id_auto 
-      ? this.currentPlayaService.carroPagoTicketVenta(item as Auto, 2, fechaHora, montoTotal)
-      : this.currentPlayaService.motoPagoTicketVenta(item as Moto, 2, fechaHora, montoTotal);
+    const paymentObservable = (item as any).id_auto
+      ? this.currentPlayaService.carroPagoTicketVenta(
+          item as Auto,
+          2,
+          fechaHora,
+          montoTotal
+        )
+      : this.currentPlayaService.motoPagoTicketVenta(
+          item as Moto,
+          2,
+          fechaHora,
+          montoTotal
+        );
 
     paymentObservable.subscribe({
       next: (response: any) => {
-        const index = this.placas.findIndex(p => this.isSameVehicle(p, item));
-        
+        const index = this.placas.findIndex((p) => this.isSameVehicle(p, item));
+
         if (index !== -1) {
           this.placas[index].state = 2;
           this.placas[index].total_pagar = montoTotal.toFixed(2);
+          // Guardar el ID del ticket generado
+          if (response.documentId) {
+            (this.placas[index] as any).ticket_id = response.documentId;
+          }
         }
-        
+
         this.showNotification(
-          `Pago procesado para ${item.placa}. Total: S/. ${montoTotal.toFixed(2)}`,
+          `Pago procesado para ${item.placa}. Total: S/. ${montoTotal.toFixed(
+            2
+          )}`,
           'success'
         );
       },
       error: (error: any) => {
         console.error('Error al procesar pago:', error);
         this.showNotification('Error al procesar el pago', 'error');
-      }
+      },
     });
   }
 
-  private calcularHorasEntreFechas(horaEntrada: string, salida: Date, tolerancia: number): number {
+  private calcularHorasEntreFechas(
+    horaEntrada: string,
+    salida: Date,
+    tolerancia: number
+  ): number {
     const entrada = new Date(horaEntrada);
     let diferenciaMs = salida.getTime() - entrada.getTime();
     const toleranciaMs = tolerancia * 60 * 1000;
-    
+
     if (diferenciaMs > toleranciaMs) {
       diferenciaMs -= toleranciaMs;
     } else {
       diferenciaMs = 0;
     }
-  
+
     const diferenciaHoras = diferenciaMs / (1000 * 60 * 60);
     let res = Math.ceil(diferenciaHoras);
-    
+
     return res === 0 ? 1 : res;
   }
 
@@ -726,31 +742,22 @@ export class PlayaComponent implements OnInit, OnDestroy {
    */
   generateBoleta(item: Auto | Moto): void {
     this.showNotification('Generando boleta...', 'info');
-    
+
     setTimeout(() => {
-      this.showNotification(
-        `Boleta generada para ${item.placa}`,
-        'success'
-      );
+      this.showNotification(`Boleta generada para ${item.placa}`, 'success');
     }, 1000);
   }
 
   generateFactura(item: Auto | Moto): void {
     this.showNotification('Generando factura...', 'info');
-    
+
     setTimeout(() => {
-      this.showNotification(
-        `Factura generada para ${item.placa}`,
-        'success'
-      );
+      this.showNotification(`Factura generada para ${item.placa}`, 'success');
     }, 1000);
   }
 
   openPersonalizadoModal(item: Auto | Moto): void {
-    this.showNotification(
-      `Documento personalizado para ${item.placa}`,
-      'info'
-    );
+    this.showNotification(`Documento personalizado para ${item.placa}`, 'info');
   }
 
   /**
@@ -760,19 +767,20 @@ export class PlayaComponent implements OnInit, OnDestroy {
     this.currentPlayaService.updateStatePlaca(item, newState).subscribe({
       next: (response: any) => {
         console.log(`Estado actualizado a ${newState}:`, response);
-        
+
         // Actualizar estado local
-        const index = this.placas.findIndex(p => this.isSameVehicle(p, item));
-        
+        const index = this.placas.findIndex((p) => this.isSameVehicle(p, item));
+
         if (index !== -1) {
           this.placas[index].state = newState;
-          this.placas[index].total_pagar = response.total_pagar || this.placas[index].total_pagar;
+          this.placas[index].total_pagar =
+            response.total_pagar || this.placas[index].total_pagar;
         }
       },
       error: (error: any) => {
         console.error('Error al actualizar estado:', error);
         this.showNotification('Error al actualizar el estado', 'error');
-      }
+      },
     });
   }
 
@@ -782,20 +790,20 @@ export class PlayaComponent implements OnInit, OnDestroy {
    */
   isFacturacionEnabled(): boolean {
     const facturacion = this.Playa?.facturacion;
-    
+
     // Manejar diferentes tipos de datos
     if (typeof facturacion === 'boolean') {
       return facturacion;
     }
-    
+
     if (typeof facturacion === 'string') {
       return facturacion.toLowerCase() === 'true' || facturacion === '1';
     }
-    
+
     if (typeof facturacion === 'number') {
       return facturacion === 1;
     }
-    
+
     return false;
   }
 }

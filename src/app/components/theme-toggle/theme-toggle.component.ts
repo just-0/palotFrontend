@@ -29,7 +29,6 @@ export class ThemeToggleComponent implements OnInit, OnDestroy {
   toggleTheme() {
     this.themeService.toggleTheme();
     
-    // Feedback visual opcional
-    console.log('Tema cambiado a:', this.themeService.getCurrentTheme() ? 'oscuro' : 'claro');
+
   }
 }
