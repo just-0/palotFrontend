@@ -352,14 +352,14 @@ export class PlayaComponent implements OnInit, OnDestroy {
     }
 
     this.currentPlayaService
-      .createManualCar(this.placaManual, this.Playa.id_playa, new Date(), 2)
+      .createManualCar(this.placaManual, this.Playa.id_playa, new Date(), 1)
       .subscribe({
         next: (response: Auto) => {
           console.log('Auto manual creado:', response);
           // Agregar a la lista de vehículos
           this.updateVehicleDataAfterCreation(response);
           // Generar PDF del ticket
-          this.pdfClient.generateTicketPDF(response, 2, this.Playa);
+          this.pdfClient.generateTicketPDF(response, 1, this.Playa);
           // Limpiar el campo de placa
           this.placaManual = '';
           // Mostrar notificación de éxito
@@ -392,14 +392,14 @@ export class PlayaComponent implements OnInit, OnDestroy {
     }
 
     this.currentPlayaService
-      .createManualBike(this.placaManual, this.Playa.id_playa, new Date(), 2)
+      .createManualBike(this.placaManual, this.Playa.id_playa, new Date(), 1)
       .subscribe({
         next: (response: Moto) => {
           console.log('Moto manual creada:', response);
           // Agregar a la lista de vehículos
           this.updateVehicleDataAfterCreation(response);
           // Generar PDF del ticket
-          this.pdfClient.generateTicketPDF(response, 2, this.Playa);
+          this.pdfClient.generateTicketPDF(response, 1, this.Playa);
           // Limpiar el campo de placa
           this.placaManual = '';
           // Mostrar notificación de éxito
@@ -508,17 +508,17 @@ export class PlayaComponent implements OnInit, OnDestroy {
   // Métodos para estadísticas
   calcularIngresosDia(): string {
     const total = this.placas
-      .filter(item => item.state === 3 || item.state === 4)
+      .filter(item => item.state === 2)
       .reduce((sum, item) => sum + (parseFloat(item.total_pagar) || 0), 0);
     return total.toFixed(2);
   }
 
   contarVehiculosActivos(): number {
-    return this.placas.filter(item => item.state === 1 || item.state === 2).length;
+    return this.placas.filter(item => item.state === 0 || item.state === 1).length;
   }
 
   contarVehiculosFinalizados(): number {
-    return this.placas.filter(item => item.state === 3 || item.state === 4).length;
+    return this.placas.filter(item => item.state === 2).length;
   }
 
   // Método para reimprimir documentos (ticket, boleta o factura)
@@ -544,18 +544,10 @@ export class PlayaComponent implements OnInit, OnDestroy {
     }, 500);
   }
 
-  /**
-   * Configura WebSocket para recibir notificaciones de vehículos detectados en tiempo real
-   * Solo se activa si la playa tiene una cámara configurada
-   */
   private setupWebSocket(): void {
-    // Verificar si la playa tiene cámara configurada
     if (!this.hasCameraConfigured()) {
-      console.log('📷 Playa sin cámara configurada - WebSocket no necesario');
       return;
     }
-
-    console.log('📷 Playa con cámara detectada - Activando WebSocket');
     
     // Conectar al WebSocket
     this.webSocketService.connect();
@@ -580,9 +572,9 @@ export class PlayaComponent implements OnInit, OnDestroy {
       this.webSocketService.getConnectionStatus().subscribe({
         next: (connected: boolean) => {
           if (connected) {
-            console.log('✅ WebSocket conectado - Listo para recibir detecciones de cámara');
+            console.log('WebSocket conectado');
           } else {
-            console.log('❌ WebSocket desconectado');
+            console.log('WebSocket desconectado');
           }
         }
       })
@@ -630,43 +622,180 @@ export class PlayaComponent implements OnInit, OnDestroy {
    * Maneja la llegada de un nuevo vehículo detectado por cámara
    */
   private handleVehicleDetected(event: VehicleDetectedEvent): void {
-    console.log('🚗 Nueva detección de cámara:', event.vehicle);
-    
-    // Verificar que el vehículo pertenece a esta playa
     if (event.vehicle.id_playa !== this.Playa.id_playa) {
       return;
     }
 
-    // Crear objeto compatible con la estructura existente
     const newVehicle = {
       id_auto: event.vehicle.id_auto,
       id_playa: event.vehicle.id_playa,
       placa: event.vehicle.placa,
       hora_entrada: event.vehicle.hora_entrada,
       hora_salida: null,
-      image: event.vehicle.image, // ✅ Usar la URL de imagen del backend
+      image: event.vehicle.image,
       state: event.vehicle.state,
       total_pagar: null
     };
 
-    // Verificar si el vehículo ya existe en la lista (evitar duplicados)
     const existingIndex = this.placas.findIndex(p => 
       p.id_auto === newVehicle.id_auto || 
       (p.placa === newVehicle.placa && p.state === 1)
     );
 
     if (existingIndex === -1) {
-      // Agregar al inicio de la lista (más reciente primero)
       this.placas.unshift(newVehicle);
-      console.log(`✅ Vehículo agregado: ${newVehicle.placa} (Total: ${this.placas.length})`);
-      
-      // Mostrar notificación de nueva detección
       this.showNotification(
         `Nueva placa detectada: ${newVehicle.placa}`,
         'success'
       );
-    } else {
-      console.log(`⚠️ Vehículo ya existe: ${newVehicle.placa}`);
     }
+  }
+
+  // ==========================================
+  // NUEVAS FUNCIONES PARA MANEJO DE ESTADOS
+  // ==========================================
+
+  /**
+   * Función auxiliar para comparar si dos vehículos son el mismo
+   * Maneja tanto Auto como Moto de forma type-safe
+   */
+  private isSameVehicle(vehicle1: any, vehicle2: Auto | Moto): boolean {
+    // Si ambos son autos
+    if (vehicle1.id_auto && (vehicle2 as Auto).id_auto) {
+      return vehicle1.id_auto === (vehicle2 as Auto).id_auto;
+    }
+    // Si ambos son motos
+    if (vehicle1.id_moto && (vehicle2 as Moto).id_moto) {
+      return vehicle1.id_moto === (vehicle2 as Moto).id_moto;
+    }
+    return false;
+  }
+
+  processPayment(item: Auto | Moto): void {
+    const fechaHora = new Date();
+    const totalHoras = this.calcularHorasEntreFechas(item.hora_entrada, fechaHora, this.Playa.tolerancia);
+    const tarifa = (item as any).id_moto ? this.Playa.tarifaMoto : this.Playa.tarifaAuto;
+    const montoTotal = totalHoras * tarifa;
+
+    // Determinar si es auto o moto y llamar al método correspondiente
+    const paymentObservable = (item as any).id_auto 
+      ? this.currentPlayaService.carroPagoTicketVenta(item as Auto, 2, fechaHora, montoTotal)
+      : this.currentPlayaService.motoPagoTicketVenta(item as Moto, 2, fechaHora, montoTotal);
+
+    paymentObservable.subscribe({
+      next: (response: any) => {
+        const index = this.placas.findIndex(p => this.isSameVehicle(p, item));
+        
+        if (index !== -1) {
+          this.placas[index].state = 2;
+          this.placas[index].total_pagar = montoTotal.toFixed(2);
+        }
+        
+        this.showNotification(
+          `Pago procesado para ${item.placa}. Total: S/. ${montoTotal.toFixed(2)}`,
+          'success'
+        );
+      },
+      error: (error: any) => {
+        console.error('Error al procesar pago:', error);
+        this.showNotification('Error al procesar el pago', 'error');
+      }
+    });
+  }
+
+  private calcularHorasEntreFechas(horaEntrada: string, salida: Date, tolerancia: number): number {
+    const entrada = new Date(horaEntrada);
+    let diferenciaMs = salida.getTime() - entrada.getTime();
+    const toleranciaMs = tolerancia * 60 * 1000;
+    
+    if (diferenciaMs > toleranciaMs) {
+      diferenciaMs -= toleranciaMs;
+    } else {
+      diferenciaMs = 0;
+    }
+  
+    const diferenciaHoras = diferenciaMs / (1000 * 60 * 60);
+    let res = Math.ceil(diferenciaHoras);
+    
+    return res === 0 ? 1 : res;
+  }
+
+  /**
+   * Genera boleta directa para un vehículo
+   * Mantiene el estado en 2 (CANCELADO)
+   */
+  generateBoleta(item: Auto | Moto): void {
+    this.showNotification('Generando boleta...', 'info');
+    
+    setTimeout(() => {
+      this.showNotification(
+        `Boleta generada para ${item.placa}`,
+        'success'
+      );
+    }, 1000);
+  }
+
+  generateFactura(item: Auto | Moto): void {
+    this.showNotification('Generando factura...', 'info');
+    
+    setTimeout(() => {
+      this.showNotification(
+        `Factura generada para ${item.placa}`,
+        'success'
+      );
+    }, 1000);
+  }
+
+  openPersonalizadoModal(item: Auto | Moto): void {
+    this.showNotification(
+      `Documento personalizado para ${item.placa}`,
+      'info'
+    );
+  }
+
+  /**
+   * Función auxiliar para actualizar el estado de un vehículo
+   */
+  private updateVehicleState(item: Auto | Moto, newState: number): void {
+    this.currentPlayaService.updateStatePlaca(item, newState).subscribe({
+      next: (response: any) => {
+        console.log(`Estado actualizado a ${newState}:`, response);
+        
+        // Actualizar estado local
+        const index = this.placas.findIndex(p => this.isSameVehicle(p, item));
+        
+        if (index !== -1) {
+          this.placas[index].state = newState;
+          this.placas[index].total_pagar = response.total_pagar || this.placas[index].total_pagar;
+        }
+      },
+      error: (error: any) => {
+        console.error('Error al actualizar estado:', error);
+        this.showNotification('Error al actualizar el estado', 'error');
+      }
+    });
+  }
+
+  /**
+   * Método auxiliar para verificar si la facturación está habilitada
+   * Maneja diferentes tipos de datos (boolean, string, etc.)
+   */
+  isFacturacionEnabled(): boolean {
+    const facturacion = this.Playa?.facturacion;
+    
+    // Manejar diferentes tipos de datos
+    if (typeof facturacion === 'boolean') {
+      return facturacion;
+    }
+    
+    if (typeof facturacion === 'string') {
+      return facturacion.toLowerCase() === 'true' || facturacion === '1';
+    }
+    
+    if (typeof facturacion === 'number') {
+      return facturacion === 1;
+    }
+    
+    return false;
   }
 }
