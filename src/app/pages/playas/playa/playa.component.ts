@@ -457,6 +457,28 @@ export class PlayaComponent implements OnInit, OnDestroy {
     return this.datePipe.transform(date, 'hh:mm a') || '';
   }
 
+  // Formatear fecha en español manualmente
+  getFechaEnEspanol(): string {
+    const diasSemana = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+    const meses = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 
+                   'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+    
+    const fecha = this.fechaHora;
+    const diaSemana = diasSemana[fecha.getDay()];
+    const dia = fecha.getDate();
+    const mes = meses[fecha.getMonth()];
+    const año = fecha.getFullYear();
+    
+    return `${diaSemana}, ${dia} de ${mes} de ${año}`;
+  }
+
+  // Convertir placa a mayúsculas en tiempo real
+  onPlacaInput(event: any): void {
+    const value = event.target.value.toUpperCase();
+    this.placaManual = value;
+    event.target.value = value;
+  }
+
   // Métodos para imprimir tickets y pagos
   printTicket(item: Auto, newState: number) {
     if (newState === 2 && item.total_pagar) {
