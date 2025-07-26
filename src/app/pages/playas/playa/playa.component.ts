@@ -502,7 +502,10 @@ export class PlayaComponent implements OnInit, OnDestroy {
 
   // Métodos para el registro diario
   datosRegistroDiarioFiltrados() {
-    const datosOrdenados = this.placas.sort((a, b) => {
+    // Primero filtrar solo placas con estado 1 (PENDIENTE) o estado 2 (PAGADO/FINALIZADO)
+    const placasConTicket = this.placas.filter(item => item.state === 1 || item.state === 2);
+    
+    const datosOrdenados = placasConTicket.sort((a, b) => {
       const fechaA = a.hora_entrada ? new Date(a.hora_entrada).getTime() : 0;
       const fechaB = b.hora_entrada ? new Date(b.hora_entrada).getTime() : 0;
       return fechaB - fechaA;
